@@ -70,6 +70,18 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
 .drop.multi .drop-count{opacity:1;transform:none}
 .drop b{font-size:13px;font-weight:650;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .drop-btns{display:flex;gap:4px;margin-top:4px}
+.af-row{display:flex;align-items:center;gap:6px;padding:10px 12px;border:1px solid var(--line);border-radius:12px;background:#fff}
+.af-lbl{font-size:12.5px;font-weight:600;color:var(--ink);cursor:pointer}
+.info{width:20px;height:20px;border-radius:50%;display:grid;place-items:center;color:var(--ink-4);cursor:help}
+.info svg{width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round}
+.info:hover,.info:focus-visible{color:var(--blue)}
+.switch{position:relative;width:34px;height:20px;flex-shrink:0;margin-left:auto}
+.switch input{position:absolute;inset:0;width:100%;height:100%;opacity:0;margin:0;cursor:pointer;z-index:1}
+.switch .track{position:absolute;inset:0;border-radius:999px;background:#d5dbe6;transition:background .2s}
+.switch .track::after{content:'';position:absolute;top:2px;left:2px;width:16px;height:16px;border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(16,33,59,.25);transition:transform .2s var(--ease)}
+.switch input:checked+.track{background:var(--blue)}
+.switch input:checked+.track::after{transform:translateX(14px)}
+.switch input:focus-visible+.track{outline:2px solid var(--blue);outline-offset:2px}
 .picked-list{list-style:none;display:flex;flex-direction:column;gap:6px}
 .picked-list li{display:flex;align-items:center;gap:9px;padding:6px 6px 6px 10px;border:1px solid var(--line);border-radius:10px;background:#fff;font-size:12px;animation:enter .3s var(--ease)}
 .picked-list .pi{position:relative;width:15px;height:19px;border-radius:3px;border:1px solid #dbe2ec;background:#fff;flex-shrink:0;box-shadow:0 1px 2px rgba(16,33,59,.06)}
@@ -270,6 +282,104 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
   .page-grid,.folder-grid{grid-template-columns:1fr}
   .sidebar{display:none}
 }
+
+/* Live progress is painted every frame, so the fill layers must not ease behind it */
+.file-tile.run .read,.file-tile.run .trail,.folder-card.run .f-fill{transition:none}
+.file-tile.run .scan{transition:opacity .3s}
+
+/* Focus mode — the opened file or folder takes the rail, its action takes the stage */
+.rail-pane{display:flex;flex-direction:column;gap:14px}
+#focusPane{animation:enter .35s var(--ease)}
+.is-focus .stage-bar{display:none}
+.stage-hint:empty{display:none}
+.rail-nav{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:-6px 0 -2px}
+.back-btn{display:inline-flex;align-items:center;gap:4px;height:32px;padding:0 10px 0 4px;border-radius:8px;font-size:12.5px;font-weight:600;color:var(--ink-2);transition:background .15s}
+.back-btn:hover{background:var(--bg-2)}
+.back-btn svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.link-btn{font-size:12px;font-weight:600;color:var(--blue);padding:4px 6px;border-radius:6px}
+.link-btn:hover{background:var(--blue-soft)}
+.focus-art{height:224px;border-radius:14px;border:1px solid var(--line-2);background:radial-gradient(120% 90% at 50% 0%,#fcfdfe 0%,#f2f4f8 100%);display:grid;place-items:center;flex-shrink:0}
+.file-tile.focus-tile,.folder-card.focus-tile{border:0!important;background:none!important;box-shadow:none!important;overflow:visible;cursor:default;display:block;transform:none!important;border-radius:0;opacity:1}
+.focus-id{display:flex;flex-direction:column;gap:8px}
+.focus-id h2{font-size:17px;font-weight:700;letter-spacing:-.35px;line-height:1.25;overflow-wrap:anywhere}
+.chip-lob{display:inline-flex;align-items:center;height:22px;padding:0 8px;border-radius:999px;background:var(--bg-2);border:1px solid var(--line);color:var(--ink-3);font-size:10.5px;font-weight:600;white-space:nowrap}
+.sub-meta{font-size:12.5px;color:var(--muted)}
+.facts{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.facts div{padding:10px 12px;border-radius:10px;background:var(--bg);border:1px solid var(--line-2);min-width:0}
+.facts dt{font-size:10px;font-weight:650;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-4)}
+.facts dd{font-size:14px;font-weight:650;font-variant-numeric:tabular-nums;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.rail-lbl{font-size:11px;font-weight:650;color:var(--ink-4);text-transform:uppercase;letter-spacing:.08em;margin-bottom:-4px}
+.rail-note{font-size:12px;color:var(--amber);background:var(--amber-soft);border:1px solid #f0d9a8;border-radius:10px;padding:9px 11px;line-height:1.4}
+.tl{list-style:none;display:flex;flex-direction:column}
+.tl li{position:relative;display:grid;grid-template-columns:22px minmax(0,1fr) auto;gap:11px;padding-bottom:16px}
+.tl li:last-child{padding-bottom:0}
+.tl li::before{content:'';position:absolute;left:10px;top:25px;bottom:3px;width:2px;border-radius:2px;background:var(--line-2)}
+.tl li:last-child::before{display:none}
+.tl li.done::before{background:#bfe6cf}
+.tl .dot{width:22px;height:22px;border-radius:50%;border:1.5px solid var(--line);background:#fff;display:grid;place-items:center}
+.tl .dot svg{width:12px;height:12px;fill:none;stroke:currentColor;stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round}
+.tl .dot i{width:7px;height:7px;border-radius:50%;background:var(--line)}
+.tl li.done .dot{background:var(--green-soft);border-color:#b7e4c7;color:var(--green)}
+.tl li.now .dot{border-color:var(--blue-border);background:var(--blue-soft)}
+.tl li.now .dot i{background:var(--blue);animation:pulse 1.7s var(--ease) infinite}
+.tl li.wait .dot{border-color:#f0d9a8;background:var(--amber-soft)}
+.tl li.wait .dot i{background:#d9a54a;animation:pulse 1.7s var(--ease) infinite}
+.tl b{display:block;font-size:13px;font-weight:650;line-height:22px}
+.tl li.todo b{color:var(--ink-4);font-weight:550}
+.tl p{font-size:11.5px;color:var(--ink-4);line-height:1.4}
+.tl li.now p{color:var(--blue-d)}.tl li.wait p{color:var(--amber)}
+.tl time{font-family:var(--mono);font-size:11px;color:var(--ink-4);line-height:22px}
+.mix{list-style:none;display:flex;flex-direction:column;border:1px solid var(--line-2);border-radius:12px;padding:2px 12px}
+.mix li{display:flex;align-items:center;gap:9px;font-size:12.5px;padding:8px 0;border-top:1px dashed var(--line)}
+.mix li:first-child{border-top:0}
+.mix i{width:8px;height:8px;border-radius:50%}
+.mix b{margin-left:auto;font-variant-numeric:tabular-nums}
+
+/* Action panel */
+.act{background:#fff;border:1px solid var(--line);border-radius:18px;box-shadow:var(--sh);padding:26px 28px;display:flex;flex-direction:column;gap:20px;max-width:780px;animation:enter .4s var(--ease)}
+.act-eyebrow{align-self:flex-start}
+.act h2{font-size:22px;font-weight:700;letter-spacing:-.5px;line-height:1.2}
+.act .lead{font-size:13.5px;color:var(--muted);line-height:1.6;max-width:600px;margin-top:8px}
+.act .lead b{color:var(--ink);font-weight:650}
+.act-stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.act-stat{padding:14px;border-radius:12px;border:1px solid var(--line-2);background:var(--bg);display:flex;flex-direction:column;gap:2px;min-width:0}
+.act-stat small{font-size:10px;font-weight:650;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-4)}
+.act-stat b{font-size:21px;font-weight:700;letter-spacing:-.4px;font-variant-numeric:tabular-nums}
+.act-stat span{font-size:11.5px;color:var(--ink-4)}
+.act-sec h3{font-size:12px;font-weight:650;color:var(--ink-3);margin-bottom:9px}
+.fix-table,.sum{border:1px solid var(--line-2);border-radius:12px}
+.fix-row{display:grid;grid-template-columns:110px minmax(0,1fr) 18px minmax(0,1fr);gap:10px;align-items:center;padding:11px 14px;border-top:1px solid var(--line-2)}
+.fix-row:first-child{border-top:0}
+.fix-row .k{font-size:11.5px;font-weight:600;color:var(--ink-4)}
+.fix-row s{font-family:var(--mono);font-size:12px;color:var(--red);opacity:.7;white-space:pre;overflow:hidden;text-overflow:ellipsis}
+.fix-row .arr{color:var(--ink-4);font-size:12px}
+.fix-row ins{justify-self:start;font-family:var(--mono);font-size:12px;color:var(--green);text-decoration:none;background:var(--green-soft);padding:2px 7px;border-radius:6px;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.sum{padding:2px 14px}
+.sum div{display:flex;justify-content:space-between;gap:12px;padding:10px 0;font-size:13px;border-top:1px dashed var(--line)}
+.sum div:first-child{border-top:0}
+.sum div span:first-child{color:var(--ink-3)}
+.sum div span:last-child{font-variant-numeric:tabular-nums;font-weight:600}
+.sum .tot span{font-weight:700;color:var(--ink)!important}
+.act-foot{display:flex;flex-wrap:wrap;gap:8px;justify-content:flex-end;align-items:center;padding-top:18px;border-top:1px solid var(--line-2)}
+.act-foot .note{margin-right:auto;font-size:12px;color:var(--ink-4)}
+.act-prog .tile-row{font-size:12.5px;color:var(--ink-3);margin-bottom:8px}
+.act-prog b{font-family:var(--mono);color:var(--blue-d);font-size:13px}
+.bar{height:6px;border-radius:999px;background:var(--bg-2);overflow:hidden}
+.bar i{display:block;height:100%;border-radius:inherit;background:linear-gradient(90deg,#a9c3fb,var(--blue))}
+.sub{list-style:none;display:flex;flex-direction:column;gap:11px}
+.sub li{display:flex;align-items:center;gap:10px;font-size:13px;color:var(--ink-4);animation:ink 0s var(--s) forwards}
+@keyframes ink{to{color:var(--ink-2)}}
+.sub .ic{position:relative;width:18px;height:18px;flex-shrink:0}
+.sub .ic::before{content:'';position:absolute;inset:0;border-radius:50%;border:2px solid var(--line-2)}
+.sub .spin{position:absolute;inset:0;border-radius:50%;border:2px solid transparent;border-top-color:var(--blue);opacity:0;animation:spin .8s linear infinite,on 0s var(--s) forwards,off .2s var(--e) forwards}
+.sub .ok{position:absolute;inset:-1px;border-radius:50%;background:var(--green-soft);color:var(--green);display:grid;place-items:center;opacity:0;animation:pop .3s var(--e) forwards}
+.sub .ok svg{width:11px;height:11px;fill:none;stroke:currentColor;stroke-width:2.8;stroke-linecap:round;stroke-linejoin:round}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes on{to{opacity:1}}
+@keyframes off{to{opacity:0}}
+@keyframes pop{from{opacity:0;transform:scale(.5)}to{opacity:1;transform:none}}
+.next{font-size:13px;color:var(--ink-2)}
+@media(max-width:1100px){.act-stats{grid-template-columns:1fr 1fr}}
 </style>
 </head>
 <body>
@@ -291,6 +401,7 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
     <div class="workspace">
       <!-- Fixed upload -->
       <aside class="upload-rail" aria-label="Upload consents">
+       <div class="rail-pane" id="uploadPane">
         <div>
           <h1>Upload</h1>
           <p class="lead">Add one or more CSVs per LoB. The agent prepares each file — you only act when asked.</p>
@@ -332,20 +443,20 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
           <input type="file" id="file" accept=".csv" multiple hidden>
         </div>
         <ul class="picked-list" id="pickedList" hidden></ul>
+        <div class="af-row">
+          <label for="autofix" class="af-lbl">Autofix errors</label>
+          <span class="info" tabindex="0" role="img" aria-label="About autofix" title="About autofix"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/></svg></span>
+          <span class="switch"><input type="checkbox" id="autofix" checked aria-label="Autofix errors"><span class="track"></span></span>
+        </div>
         <div id="uploadError" class="error" hidden></div>
         <label class="declare">
           <input type="checkbox" id="declare">
           <span>I confirm these consents comply with TRAI regulations and have been verified.</span>
         </label>
-        <details class="more">
-          <summary>Preparation options</summary>
-          <label class="toggle" style="margin-top:8px">
-            <input type="checkbox" id="autofix" checked>
-            <span>Apply AI autofix automatically</span>
-          </label>
-        </details>
         <button type="button" class="btn btn-pri btn-full" id="uploadBtn" disabled>Upload &amp; prepare</button>
         <button type="button" class="btn btn-sm" id="seedDemo" style="align-self:flex-start">Load sample queue</button>
+       </div>
+       <div class="rail-pane" id="focusPane" hidden></div>
       </aside>
 
       <!-- Right representation -->
@@ -375,15 +486,6 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
   </main>
 </div>
 
-<div class="drawer-bg" id="drawerBg"></div>
-<aside class="drawer" id="drawer" aria-hidden="true">
-  <div class="drawer-head">
-    <h3 id="drawerTitle">File</h3>
-    <p id="drawerSub"></p>
-  </div>
-  <div class="drawer-body" id="drawerBody"></div>
-  <div class="drawer-foot" id="drawerFoot"></div>
-</aside>
 <div class="toast" id="toast" role="status"></div>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
   <linearGradient id="fBack" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#d4d5d9"/><stop offset="1" stop-color="#bdbec3"/></linearGradient>
@@ -404,9 +506,6 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
   let picked = [];
   let filter = 'all';
   let layout = 'page';
-  let openLob = null;
-  let reviewId = null;
-  const timers = new Map();
 
   const $ = (s, el=document) => el.querySelector(s);
   const $$ = (s, el=document) => [...el.querySelectorAll(s)];
@@ -421,13 +520,14 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
   const isRunning = j => ['upload','received','validate','fix','verify'].includes(j.phase);
   const isDone = j => j.phase==='submitted' || j.phase==='cancelled';
 
-  function progress(j) {
-    const map = { upload:12, received:22, validate:40, fix:58, fix_review:62, verify:82, ready:100, submitted:100, cancelled:0 };
-    return map[j.phase] ?? 0;
-  }
+  /* Running files advance continuously: 0 → 100% in one minute of agent time */
+  const RATE = 100 / 60000;
+  const PHASE_AT = { upload:5, received:15, validate:30, fix:50, fix_review:42, verify:80, ready:100, submitted:100, cancelled:0 };
+  const progressF = j => (isRunning(j) || j.phase==='fix_review') && j.p != null ? j.p : (PHASE_AT[j.phase] ?? 0);
+  const progress = j => Math.round(progressF(j));
 
   function stageInfo(j) {
-    if (j.phase==='fix_review') return { key:'fix', label:'Review autofix', tip:'Safe fixes ready for you', cls:'attn' };
+    if (j.phase==='fix_review') return { key:'fix', label:'Review errors', tip:'Errors found · autofix or skip', cls:'attn' };
     if (j.phase==='ready') return { key:'ready', label:'Ready to submit', tip:'Authorize when you’re ready', cls:'attn' };
     if (j.phase==='submitted') return { key:'ready', label:'Submitted', tip:'Migration received', cls:'ok' };
     if (j.phase==='cancelled') return { key:'upload', label:'Cancelled', tip:'', cls:'' };
@@ -502,27 +602,31 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
     </div>`;
   }
 
+  function paperHTML(j) {
+    const doc = docHTML(j.id);
+    return `<div class="paper" aria-hidden="true">
+      <span class="back"></span>
+      <div class="sheet">
+        <div class="sheet-clip">${doc}<div class="read">${doc}<span class="trail"></span></div></div>
+        <span class="scan"></span>
+        <span class="doc-stamp"><svg viewBox="0 0 24 24"><path d="M6 12.5l4 4 8-9"/></svg></span>
+      </div>
+    </div>`;
+  }
+
   function fileTile(j) {
     const pct = progress(j);
     const st = stageInfo(j);
     const act = j.phase==='ready'
       ? `<button class="btn btn-pri btn-sm tile-act" data-act="review" data-id="${j.id}">Submit</button>`
       : j.phase==='fix_review'
-        ? `<button class="btn btn-pri btn-sm tile-act" data-act="fix" data-id="${j.id}">Review</button>`
+        ? `<button class="btn btn-pri btn-sm tile-act" data-act="fix" data-id="${j.id}">Review errors</button>`
         : j.phase==='submitted'
           ? `<button class="btn btn-sm tile-act" data-act="receipt" data-id="${j.id}">Receipt</button>`
           : '';
-    const doc = docHTML(j.id);
     return `<article class="file-tile ${tileClass(j)}${pct>=100?' full':''}" style="--fill:${pct}%" data-key="t${j.id}" data-sig="${j.phase}" data-fk="t${j.id}" data-to="${pct}" data-id="${j.id}" tabindex="0" role="button" title="${esc(st.tip)}" aria-label="${esc(j.name)}, ${pct}% ${st.label}">
       <div class="tile-art">
-        <div class="paper" aria-hidden="true">
-          <span class="back"></span>
-          <div class="sheet">
-            <div class="sheet-clip">${doc}<div class="read">${doc}<span class="trail"></span></div></div>
-            <span class="scan"></span>
-            <span class="doc-stamp"><svg viewBox="0 0 24 24"><path d="M6 12.5l4 4 8-9"/></svg></span>
-          </div>
-        </div>
+        ${paperHTML(j)}
         <div class="tile-top"><span class="tile-lob">${esc(j.lob)}</span><span class="tile-stage ${st.cls}">${st.cls==='run'||st.cls==='attn'?'<i class="pulse"></i>':''}${esc(st.label)}</span></div>
         <span class="tile-pct">${pct}%</span>
       </div>
@@ -554,6 +658,21 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
   const F_FRONT = 'M8,56 Q8,46 18,46 H70 C77,46 79,58 88,58 H182 Q192,58 192,68 V130 Q192,142 180,142 H20 Q8,142 8,130 Z';
   const HEX = 'M15 2.5 L26.5 9 V23 L15 29.5 L3.5 23 V9 Z';
 
+  function folderArt(lob, files) {
+    const initials = lob.split(/\s+/).map(w => w[0]).join('').slice(0, 2).toUpperCase();
+    return `<div class="folder" aria-hidden="true">
+      <svg viewBox="0 0 200 150"><path d="${F_BACK}" fill="url(#fBack)"/><path d="M146 17h14M166 17h7" stroke="#e6e7ea" stroke-width="3" stroke-linecap="round"/></svg>
+      ${files.length > 1 ? '<span class="f-sheet s2"></span>' : ''}
+      <span class="f-sheet"><i></i><i></i><i></i></span>
+      <div class="f-front"><span class="f-fill"></span></div>
+      <svg class="f-edge" viewBox="0 0 200 150"><path d="${F_FRONT}"/></svg>
+      <div class="f-label">
+        <svg class="f-hex" viewBox="0 0 30 32"><path d="${HEX}"/><text x="15" y="19.6" text-anchor="middle">${esc(initials)}</text></svg>
+        <span><b>${esc(lob)}</b><small>${num(files.reduce((s,j)=>s+(j.total||0),0))} records</small></span>
+      </div>
+    </div>`;
+  }
+
   function folderCard(lob, files) {
     const avg = Math.round(files.reduce((s,j)=>s+progress(j),0) / files.length);
     const need = files.filter(needsYou).length;
@@ -562,21 +681,8 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
     const st = need ? `Needs you · ${need}` : run ? `Agent working · ${run}` : 'Up to date';
     const cls = need ? 'needs' : run ? 'run' : allDone ? 'ok' : '';
     const pill = need ? 'attn' : run ? 'run' : allDone ? 'ok' : '';
-    const initials = lob.split(/\s+/).map(w => w[0]).join('').slice(0, 2).toUpperCase();
     return `<article class="folder-card ${cls}" style="--fill:${avg}%" data-key="f${esc(lob)}" data-sig="${avg}|${cls}|${files.length}|${need}|${run}" data-fk="f${esc(lob)}" data-to="${avg}" data-lob="${esc(lob)}" tabindex="0" role="button" aria-label="${esc(lob)}, ${files.length} files, ${avg}%">
-      <div class="folder-art">
-        <div class="folder" aria-hidden="true">
-          <svg viewBox="0 0 200 150"><path d="${F_BACK}" fill="url(#fBack)"/><path d="M146 17h14M166 17h7" stroke="#e6e7ea" stroke-width="3" stroke-linecap="round"/></svg>
-          ${files.length > 1 ? '<span class="f-sheet s2"></span>' : ''}
-          <span class="f-sheet"><i></i><i></i><i></i></span>
-          <div class="f-front"><span class="f-fill"></span></div>
-          <svg class="f-edge" viewBox="0 0 200 150"><path d="${F_FRONT}"/></svg>
-          <div class="f-label">
-            <svg class="f-hex" viewBox="0 0 30 32"><path d="${HEX}"/><text x="15" y="19.6" text-anchor="middle">${esc(initials)}</text></svg>
-            <span><b>${esc(lob)}</b><small>${num(files.reduce((s,j)=>s+(j.total||0),0))} records</small></span>
-          </div>
-        </div>
-      </div>
+      <div class="folder-art">${folderArt(lob, files)}</div>
       <div class="folder-foot">
         <span class="tile-stage ${pill}">${pill==='run'||pill==='attn'?'<i class="pulse"></i>':''}${esc(st)}</span>
         <span class="tile-pct">${avg}%</span>
@@ -630,136 +736,347 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
     return `<div class="empty"><h3>${msg}</h3><p>${sub}</p></div>`;
   }
 
+  /* ---------- focus: an opened file or folder takes the rail, its action takes the stage ---------- */
+  let focus = null;
+  const STEP_KEYS = ['upload','validate','fix','verify','ready','submitted'];
+  const stepKey = ph => ({ upload:'upload', received:'upload', validate:'validate', fix:'fix', fix_review:'fix', verify:'verify', ready:'ready', submitted:'submitted' })[ph];
+  const fmtTime = t => new Date(t).toLocaleTimeString([], { hour:'2-digit', minute:'2-digit' });
+  const sizeOf = j => j.size || j.total * 96;
+  const inr = n => '₹' + Math.round(n).toLocaleString('en-IN');
+  const stat = (l, v, sub) => `<div class="act-stat"><small>${l}</small><b>${v}</b><span>${sub}</span></div>`;
+  const ICON_BACK = '<svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>';
+  const CHECK = '<svg viewBox="0 0 24 24"><path d="M6 12.5l4 4 8-9"/></svg>';
+  const pulseFor = cls => cls==='run' || cls==='attn' ? '<i class="pulse"></i>' : '';
+
+  function stampPhases() {
+    const now = Date.now();
+    jobs.forEach(j => { const k = stepKey(j.phase); if (!k) return; j.at = j.at || {}; if (!j.at[k]) j.at[k] = now; });
+  }
+
+  const TL = [
+    { k:'upload', t:'Upload', done: j => `${fmtSize(sizeOf(j))} · sealed in your browser` },
+    { k:'validate', t:'Validation', done: j => `${num(j.total)} rows checked · ${num(j.manual)} need manual edits` },
+    { k:'fix', t:'Autofix', done: j => j.fixedApplied ? `${num(j.fixedApplied)} safe fixes applied` : 'Skipped · originals kept' },
+    { k:'verify', t:'Verification', done: j => `${num(j.verified)} authentic · ${num(j.failed)} failed` },
+    { k:'ready', t:'Your go-ahead', done: () => 'Authorized by you' },
+    { k:'submitted', t:'Submission', done: () => 'Received for migration' },
+  ];
+  function timelineHTML(j) {
+    const cur = j.phase==='submitted' ? TL.length : STEP_KEYS.indexOf(stepKey(j.phase));
+    const st = stageInfo(j);
+    return `<ol class="tl">${TL.map((s, i) => {
+      const state = i < cur ? 'done' : i === cur ? (needsYou(j) ? 'wait' : 'now') : 'todo';
+      const desc = state==='done' ? s.done(j)
+        : state==='todo' ? (i === cur + 1 ? 'Up next' : '')
+        : j.phase==='fix_review' ? `${num(j.fixed)} errors found · autofix or skip`
+        : j.phase==='ready' ? `${num(j.verified)} records waiting for your go-ahead`
+        : st.tip;
+      const t = j.at && j.at[s.k] && state !== 'todo' ? `<time>${fmtTime(j.at[s.k])}</time>` : '<span></span>';
+      return `<li class="${state}"><span class="dot">${state==='done' ? CHECK : '<i></i>'}</span><div><b>${s.t}</b>${desc ? `<p>${esc(desc)}</p>` : ''}</div>${t}</li>`;
+    }).join('')}</ol>`;
+  }
+
+  function fileRail(j) {
+    const pct = progress(j), st = stageInfo(j), from = focus.from;
+    return `<div class="rail-nav">
+        <button type="button" class="back-btn" data-nav="back">${ICON_BACK}${from ? esc(from) : 'All files'}</button>
+        ${from ? '<button type="button" class="link-btn" data-nav="home">All files</button>' : ''}
+      </div>
+      <div class="focus-art"><div class="file-tile focus-tile ${tileClass(j)}${pct>=100?' full':''}" style="--fill:${pct}%" data-fk="r${j.id}" data-to="${pct}">${paperHTML(j)}</div></div>
+      <div class="focus-id">
+        <h2>${esc(j.name)}</h2>
+        <div class="tile-row"><span class="chip-lob">${esc(j.lob)}</span><span class="tile-stage ${st.cls}">${pulseFor(st.cls)}${esc(st.label)}</span></div>
+      </div>
+      <dl class="facts">
+        <div><dt>Records</dt><dd>${num(j.total)}</dd></div>
+        <div><dt>Progress</dt><dd data-live-pct="${j.id}">${pct}%</dd></div>
+        <div><dt>File size</dt><dd>${fmtSize(sizeOf(j))}</dd></div>
+        <div><dt>Autofix</dt><dd>${j.autofix ? 'Automatic' : 'Ask me first'}</dd></div>
+      </dl>
+      <div class="rail-lbl">Timeline</div>
+      ${timelineHTML(j)}`;
+  }
+
+  function folderRail(lob, files) {
+    const avg = Math.round(files.reduce((s,j)=>s+progressF(j),0) / files.length);
+    const need = files.filter(needsYou).length, run = files.filter(isRunning).length, done = files.filter(j => j.phase==='submitted').length;
+    const cls = need ? 'needs' : run ? 'run' : done === files.length ? 'ok' : '';
+    const rec = files.reduce((s,j)=>s+(j.total||0),0), eligible = files.reduce((s,j)=>s+(j.verified||0),0);
+    return `<div class="rail-nav"><button type="button" class="back-btn" data-nav="back">${ICON_BACK}All folders</button></div>
+      <div class="focus-art"><div class="folder-card focus-tile ${cls}" style="--fill:${avg}%" data-fk="rf${esc(lob)}" data-to="${avg}" data-lob="${esc(lob)}">${folderArt(lob, files)}</div></div>
+      <div class="focus-id"><h2>${esc(lob)}</h2><p class="sub-meta">${files.length} file${files.length===1?'':'s'} · ${num(rec)} records</p></div>
+      <dl class="facts">
+        <div><dt>Files</dt><dd>${files.length}</dd></div>
+        <div><dt>Avg progress</dt><dd data-live-folder>${avg}%</dd></div>
+        <div><dt>Records</dt><dd>${num(rec)}</dd></div>
+        <div><dt>Eligible so far</dt><dd>${num(eligible)}</dd></div>
+      </dl>
+      <div class="rail-lbl">What’s inside</div>
+      <ul class="mix">
+        <li><i style="background:#d9a54a"></i>Needs you<b>${need}</b></li>
+        <li><i style="background:var(--blue)"></i>Agent working<b>${run}</b></li>
+        <li><i style="background:var(--green)"></i>Submitted<b>${done}</b></li>
+      </ul>
+      ${need ? `<p class="rail-note">${need} file${need>1?'s are':' is'} waiting on you. Open ${need>1?'one':'it'} on the right to act.</p>` : ''}
+      <button type="button" class="btn btn-full" data-nav="upload-more">Upload more to ${esc(lob)}</button>`;
+  }
+
+  const SUB = {
+    upload: ['Encrypting in your browser', 'Sending the sealed file', 'Confirming receipt'],
+    validate: ['Reading headers', 'Checking required columns', 'Validating phone and date formats', 'Flagging duplicate rows'],
+    fix: ['Normalising phone numbers', 'Standardising consent dates', 'Trimming stray whitespace'],
+    verify: ['Matching consent signals', 'Checking authenticity', 'Scoring each record'],
+  };
+  const SEG_OF = { upload:[0,20], validate:[20,42], fix:[42,60], verify:[60,100] };
+  const NEXT = { upload:'Validation', validate:'Autofix', fix:'Verification', verify:'Your go-ahead to submit' };
+  const FIXES = [['Phone', '98450 12345', '+91 98450 12345'], ['Consent date', '12/9/23', '2023-09-12'], ['Email', ' Ravi.M@Mail.com', 'ravi.m@mail.com'], ['Channel', 'sms ', 'SMS']];
+
+  function actionPanel(j) {
+    const pct = progress(j), k = stepKey(j.phase), st = stageInfo(j);
+    let body;
+    if (j.phase === 'fix_review') {
+      body = `
+      <span class="tile-stage attn act-eyebrow"><i class="pulse"></i>Action needed</span>
+      <div><h2>Review errors</h2><p class="lead">Validation found <b>${num(j.fixed)}</b> rows in <b>${esc(j.name)}</b> with format errors the agent can fix safely. Autofix them to include those rows, or skip and continue with the clean rows only. Originals are always kept.</p></div>
+      <div class="act-stats">${stat('Fixable errors', num(j.fixed), 'Format only, values unchanged')}${stat('Manual edits', num(j.manual), 'Left out of this run')}${stat('Clean rows', num(j.valid), 'Ready as they are')}</div>
+      <div class="act-sec"><h3>Sample of the fixes</h3><div class="fix-table">${FIXES.map(([f, a, b]) => `<div class="fix-row"><span class="k">${f}</span><s>${esc(a)}</s><span class="arr">→</span><ins>${esc(b)}</ins></div>`).join('')}</div></div>
+      <div class="act-foot"><span class="note">Skipping leaves these rows out of the submission.</span><button type="button" class="btn" data-do="skip">Skip</button><button type="button" class="btn btn-pri" data-do="apply">Autofix ${num(j.fixed)} errors</button></div>`;
+    } else if (j.phase === 'ready') {
+      const base = j.verified * .05, gst = base * .18;
+      body = `
+      <span class="tile-stage attn act-eyebrow"><i class="pulse"></i>Action needed</span>
+      <div><h2>Authorize submission</h2><p class="lead"><b>${esc(j.name)}</b> is prepared. <b>${num(j.verified)}</b> records passed verification and are ready to migrate into ${esc(j.lob)}.</p></div>
+      <div class="act-stats">${stat('Eligible', num(j.verified), 'Verified consents')}${stat('Failed checks', num(j.failed), 'Won’t be submitted')}${stat('Estimated cost', inr(base + gst), 'Incl. 18% GST')}</div>
+      <div class="act-sec"><h3>Cost breakdown</h3><div class="sum"><div><span>${num(j.verified)} records × ₹0.05</span><span>${inr(base)}</span></div><div><span>GST 18%</span><span>${inr(gst)}</span></div><div class="tot"><span>Total</span><span>${inr(base + gst)}</span></div></div></div>
+      <label class="declare"><input type="checkbox" id="authz"><span>I authorize submitting ${num(j.verified)} records for ${esc(j.lob)}.</span></label>
+      <div class="act-foot"><button type="button" class="btn" data-nav="back">Not now</button><button type="button" class="btn btn-pri" id="submitBtn" data-do="submit" disabled>Authorize &amp; submit</button></div>`;
+    } else if (j.phase === 'submitted') {
+      const amt = (j.verified || 0) * .05 * 1.18;
+      body = `
+      <span class="tile-stage ok act-eyebrow">Submitted</span>
+      <div><h2>Migration received</h2><p class="lead"><b>${num(j.verified)}</b> records from <b>${esc(j.name)}</b> were submitted${j.at && j.at.submitted ? ` at ${fmtTime(j.at.submitted)}` : ''}. Nothing else is needed from you.</p></div>
+      <div class="act-sec"><h3>Receipt</h3><div class="sum">
+        <div><span>Reference</span><span>MIG-2026-${String(j.id).padStart(4, '0')}</span></div>
+        <div><span>Line of business</span><span>${esc(j.lob)}</span></div>
+        <div><span>Records submitted</span><span>${num(j.verified)}</span></div>
+        <div><span>Failed checks (not submitted)</span><span>${num(j.failed)}</span></div>
+        <div class="tot"><span>Amount</span><span>${inr(amt)}</span></div>
+      </div></div>
+      <div class="act-foot"><button type="button" class="btn" data-nav="back">Back</button><button type="button" class="btn btn-pri" data-do="receipt">Download receipt</button></div>`;
+    } else {
+      const [a, b] = SEG_OF[k], items = SUB[k], p = progressF(j);
+      const ms = thr => `${Math.max(0, Math.round((thr - p) / RATE))}ms`;
+      body = `
+      <span class="tile-stage run act-eyebrow"><i class="pulse"></i>Agent working</span>
+      <div><h2>${esc(st.label)}</h2><p class="lead">${esc(st.tip)}. Nothing is needed from you right now. If this file needs you, it will show up here.</p></div>
+      <div class="act-prog"><div class="tile-row"><span>Overall progress</span><b data-live-pct="${j.id}">${pct}%</b></div><div class="bar"><i data-live-bar="${j.id}" style="width:${p.toFixed(2)}%"></i></div></div>
+      <div class="act-sec"><h3>Right now</h3><ul class="sub">${items.map((t, i) => `<li style="--s:${ms(a + (b - a) * i / items.length)};--e:${ms(a + (b - a) * (i + 1) / items.length)}"><span class="ic"><span class="spin"></span><span class="ok">${CHECK}</span></span>${t}</li>`).join('')}</ul></div>
+      <div class="act-sec"><h3>Up next</h3><p class="next">${k === 'validate' && !j.autofix ? 'Review errors (autofix is off)' : NEXT[k]}</p></div>
+      <div class="act-foot"><span class="note">You can leave this view, the agent keeps going.</span><button type="button" class="btn" data-nav="back">Back to files</button></div>`;
+    }
+    return `<div class="act" data-view="act-${j.id}-${j.phase}">${body}</div>`;
+  }
+
   function render() {
+    stampPhases();
     const list = filtered();
     $('#cAll').textContent = jobs.length;
     $('#cNeeds').textContent = jobs.filter(needsYou).length;
     $('#cRun').textContent = jobs.filter(isRunning).length;
     $('#cDone').textContent = jobs.filter(isDone).length;
 
-    const canvas = $('#canvas');
+    const canvas = $('#canvas'), up = $('#uploadPane'), fp = $('#focusPane');
+    if (focus && focus.type === 'file' && !jobs.some(j => j.id === focus.id)) focus = null;
+    if (focus && focus.type === 'folder' && !jobs.some(j => j.lob === focus.lob)) focus = null;
+    document.body.classList.toggle('is-focus', !!focus);
+    up.hidden = !!focus; fp.hidden = !focus;
+    if (focus) { renderFocus(canvas, fp); return; }
+    fp.dataset.sig = '';
+
     if (!jobs.length) {
-      openLob = null;
       $('#hint').innerHTML = 'Upload on the left — pages appear here and <strong>fill as the agent reads them</strong>.';
       patch(canvas, empty('No files yet', 'Your first upload will show up in the page grid.'));
       return;
     }
 
-    if (layout === 'folder' && openLob) {
-      const files = list.filter(j => j.lob === openLob);
-      $('#hint').innerHTML = `<strong>${esc(openLob)}</strong> · ${files.length} file${files.length===1?'':'s'} in this view`;
-      patch(canvas, `<div class="drill">
-        <div class="drill-head">
-          <button type="button" class="btn btn-sm" id="backFolders">← Folders</button>
-          <h2>${esc(openLob)}</h2>
-        </div>
-        <div class="file-list">${files.length ? files.map(j => {
-          const pct=progress(j); const st=stageInfo(j);
-          return `<div class="file-row" data-id="${j.id}" tabindex="0">
-            ${miniTile(j)}
-            <div><b>${esc(j.name)}</b><span>${esc(st.label)} · ${pct}%</span></div>
-            <span class="pill ${st.cls}">${esc(st.label)}</span>
-            ${j.phase==='ready'?`<button class="btn btn-pri btn-sm" data-act="review" data-id="${j.id}">Submit</button>`:
-              j.phase==='fix_review'?`<button class="btn btn-pri btn-sm" data-act="fix" data-id="${j.id}">Review</button>`:'<span></span>'}
-          </div>`;
-        }).join('') : empty('No files here', 'Try another filter.')}
-        </div>
-      </div>`);
-      $('#backFolders').onclick = () => { openLob=null; render(); };
-      return;
-    }
-
     if (layout === 'folder') {
       const groups = foldersFrom(list);
-      $('#hint').textContent = 'Folders group files by LoB. Open one to see each file’s fill.';
+      $('#hint').textContent = 'Folders group files by LoB. Open one to see what’s inside.';
       patch(canvas, groups.length
         ? `<div class="folder-grid" data-view="folder">${groups.map(([lob, files]) => folderCard(lob, files)).join('')}</div>`
         : empty('Nothing in this filter', 'Switch filter or upload another file.'));
       return;
     }
 
-    openLob = null;
-    $('#hint').innerHTML = 'Each page fills as the agent reads it, a soft wash following the scan line.';
+    $('#hint').innerHTML = 'Each page fills as the agent reads it. Open one to see its timeline.';
     patch(canvas, list.length
       ? `<div class="page-grid" data-view="page">${list.map(fileTile).join('')}</div>`
       : empty('Nothing in this filter', 'Try All, or upload a new file.'));
   }
 
-  function schedule(j) {
-    clearTimeout(timers.get(j.id));
-    const delays = { upload:900, received:700, validate:1300, fix:1500, verify:1400 };
-    const tick = () => {
-      const job = jobs.find(x => x.id === j.id);
-      if (!job || isDone(job) || needsYou(job)) return;
-      if (job.phase==='upload') job.phase='received';
-      else if (job.phase==='received') job.phase='validate';
-      else if (job.phase==='validate') {
-        job.phase='fix';
-        job.valid=Math.round(job.total*.9);
-        job.fixed=Math.round(job.total*.06);
-        job.manual=Math.round(job.total*.03);
-        job.dup=job.total-job.valid-job.fixed-job.manual;
-      } else if (job.phase==='fix') {
-        if (job.autofix) { job.fixedApplied=job.fixed; job.phase='verify'; toast(`${job.lob}: auto-fixed`); }
-        else { job.phase='fix_review'; render(); toast(`${job.lob}: needs review`); return; }
-      } else if (job.phase==='verify') {
-        job.verified=job.valid+(job.fixedApplied||0);
-        job.failed=Math.round(job.total*.04);
-        job.phase='ready'; render(); toast(`${job.lob}: ready`); return;
-      }
-      render();
-      if (!needsYou(job) && !isDone(job)) timers.set(job.id, setTimeout(tick, delays[job.phase]||900));
-    };
-    timers.set(j.id, setTimeout(tick, delays[j.phase]||700));
-  }
-
-  function startJob({lob,name,size,autofix}) {
-    const job = {
-      id:nextId++, lob, name, size, autofix, phase:'upload',
-      total:80000+Math.floor(Math.random()*180000),
-      valid:0,fixed:0,manual:0,dup:0,verified:0,failed:0,fixedApplied:0
-    };
-    jobs=[job,...jobs];
-    schedule(job);
-  }
-
-  function openDrawer(job, mode) {
-    reviewId=job.id;
-    $('#drawerBg').classList.add('is-on');
-    $('#drawer').classList.add('is-on');
-    $('#drawer').setAttribute('aria-hidden','false');
-    $('#drawerTitle').textContent=job.lob;
-    $('#drawerSub').textContent=job.name;
-    const st=stageInfo(job);
-    const order=['upload','validate','fix','verify','ready'];
-    const idx=order.indexOf(st.key);
-    const dots=order.map((_,i)=>`<i class="${i<idx?'done':i===idx?'on':''}"></i>`).join('');
-    const focus=`<div class="step-focus"><div class="lbl">Current focus</div><b>${esc(st.label)}</b><p>${esc(st.tip)}</p><div class="step-dots">${dots}</div></div>`;
-
-    if (mode==='fix') {
-      $('#drawerBody').innerHTML=`${focus}<div class="stat-grid"><div class="stat"><small>Safe fixes</small><b>${num(job.fixed)}</b></div><div class="stat"><small>Manual</small><b>${num(job.manual)}</b></div></div><p class="caption">Apply format-safe fixes, or skip and continue.</p>`;
-      $('#drawerFoot').innerHTML=`<button class="btn" data-d="close">Close</button><button class="btn" data-d="skip">Skip</button><button class="btn btn-pri" data-d="apply">Apply</button>`;
+  function renderFocus(canvas, fp) {
+    if (focus.type === 'file') {
+      const j = jobs.find(x => x.id === focus.id);
+      const sig = `f|${j.id}|${j.phase}|${focus.from || ''}`;
+      if (fp.dataset.sig !== sig) { fp.innerHTML = fileRail(j); fp.dataset.sig = sig; animateFills(fp); }
+      $('#hint').textContent = '';
+      patch(canvas, actionPanel(j));
     } else {
-      const cost=Math.round((job.verified||0)*.05*1.18);
-      $('#drawerBody').innerHTML=`${focus}<div class="stat-grid"><div class="stat"><small>Eligible</small><b>${num(job.verified)}</b></div><div class="stat"><small>Estimate</small><b>₹${cost.toLocaleString('en-IN')}</b></div></div>`;
-      $('#drawerFoot').innerHTML=mode==='receipt'
-        ? `<button class="btn btn-pri" data-d="close">Done</button>`
-        : `<button class="btn" data-d="close">Not now</button><button class="btn btn-pri" data-d="submit">Authorize</button>`;
+      const files = jobs.filter(j => j.lob === focus.lob);
+      const sig = `d|${focus.lob}|${files.map(j => j.id + j.phase).join()}`;
+      if (fp.dataset.sig !== sig) { fp.innerHTML = folderRail(focus.lob, files); fp.dataset.sig = sig; animateFills(fp); }
+      $('#hint').innerHTML = `<strong>${esc(focus.lob)}</strong> · ${files.length} file${files.length===1?'':'s'}. Open one to see its timeline and what it needs.`;
+      patch(canvas, `<div class="page-grid" data-view="lob-${esc(focus.lob)}">${files.map(fileTile).join('')}</div>`);
     }
   }
 
-  function closeDrawer() {
-    reviewId=null;
-    $('#drawerBg').classList.remove('is-on');
-    $('#drawer').classList.remove('is-on');
-    $('#drawer').setAttribute('aria-hidden','true');
+  /* ---------- moving a page or folder between the grid and the rail ---------- */
+  const tplNode = html => { const t = document.createElement('template'); t.innerHTML = html.trim(); return t.content.firstElementChild; };
+  function snapshot(host, sel) {
+    const node = host && host.querySelector(sel);
+    if (!node) return null;
+    return { rect: node.getBoundingClientRect(), node: node.cloneNode(true), cls: host.className, fill: host.style.getPropertyValue('--fill') };
+  }
+  function fly(snap, dst, ms = 680) {
+    if (!snap || !dst || RM) { if (dst) dst.style.visibility = ''; return; }
+    const s = snap.rect, d = dst.getBoundingClientRect(), W = dst.offsetWidth, H = dst.offsetHeight;
+    const g = document.createElement('div');
+    g.className = `${snap.cls} focus-tile`;
+    g.style.cssText = `position:fixed;left:${s.left}px;top:${s.top}px;width:${W}px;height:${H}px;z-index:70;pointer-events:none;transform-origin:0 0;margin:0;padding:0`;
+    if (snap.fill) g.style.setProperty('--fill', snap.fill);
+    snap.node.style.cssText += ';position:absolute;inset:0;scale:1;transform:none;margin:0;visibility:visible';
+    g.appendChild(snap.node);
+    document.body.appendChild(g);
+    dst.style.visibility = 'hidden';
+    const a = g.animate([
+      { transform: `scale(${s.width / W})` },
+      { transform: `translate(${d.left - s.left}px,${d.top - s.top}px) scale(${d.width / W})` },
+    ], { duration: ms, easing: 'cubic-bezier(.22,1,.36,1)' });
+    const done = () => { g.remove(); dst.style.visibility = ''; };
+    a.onfinish = done; a.oncancel = done;
   }
 
-  function applyFix(job, apply) {
-    job.fixedApplied=apply?job.fixed:0;
-    job.phase='verify';
-    closeDrawer(); render(); schedule(job);
-    toast(apply?'Autofix applied':'Continued without autofix');
+  function openFile(id, host) {
+    const j = jobs.find(x => x.id === id);
+    if (!j) return;
+    const snap = snapshot(host, '.paper');
+    lastFill.set(`r${id}`, progress(j));
+    focus = { type: 'file', id, from: focus && focus.type === 'folder' ? focus.lob : null };
+    render();
+    scrollTo({ top: 0 });
+    fly(snap, $('#focusPane .paper'));
+  }
+  function openFolder(lob, host) {
+    const snap = snapshot(host, '.folder');
+    lastFill.set(`rf${lob}`, +host.dataset.to);
+    focus = { type: 'folder', lob };
+    render();
+    scrollTo({ top: 0 });
+    fly(snap, $('#focusPane .folder'));
+  }
+  function navigate(to) {
+    if (!focus) return;
+    const prev = focus;
+    if (to === 'upload-more') {
+      focus = null; render();
+      $('#lob').value = prev.lob; updateUpload();
+      $('#drop').focus();
+      return;
+    }
+    const snap = snapshot($('#focusPane .focus-tile'), prev.type === 'file' ? '.paper' : '.folder');
+    focus = to === 'back' && prev.type === 'file' && prev.from ? { type: 'folder', lob: prev.from } : null;
+    render();
+    const dst = prev.type === 'file'
+      ? $(`#canvas [data-key="t${prev.id}"] .paper`)
+      : ($$('#canvas .folder-card').find(c => c.dataset.lob === prev.lob) || null)?.querySelector('.folder');
+    if (dst) { dst.closest('article').scrollIntoView({ block: 'nearest' }); fly(snap, dst); }
+  }
+  document.addEventListener('click', e => { const n = e.target.closest('[data-nav]'); if (n) navigate(n.dataset.nav); });
+
+  function doAction(a) {
+    const j = focus && focus.type === 'file' && jobs.find(x => x.id === focus.id);
+    if (!j) return;
+    if (a === 'apply' || a === 'skip') {
+      j.fixedApplied = a === 'apply' ? j.fixed : 0;
+      j.phase = a === 'apply' ? 'fix' : 'verify'; j.fixDone = true;
+      render(); startTicker();
+      toast(a === 'apply' ? `Autofixing ${num(j.fixed)} errors` : 'Continuing without fixes');
+    }
+    if (a === 'submit' && $('#authz') && $('#authz').checked) {
+      j.phase = 'submitted';
+      render(); toast(`${j.name} submitted`);
+    }
+    if (a === 'receipt') toast('Receipt downloaded');
+  }
+
+  /* ---------- the agent: one frame loop advances every running file ---------- */
+  let raf = 0, lastT = 0;
+  function startTicker() { if (!raf && jobs.some(isRunning)) { lastT = performance.now(); raf = requestAnimationFrame(tick); } }
+  function tick(now) {
+    const dt = Math.min(100, now - lastT); lastT = now;
+    let changed = false;
+    for (const j of jobs) {
+      if (!isRunning(j)) continue;
+      const prev = j.phase;
+      j.p = Math.min(100, (j.p || 0) + dt * RATE);
+      if (j.p >= 100) {
+        j.verified = j.valid + (j.fixedApplied || 0);
+        j.failed = Math.round(j.total * .04);
+        j.phase = 'ready';
+        toast(`${j.name} is ready to submit`);
+      } else if (j.p >= 42 && !j.fixDone && !j.autofix) {
+        /* autofix is off: stop after validation and ask the user */
+        j.fixDone = true; j.p = 42; j.phase = 'fix_review';
+        toast(`${j.name}: review errors`);
+      } else if (j.p >= 60 && !j.fixDone) {
+        j.fixDone = true; j.fixedApplied = j.fixed; j.phase = 'verify';
+      } else {
+        const skipped = j.fixDone && !j.fixedApplied;
+        const ph = j.p >= 60 ? 'verify' : j.p >= 42 ? (skipped ? 'verify' : 'fix') : j.p >= 20 ? 'validate' : j.p >= 10 ? 'received' : 'upload';
+        if (ph !== j.phase) j.phase = ph;
+      }
+      if (j.phase !== prev) changed = true;
+    }
+    if (changed) render();
+    paintLive();
+    raf = jobs.some(isRunning) ? requestAnimationFrame(tick) : 0;
+  }
+  function setFill(el, p) {
+    el.style.setProperty('--fill', `${p.toFixed(2)}%`);
+    el.dataset.to = Math.round(p);
+    lastFill.set(el.dataset.fk, Math.round(p));
+  }
+  function paintLive() {
+    for (const j of jobs) {
+      if (!isRunning(j)) continue;
+      const pr = `${Math.round(j.p)}%`;
+      $$(`[data-fk="t${j.id}"],[data-fk="r${j.id}"]`).forEach(el => {
+        setFill(el, j.p);
+        const t = $(':scope > .tile-art > .tile-pct', el); if (t) t.textContent = pr;
+      });
+      $$(`[data-live-pct="${j.id}"]`).forEach(el => { el.textContent = pr; });
+      $$(`[data-live-bar="${j.id}"]`).forEach(el => { el.style.width = `${j.p.toFixed(2)}%`; });
+    }
+    const pool = focus ? jobs : filtered();
+    $$('.folder-card[data-lob]').forEach(el => {
+      const fs = pool.filter(j => j.lob === el.dataset.lob);
+      if (!fs.some(isRunning)) return;
+      const avg = fs.reduce((s, j) => s + progressF(j), 0) / fs.length;
+      setFill(el, avg);
+      const t = $(':scope > .folder-foot .tile-pct', el); if (t) t.textContent = `${Math.round(avg)}%`;
+      if (el.classList.contains('focus-tile')) { const d = $('[data-live-folder]'); if (d) d.textContent = `${Math.round(avg)}%`; }
+    });
+  }
+
+  function startJob({lob,name,size,autofix}) {
+    const total = 80000 + Math.floor(Math.random() * 180000);
+    const valid = Math.round(total * .9), fixed = Math.round(total * .06), manual = Math.round(total * .03);
+    const job = {
+      id:nextId++, lob, name, size, autofix, phase:'upload', p:0, fixDone:false,
+      total, valid, fixed, manual, dup: total - valid - fixed - manual, verified:0, failed:0, fixedApplied:0
+    };
+    jobs=[job,...jobs];
+    return job;
   }
 
   // Upload events
@@ -782,9 +1099,24 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
   $('#uploadBtn').onclick=()=>{
     if(!picked.length||!$('#lob').value||!$('#declare').checked)return;
     const lob=$('#lob').value, autofix=$('#autofix').checked, n=picked.length, first=picked[0].name;
-    [...picked].reverse().forEach(f=>startJob({lob,name:f.name,size:f.size,autofix}));
+    /* each picked file's icon grows into its page on the grid, then processing begins */
+    const srcs=$$('#pickedList .pi').map(el=>el.getBoundingClientRect());
+    const created=[];
+    [...picked].reverse().forEach(f=>created.unshift(startJob({lob,name:f.name,size:f.size,autofix})));
     picked=[]; $('#declare').checked=false;
+    filter='all'; layout='page';
+    $$('.filters .chip-btn').forEach(b=>b.classList.toggle('is-on',b.dataset.filter==='all'));
+    $$('.layouts .chip-btn').forEach(b=>b.classList.toggle('is-on',b.dataset.layout==='page'));
     renderPicked(); render();
+    created.forEach((j,i)=>{
+      const host=$(`#canvas [data-key="t${j.id}"]`); if(!host) return;
+      const dst=host.querySelector('.paper');
+      if(!RM){
+        host.animate([{opacity:0,transform:'translateY(10px)'},{opacity:1,transform:'none'}],{duration:450,delay:i*140,fill:'backwards',easing:'cubic-bezier(.22,1,.36,1)'});
+        if(srcs[i]){ dst.style.visibility='hidden'; setTimeout(()=>fly({rect:srcs[i],node:tplNode(paperHTML(j)),cls:host.className,fill:'0%'},dst,820),i*140); }
+      }
+    });
+    startTicker();
     toast(n>1?`Received ${n} files for ${lob}`:`Received ${first}`);
   };
 
@@ -795,47 +1127,26 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
   });
   $$('.layouts .chip-btn').forEach(btn=>btn.onclick=()=>{
     layout=btn.dataset.layout;
-    openLob=null;
     $$('.layouts .chip-btn').forEach(b=>b.classList.toggle('is-on',b===btn));
     render();
   });
 
   $('#canvas').addEventListener('click', e => {
-    const act=e.target.closest('[data-act]');
-    if(act){
-      const job=jobs.find(j=>j.id===+act.dataset.id);
-      if(!job)return;
-      if(act.dataset.act==='review')openDrawer(job,'submit');
-      if(act.dataset.act==='fix')openDrawer(job,'fix');
-      if(act.dataset.act==='receipt')openDrawer(job,'receipt');
-      e.stopPropagation(); return;
-    }
-    const folder=e.target.closest('[data-lob]');
-    if(folder){ openLob=folder.dataset.lob; render(); return; }
-    const tile=e.target.closest('.file-tile,[data-id].file-row');
-    if(tile){
-      const job=jobs.find(j=>j.id===+tile.dataset.id);
-      if(!job)return;
-      if(job.phase==='ready')openDrawer(job,'submit');
-      else if(job.phase==='fix_review')openDrawer(job,'fix');
-      else if(job.phase==='submitted')openDrawer(job,'receipt');
-      else openDrawer(job,'receipt');
-    }
+    const d=e.target.closest('[data-do]');
+    if(d){ doAction(d.dataset.do); return; }
+    const tile=e.target.closest('.file-tile');
+    if(tile&&tile.dataset.id){ openFile(+tile.dataset.id, tile); return; }
+    const folder=e.target.closest('.folder-card');
+    if(folder) openFolder(folder.dataset.lob, folder);
   });
-
-  $('#drawerFoot').addEventListener('click', e => {
-    const b=e.target.closest('[data-d]'); if(!b)return;
-    const job=jobs.find(j=>j.id===reviewId);
-    const a=b.dataset.d;
-    if(a==='close')closeDrawer();
-    if(a==='apply'&&job)applyFix(job,true);
-    if(a==='skip'&&job)applyFix(job,false);
-    if(a==='submit'&&job){ job.phase='submitted'; closeDrawer(); render(); toast(`${job.lob} submitted`); }
+  $('#canvas').addEventListener('keydown', e => {
+    if((e.key==='Enter'||e.key===' ')&&e.target.matches('.file-tile,.folder-card')){ e.preventDefault(); e.target.click(); }
   });
-  $('#drawerBg').onclick=closeDrawer;
+  $('#canvas').addEventListener('change', e => {
+    if(e.target.id==='authz') $('#submitBtn').disabled=!e.target.checked;
+  });
 
   $('#seedDemo').onclick=()=>{
-    jobs.forEach(j=>clearTimeout(timers.get(j.id))); timers.clear();
     jobs=[
       {id:nextId++,lob:'Credit Cards',name:'credit_cards_sept.csv',autofix:true,phase:'ready',total:100000,valid:90000,fixed:6000,manual:3000,dup:1000,verified:96000,failed:4000,fixedApplied:6000},
       {id:nextId++,lob:'Credit Cards',name:'credit_cards_aug.csv',autofix:true,phase:'verify',total:80000,valid:72000,fixed:4800,manual:2400,dup:800,verified:0,failed:0,fixedApplied:4800},
@@ -847,11 +1158,19 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
       {id:nextId++,lob:'Insurance',name:'insurance_q2.csv',autofix:true,phase:'submitted',total:51000,valid:48000,fixed:2000,manual:800,dup:200,verified:49000,failed:1000,fixedApplied:2000},
       {id:nextId++,lob:'Savings Accounts',name:'savings_sep.csv',autofix:false,phase:'received',total:95000,valid:0,fixed:0,manual:0,dup:0,verified:0,failed:0,fixedApplied:0}
     ];
-    filter='all'; layout='page'; openLob=null;
+    const now=Date.now();
+    jobs.forEach(j=>{
+      j.p={upload:4,received:14,validate:31,fix:50,fix_review:42,verify:78}[j.phase] ?? 100;
+      j.fixDone=!['upload','received','validate','fix'].includes(j.phase);
+      const idx=j.phase==='submitted'?5:STEP_KEYS.indexOf(stepKey(j.phase));
+      j.at={};
+      for(let i=0;i<=idx;i++) j.at[STEP_KEYS[i]]=now-(idx-i)*(3+j.id%4)*60000;
+    });
+    filter='all'; layout='page'; focus=null;
     $$('.filters .chip-btn').forEach(b=>b.classList.toggle('is-on',b.dataset.filter==='all'));
     $$('.layouts .chip-btn').forEach(b=>b.classList.toggle('is-on',b.dataset.layout==='page'));
     render();
-    jobs.filter(isRunning).forEach(schedule);
+    startTicker();
     toast('Sample queue · try Page and Folders');
   };
 
