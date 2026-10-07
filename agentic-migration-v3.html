@@ -138,8 +138,14 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
 .doc-stamp svg{width:10px;height:10px;fill:none;stroke:rgb(var(--t));stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round}
 .file-tile.ok .doc-stamp{opacity:1;transform:none}
 
-.tile-act{position:absolute;right:10px;bottom:10px;opacity:0;transform:translateY(4px);transition:opacity .18s var(--ease),transform .18s var(--ease);box-shadow:0 4px 12px rgba(16,33,59,.12)}
-.file-tile:hover .tile-act,.file-tile.needs .tile-act,.file-tile:focus-within .tile-act{opacity:1;transform:none}
+.tile-art{height:236px;padding-top:24px}
+.tile-top{position:absolute;left:10px;right:10px;top:10px;display:flex;align-items:center;justify-content:space-between;gap:8px;min-width:0;z-index:2}
+.tile-top .tile-lob{display:inline-flex;align-items:center;height:22px;padding:0 8px;border-radius:999px;background:rgba(255,255,255,.9);border:1px solid var(--line);color:var(--ink-3);font-size:10.5px;font-weight:600}
+.tile-art>.tile-pct{position:absolute;right:12px;bottom:10px;font-size:17px;letter-spacing:-.6px;z-index:2}
+.tile-tip{font-size:11.5px;color:var(--ink-4);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+.tile-foot .tile-row{min-height:32px}
+.tile-foot .tile-row:first-child{min-height:0}
+.tile-act{flex-shrink:0}
 .tile-foot,.folder-foot{padding:11px 13px 12px;display:flex;flex-direction:column;gap:5px;min-width:0}
 .tile-row{display:flex;align-items:center;justify-content:space-between;gap:8px;min-width:0}
 .tile-name{font-size:12.5px;font-weight:650;letter-spacing:-.15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
@@ -460,11 +466,12 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
             <span class="doc-stamp"><svg viewBox="0 0 24 24"><path d="M6 12.5l4 4 8-9"/></svg></span>
           </div>
         </div>
-        ${act}
+        <div class="tile-top"><span class="tile-lob">${esc(j.lob)}</span><span class="tile-stage ${st.cls}">${st.cls==='run'||st.cls==='attn'?'<i class="pulse"></i>':''}${esc(st.label)}</span></div>
+        <span class="tile-pct">${pct}%</span>
       </div>
       <div class="tile-foot">
-        <div class="tile-row"><span class="tile-name" title="${esc(j.name)}">${esc(j.name)}</span><span class="tile-pct">${pct}%</span></div>
-        <div class="tile-row"><span class="tile-lob">${esc(j.lob)}</span><span class="tile-stage ${st.cls}">${st.cls==='run'||st.cls==='attn'?'<i class="pulse"></i>':''}${esc(st.label)}</span></div>
+        <div class="tile-row"><span class="tile-name" title="${esc(j.name)}">${esc(j.name)}</span></div>
+        <div class="tile-row"><span class="tile-tip">${esc(st.tip || st.label)}</span>${act}</div>
       </div>
     </article>`;
   }
@@ -550,7 +557,7 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
     root.getBoundingClientRect();
     moving.forEach(([el, from, to]) => {
       el.style.setProperty('--fill', to + '%');
-      const pct = $(':scope > .tile-foot .tile-pct, :scope > .folder-foot .tile-pct', el);
+      const pct = $(':scope > .tile-art > .tile-pct, :scope > .folder-foot .tile-pct', el);
       if (!pct) return;
       const t0 = performance.now();
       const step = now => {
