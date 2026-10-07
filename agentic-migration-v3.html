@@ -154,7 +154,7 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
 /* Tint per state — every fill, line and glow reads from --t at low alpha */
 .file-tile,.folder-card,.mini-tile{--t:100 116 139}
 .file-tile.run,.folder-card.run,.mini-tile.run{--t:37 96 246}
-.file-tile.attn,.folder-card.needs,.mini-tile.attn{--t:196 132 29}
+.file-tile.attn,.folder-card.needs,.mini-tile.attn{--t:100 116 139}
 .file-tile.ok,.folder-card.ok,.mini-tile.ok{--t:22 150 96}
 
 /* Page grid — document tiles */
@@ -162,7 +162,7 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
 .file-tile{position:relative;border-radius:16px;border:1px solid var(--line);background:#fff;overflow:hidden;box-shadow:var(--sh);cursor:pointer;display:flex;flex-direction:column;transition:transform .22s var(--ease),box-shadow .22s var(--ease),border-color .22s}
 .file-tile:hover{transform:translateY(-3px);box-shadow:var(--sh-2);border-color:#d6e1f7}
 .file-tile:focus-visible{outline:2px solid var(--blue);outline-offset:3px}
-.file-tile.needs{border-color:#f0dcb4;box-shadow:0 0 0 3px rgba(196,132,29,.07),var(--sh)}
+.file-tile.needs{border-color:#d9e3f5}
 .file-tile.done{opacity:.94}
 .tile-art,.folder-art{position:relative;height:212px;display:grid;place-items:center;background:radial-gradient(120% 90% at 50% 0%,#fcfdfe 0%,#f2f4f8 100%);border-bottom:1px solid var(--line-2);container-type:inline-size}
 
@@ -194,14 +194,17 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
 .file-tile.run .scan{animation:breathe 2.4s ease-in-out infinite}
 @keyframes breathe{50%{opacity:.55}}
 /* finished pages read as signed ink, not a coloured block */
-.file-tile.ok .read .doc i{background:#dfe4eb}
-.file-tile.ok .read .doc-hl i:first-child{background:#d3d9e2}
-.file-tile.ok .read .doc-img{background:#eceff4}
+.file-tile.ok .read .doc i,.file-tile.attn .read .doc i{background:#dfe4eb}
+.file-tile.ok .read .doc-hl i:first-child,.file-tile.attn .read .doc-hl i:first-child{background:#d3d9e2}
+.file-tile.ok .read .doc-img,.file-tile.attn .read .doc-img{background:#eceff4}
 .file-tile.ok .read .doc-sig{stroke:#3d4a63}
-.file-tile.ok .trail{opacity:0}
+.file-tile.ok .trail,.file-tile.attn .trail{opacity:0}
+.file-tile.attn .read{background:none}
 .doc-stamp{position:absolute;top:9px;right:9px;width:16px;height:16px;border-radius:50%;background:rgb(var(--t)/.12);display:grid;place-items:center;opacity:0;transform:scale(.6);transition:opacity .3s,transform .3s var(--ease)}
 .doc-stamp svg{width:10px;height:10px;fill:none;stroke:rgb(var(--t));stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round}
 .file-tile.ok .doc-stamp{opacity:1;transform:none}
+.file-tile.attn .doc-stamp{opacity:1;transform:none;width:18px;height:18px;background:var(--blue-soft);box-shadow:0 0 0 1px var(--blue-border)}
+.file-tile.attn .doc-stamp svg{stroke:var(--blue)}
 
 .tile-art{height:236px;padding-top:24px}
 .tile-top{position:absolute;left:10px;right:10px;top:10px;display:flex;align-items:center;justify-content:space-between;gap:8px;min-width:0;z-index:2}
@@ -215,7 +218,7 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
 .tile-row{display:flex;align-items:center;justify-content:space-between;gap:8px;min-width:0}
 .tile-name{font-size:12.5px;font-weight:650;letter-spacing:-.15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
 .tile-pct{font-family:var(--mono);font-size:12.5px;font-weight:600;letter-spacing:-.3px;color:var(--ink-3);font-variant-numeric:tabular-nums;flex-shrink:0}
-.run .tile-pct{color:var(--blue-d)}.attn .tile-pct,.needs .tile-pct{color:var(--amber)}.ok .tile-pct{color:var(--green)}
+.run .tile-pct{color:var(--blue-d)}.attn .tile-pct,.needs .tile-pct{color:var(--ink-2)}.ok .tile-pct{color:var(--green)}
 .tile-lob{font-size:11.5px;color:var(--ink-4);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
 .tile-stage{display:inline-flex;align-items:center;gap:5px;height:22px;padding:0 8px;border-radius:999px;font-size:10.5px;font-weight:650;background:var(--bg-2);border:1px solid var(--line);color:var(--ink-3);white-space:nowrap;flex-shrink:0}
 .tile-stage.run{background:var(--blue-soft);border-color:var(--blue-border);color:var(--blue-d)}
@@ -230,7 +233,7 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
 .folder-card{position:relative;border-radius:16px;border:1px solid var(--line);background:#fff;overflow:hidden;box-shadow:var(--sh);cursor:pointer;display:flex;flex-direction:column;transition:transform .22s var(--ease),box-shadow .22s,border-color .22s}
 .folder-card:hover{transform:translateY(-3px);box-shadow:var(--sh-2);border-color:#d6e1f7}
 .folder-card:focus-visible{outline:2px solid var(--blue);outline-offset:3px}
-.folder-card.needs{border-color:#f0dcb4}
+.folder-card.needs{border-color:#d9e3f5}
 .folder{position:relative;width:200px;height:150px;filter:drop-shadow(0 14px 16px rgba(16,33,59,.10)) drop-shadow(0 2px 3px rgba(16,33,59,.06));transition:transform .35s var(--ease)}
 .folder>svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
 .f-sheet{position:absolute;left:22px;right:22px;top:22px;height:100px;border-radius:6px;background:#fff;padding:11px 14px;display:flex;flex-direction:column;gap:6px;box-shadow:0 1px 2px rgba(16,33,59,.08);transition:transform .45s var(--ease)}
@@ -272,7 +275,14 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
 .pill.attn{background:var(--amber-soft);color:var(--amber);border-color:#f0d9a8}
 .pill.ok{background:var(--green-soft);color:var(--green);border-color:#b7e4c7}
 
-.empty{padding:48px 20px;text-align:center;border:1px dashed var(--line);border-radius:14px;background:rgba(255,255,255,.6)}
+.empty{padding:44px 20px 48px;text-align:center;border:1px dashed var(--line);border-radius:14px;background:rgba(255,255,255,.6)}
+.empty-art{position:relative;width:92px;height:116px;margin:0 auto 22px}
+.e-back{position:absolute;inset:0;border-radius:7px;background:#f3f5f9;border:1px solid #e6eaf0;transform:translate(9px,5px) rotate(5deg)}
+.e-sheet{position:absolute;inset:0;border-radius:7px;background:#fff;border:1.5px dashed #cdd5e2;padding:16px 12px;display:flex;flex-direction:column;gap:9px;animation:efloat 4s ease-in-out infinite}
+.e-sheet i{display:block;height:4px;border-radius:2px;background:#eef1f5}
+.e-badge{position:absolute;right:-14px;bottom:-10px;width:36px;height:36px;border-radius:50%;background:#fff;border:1px solid var(--line);box-shadow:var(--sh-2);display:grid;place-items:center;color:var(--ink-4)}
+.e-badge svg{width:17px;height:17px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round}
+@keyframes efloat{50%{transform:translateY(-4px)}}
 .empty h3{font-size:15px;font-weight:650;margin-bottom:6px}
 .empty p{font-size:13px;color:var(--muted);max-width:320px;margin:0 auto}
 
@@ -723,6 +733,8 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
     </div>`;
   }
 
+  /* stamp on the page: a tick once submitted, a pen when it needs sign-off, ! when errors need review */
+  const STAMP = { submitted: 'M6 12.5l4 4 8-9', ready: 'M4 20l4-1 10-10-3-3L5 16l-1 4zM13 8l3 3', fix_review: 'M12 7v6M12 17h.01' };
   function paperHTML(j) {
     const doc = docHTML(j.id);
     return `<div class="paper" aria-hidden="true">
@@ -730,7 +742,7 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
       <div class="sheet">
         <div class="sheet-clip">${doc}<div class="read">${doc}<span class="trail"></span></div></div>
         <span class="scan"></span>
-        <span class="doc-stamp"><svg viewBox="0 0 24 24"><path d="M6 12.5l4 4 8-9"/></svg></span>
+        <span class="doc-stamp"><svg viewBox="0 0 24 24"><path d="${STAMP[j.phase] || STAMP.submitted}"/></svg></span>
       </div>
     </div>`;
   }
@@ -853,9 +865,18 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
     });
   }
 
+  /* empty state: a blank, dashed page with a magnifier, so "nothing here" reads at a glance */
   function empty(msg, sub) {
-    return `<div class="empty"><h3>${msg}</h3><p>${sub}</p></div>`;
+    return `<div class="empty"><div class="empty-art" aria-hidden="true"><span class="e-back"></span><span class="e-sheet"><i style="width:46%"></i><i></i><i style="width:80%"></i><i style="width:64%"></i></span><span class="e-badge"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="6"/><path d="M20 20l-4.5-4.5M8.5 11h5"/></svg></span></div><h3>${msg}</h3><p>${sub}</p></div>`;
   }
+  const EMPTY_FOR = {
+    needs: ['Nothing needs you right now', 'Files that need a review or your go-ahead will show up here.'],
+    run: ['No files in progress', 'Upload a file and the agent starts on it right away.'],
+    done: ['Nothing submitted yet', 'Files you submit for migration will show up here.'],
+    all: ['Nothing in this filter', 'Try All, or upload a new file.'],
+  };
+  const emptyFor = () => empty(...(EMPTY_FOR[filter] || EMPTY_FOR.all));
+
 
   /* ---------- focus: an opened file or folder takes the rail, its action takes the stage ---------- */
   let focus = null;
@@ -1158,14 +1179,14 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
       $('#hint').textContent = 'Each LOB groups its files. Open one to see what’s inside.';
       patch(canvas, groups.length
         ? `<div class="folder-grid" data-view="folder">${groups.map(([lob, files]) => folderCard(lob, files)).join('')}</div>`
-        : empty('Nothing in this filter', 'Switch filter or upload another file.'));
+        : emptyFor());
       return;
     }
 
     $('#hint').innerHTML = 'Each page fills as the agent reads it. Open one to see its timeline.';
     patch(canvas, list.length
       ? `<div class="page-grid" data-view="page">${list.map(fileTile).join('')}</div>`
-      : empty('Nothing in this filter', 'Try All, or upload a new file.'));
+      : emptyFor());
   }
 
   function renderFocus(canvas, fp) {
