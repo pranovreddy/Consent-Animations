@@ -379,6 +379,39 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
 @keyframes off{to{opacity:0}}
 @keyframes pop{from{opacity:0;transform:scale(.5)}to{opacity:1;transform:none}}
 .next{font-size:13px;color:var(--ink-2)}
+/* Ready for your go-ahead */
+.rd-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;padding-bottom:18px;border-bottom:1px solid var(--line-2)}
+.rd-file{font-size:13px;color:var(--ink-3);margin-top:8px}
+.chip-ok{flex-shrink:0;background:var(--green-soft);color:var(--green);font-size:11.5px;font-weight:650;padding:5px 10px;border-radius:7px}
+.rd-stats{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.rd-stats small{display:block;font-size:12px;color:var(--ink-3)}
+.rd-stats b{display:block;font-size:30px;font-weight:700;letter-spacing:-.8px;line-height:1.2;margin-top:4px;font-variant-numeric:tabular-nums}
+.rd-stats span{font-size:12px;color:var(--ink-3)}
+.ok-note{display:flex;gap:10px;align-items:center;padding:13px 16px;border-radius:10px;background:#eaf6ef;color:var(--ink-2);font-size:13px;line-height:1.45}
+.ok-note svg{width:17px;height:17px;flex-shrink:0;fill:none;stroke:var(--blue);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.disc summary{display:inline-flex;align-items:center;gap:7px;font-size:13px;font-weight:650;color:var(--blue);cursor:pointer;list-style:none}
+.disc summary::-webkit-details-marker{display:none}
+.disc summary::before{content:'';border:4.5px solid transparent;border-left:6px solid currentColor;border-right:0;transition:transform .2s var(--ease)}
+.disc[open] summary::before{transform:rotate(90deg)}
+.disc-body{margin-top:10px;border:1px solid var(--line-2);border-radius:10px;padding:2px 14px}
+.disc-body div{display:flex;justify-content:space-between;gap:12px;padding:9px 0;font-size:12.5px;color:var(--ink-3);border-top:1px dashed var(--line)}
+.disc-body div:first-child{border-top:0}
+.disc-body div span:last-child{font-variant-numeric:tabular-nums;font-weight:600;color:var(--ink-2);white-space:nowrap}
+.appeal{padding:16px 18px;border:1px solid var(--line);border-radius:12px;background:#f8f9fc}
+.appeal h4{font-size:14px;font-weight:650}
+.appeal p{font-size:13px;color:var(--muted);margin:5px 0 12px}
+.auth{padding:18px 18px 16px;border-radius:12px;background:#f4f6fb}
+.auth-lbl{font-size:11px;font-weight:650;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);margin-bottom:6px}
+.auth-row{display:flex;justify-content:space-between;gap:12px;padding:8px 0;font-size:13px;color:var(--ink-2);font-variant-numeric:tabular-nums}
+.auth-row b{font-weight:700;color:var(--ink)}
+.auth-row.tot{margin-top:6px;padding-top:14px;border-top:1px solid var(--line);font-size:16px;font-weight:650;color:var(--ink)}
+.auth-row.tot b{font-size:16px}
+.auth-note{font-size:12px;color:var(--ink-3);margin-top:8px}
+.auth-check{font-size:13px;line-height:1.55}
+.auth-check b{font-weight:650;color:var(--ink)}
+.submit-full{width:100%;height:46px;font-size:13.5px}
+.submit-full svg{width:15px;height:15px}
+.concept{font-size:12px;color:var(--ink-4);margin-top:-8px}
 @media(max-width:1100px){.act-stats{grid-template-columns:1fr 1fr}}
 </style>
 </head>
@@ -743,6 +776,7 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
   const fmtTime = t => new Date(t).toLocaleTimeString([], { hour:'2-digit', minute:'2-digit' });
   const sizeOf = j => j.size || j.total * 96;
   const inr = n => '₹' + Math.round(n).toLocaleString('en-IN');
+  const inr2 = n => '₹' + n.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
   const stat = (l, v, sub) => `<div class="act-stat"><small>${l}</small><b>${v}</b><span>${sub}</span></div>`;
   const ICON_BACK = '<svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>';
   const CHECK = '<svg viewBox="0 0 24 24"><path d="M6 12.5l4 4 8-9"/></svg>';
@@ -842,14 +876,32 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
       <div class="act-sec"><h3>Sample of the fixes</h3><div class="fix-table">${FIXES.map(([f, a, b]) => `<div class="fix-row"><span class="k">${f}</span><s>${esc(a)}</s><span class="arr">→</span><ins>${esc(b)}</ins></div>`).join('')}</div></div>
       <div class="act-foot"><span class="note">Skipping leaves these rows out of the submission.</span><button type="button" class="btn" data-do="skip">Skip</button><button type="button" class="btn btn-pri" data-do="apply">Autofix ${num(j.fixed)} errors</button></div>`;
     } else if (j.phase === 'ready') {
-      const base = j.verified * .05, gst = base * .18;
+      const base = j.verified * .05, tax = base * .18, total = base + tax;
+      const skipped = (j.fixed || 0) - (j.fixedApplied || 0), excluded = j.total - j.verified;
+      const why = [[`Didn’t pass authenticity checks`, j.failed], ['Need manual edits', j.manual], ['Duplicate rows', j.dup], ['Errors you chose not to fix', skipped]].filter(r => r[1] > 0);
+      const hist = TL.slice(0, 4).filter(s => j.at && j.at[s.k]).map(s => `<div><span>${s.t} · ${esc(s.done(j))}</span><span>${fmtTime(j.at[s.k])}</span></div>`).join('');
       body = `
-      <span class="tile-stage attn act-eyebrow"><i class="pulse"></i>Action needed</span>
-      <div><h2>Authorize submission</h2><p class="lead"><b>${esc(j.name)}</b> is prepared. <b>${num(j.verified)}</b> records passed verification and are ready to migrate into ${esc(j.lob)}.</p></div>
-      <div class="act-stats">${stat('Eligible', num(j.verified), 'Verified consents')}${stat('Failed checks', num(j.failed), 'Won’t be submitted')}${stat('Estimated cost', inr(base + gst), 'Incl. 18% GST')}</div>
-      <div class="act-sec"><h3>Cost breakdown</h3><div class="sum"><div><span>${num(j.verified)} records × ₹0.05</span><span>${inr(base)}</span></div><div><span>GST 18%</span><span>${inr(gst)}</span></div><div class="tot"><span>Total</span><span>${inr(base + gst)}</span></div></div></div>
-      <label class="declare"><input type="checkbox" id="authz"><span>I authorize submitting ${num(j.verified)} records for ${esc(j.lob)}.</span></label>
-      <div class="act-foot"><button type="button" class="btn" data-nav="back">Not now</button><button type="button" class="btn btn-pri" id="submitBtn" data-do="submit" disabled>Authorize &amp; submit</button></div>`;
+      <div class="rd-head"><div><h2>Ready for your go-ahead</h2><p class="rd-file">${esc(j.name)}</p></div><span class="chip-ok">${esc(j.lob)}</span></div>
+      <div class="rd-stats">
+        <div><small>Eligible for this submission</small><b>${num(j.verified)}</b></div>
+        <div><small>Migration estimate</small><b>${inr2(total)}</b><span>including sample tax</span></div>
+      </div>
+      <div class="ok-note"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg>Validation and authenticity checks are complete.${j.fixedApplied ? ` ${num(j.fixedApplied)} records were safely corrected and revalidated.` : ' No corrections were applied.'}</div>
+      <details class="disc"><summary>${num(excluded)} records excluded from this submission</summary>
+        <div class="disc-body">${why.map(([t, n]) => `<div><span>${t}</span><span>${num(n)}</span></div>`).join('')}</div>
+      </details>
+      ${j.failed ? `<div class="appeal"><h4>${num(j.failed)} records did not pass authenticity checks</h4><p>You can appeal these separately. The ${num(j.verified)} verified consents can proceed now.</p><button type="button" class="btn" data-do="appeal">Review reasons &amp; appeal</button></div>` : ''}
+      <details class="disc"><summary>View preparation history</summary><div class="disc-body">${hist}</div></details>
+      <div class="auth">
+        <div class="auth-lbl">Migration authorization</div>
+        <div class="auth-row"><span>${num(j.verified)} consents × ₹0.05</span><b>${inr2(base)}</b></div>
+        <div class="auth-row"><span>Sample tax · 18%*</span><span>${inr2(tax)}</span></div>
+        <div class="auth-row tot"><span>Total to authorize</span><b>${inr2(total)}</b></div>
+        <p class="auth-note">*Illustrative rate and tax only. Replace with the actual contracted rate and applicable tax in production.</p>
+      </div>
+      <label class="declare auth-check"><input type="checkbox" id="authz"><span>I authorize migration of <b>${num(j.verified)} consents</b> for <b>${inr2(total)}, including the sample tax shown</b>. I understand that excluded records are not part of this submission.</span></label>
+      <button type="button" class="btn btn-pri submit-full" id="submitBtn" data-do="submit" disabled>Submit ${num(j.verified)} consents for migration <svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+      <p class="concept">Concept: direct authorization by an eligible billing approver. Other roles send this same summary for approval.</p>`;
     } else if (j.phase === 'submitted') {
       const amt = (j.verified || 0) * .05 * 1.18;
       body = `
@@ -1007,6 +1059,7 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
       render(); toast(`${j.name} submitted`);
     }
     if (a === 'receipt') toast('Receipt downloaded');
+    if (a === 'appeal') toast('Appeal review opens separately');
   }
 
   /* ---------- the agent: one frame loop advances every running file ---------- */
@@ -1020,8 +1073,8 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
       const prev = j.phase;
       j.p = Math.min(100, (j.p || 0) + dt * RATE);
       if (j.p >= 100) {
-        j.verified = j.valid + (j.fixedApplied || 0);
         j.failed = Math.round(j.total * .04);
+        j.verified = j.valid + (j.fixedApplied || 0) - j.failed;
         j.phase = 'ready';
         toast(`${j.name} is ready to submit`);
       } else if (j.p >= 42 && !j.fixDone && !j.autofix) {
@@ -1148,12 +1201,12 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
 
   $('#seedDemo').onclick=()=>{
     jobs=[
-      {id:nextId++,lob:'Credit Cards',name:'credit_cards_sept.csv',autofix:true,phase:'ready',total:100000,valid:90000,fixed:6000,manual:3000,dup:1000,verified:96000,failed:4000,fixedApplied:6000},
+      {id:nextId++,lob:'Credit Cards',name:'credit_cards_sept.csv',autofix:true,phase:'ready',total:100000,valid:90000,fixed:6000,manual:3000,dup:1000,verified:92000,failed:4000,fixedApplied:6000},
       {id:nextId++,lob:'Credit Cards',name:'credit_cards_aug.csv',autofix:true,phase:'verify',total:80000,valid:72000,fixed:4800,manual:2400,dup:800,verified:0,failed:0,fixedApplied:4800},
       {id:nextId++,lob:'Personal Loans',name:'personal_loans_sept.csv',autofix:false,phase:'fix_review',total:250000,valid:225000,fixed:15000,manual:7500,dup:2500,verified:0,failed:0,fixedApplied:0},
       {id:nextId++,lob:'Personal Loans',name:'personal_loans_july.csv',autofix:true,phase:'validate',total:120000,valid:0,fixed:0,manual:0,dup:0,verified:0,failed:0,fixedApplied:0},
       {id:nextId++,lob:'Savings Accounts',name:'savings_oct.csv',autofix:true,phase:'fix',total:180000,valid:162000,fixed:10800,manual:5400,dup:1800,verified:0,failed:0,fixedApplied:0},
-      {id:nextId++,lob:'Home Loans',name:'home_loans_aug.csv',autofix:true,phase:'submitted',total:72000,valid:65000,fixed:4000,manual:2000,dup:1000,verified:69000,failed:3000,fixedApplied:4000},
+      {id:nextId++,lob:'Home Loans',name:'home_loans_aug.csv',autofix:true,phase:'submitted',total:72000,valid:65000,fixed:4000,manual:2000,dup:1000,verified:66000,failed:3000,fixedApplied:4000},
       {id:nextId++,lob:'Insurance',name:'insurance_q3.csv',autofix:true,phase:'upload',total:45000,valid:0,fixed:0,manual:0,dup:0,verified:0,failed:0,fixedApplied:0},
       {id:nextId++,lob:'Insurance',name:'insurance_q2.csv',autofix:true,phase:'submitted',total:51000,valid:48000,fixed:2000,manual:800,dup:200,verified:49000,failed:1000,fixedApplied:2000},
       {id:nextId++,lob:'Savings Accounts',name:'savings_sep.csv',autofix:false,phase:'received',total:95000,valid:0,fixed:0,manual:0,dup:0,verified:0,failed:0,fixedApplied:0}
