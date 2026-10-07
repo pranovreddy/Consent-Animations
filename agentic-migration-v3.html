@@ -102,7 +102,7 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
 .picked-list{list-style:none;display:flex;flex-direction:column;gap:6px}
 .picked-list li{display:flex;align-items:center;gap:9px;padding:6px 6px 6px 10px;border:1px solid var(--line);border-radius:10px;background:#fff;font-size:12px;animation:enter .3s var(--ease)}
 .picked-list .pi{position:relative;width:15px;height:19px;border-radius:3px;border:1px solid #dbe2ec;background:#fff;flex-shrink:0;box-shadow:0 1px 2px rgba(16,33,59,.06)}
-.picked-list .pi::before{content:'';position:absolute;left:3px;right:3px;top:4px;height:8px;background:repeating-linear-gradient(180deg,#d5dce8 0 1.5px,transparent 1.5px 3.5px)}
+.picked-list .pi::before{content:'';position:absolute;left:2px;right:2px;top:3px;bottom:3px;background:repeating-linear-gradient(180deg,#d5dce8 0 1px,transparent 1px 3.5px),repeating-linear-gradient(90deg,#d5dce8 0 1px,transparent 1px 4px)}
 .picked-list .pl{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
 .picked-list b{min-width:0;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .picked-list .st{font-size:10.5px;color:#0f766e;font-family:var(--mono);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -180,6 +180,28 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
 .doc-hl{flex:1;display:flex;flex-direction:column;gap:5px}
 .doc-hl i:first-child{height:5px;background:#e1e6ed}
 .doc-p{display:flex;flex-direction:column;gap:6px}
+.csv{gap:9px;padding:12px 11px}
+.csv i{height:3px}
+.csv-top{display:flex;align-items:center;gap:6px}
+.csv-top i{height:4px;background:#e1e6ed}
+.csv-tag{flex-shrink:0;font:700 7.5px/1 var(--mono);letter-spacing:.05em;padding:3px 4px;border-radius:3px;background:#e7f4ec;color:#1f8f5c}
+.csv-grid{border:1px solid #e6eaf0;border-radius:4px;overflow:hidden}
+.csv-row{display:grid;grid-template-columns:.6fr 1.2fr 1fr .9fr;border-top:1px solid #eef1f5}
+.csv-row:first-child{border-top:0}
+.csv-row span{height:13px;padding:0 4px;border-left:1px solid #eef1f5;display:flex;align-items:center}
+.csv-row span:first-child{border-left:0}
+.csv-row.hd{background:#f4f6f9}
+.csv-row.hd i{background:#d5dbe4}
+.read .csv-grid{border-color:rgb(var(--t)/.22)}
+.read .csv-row,.read .csv-row span{border-color:rgb(var(--t)/.14)}
+.read .csv-row.hd{background:rgb(var(--t)/.08)}
+.read .csv-row.hd i{background:rgb(var(--t)/.32)}
+.read .csv-top i{background:rgb(var(--t)/.26)}
+.file-tile.ok .read .csv-grid,.file-tile.attn .read .csv-grid{border-color:#e1e6ed}
+.file-tile.ok .read .csv-row,.file-tile.ok .read .csv-row span,.file-tile.attn .read .csv-row,.file-tile.attn .read .csv-row span{border-color:#eceff4}
+.file-tile.ok .read .csv-row.hd,.file-tile.attn .read .csv-row.hd{background:#f2f4f8}
+.file-tile.ok .read .csv-row.hd i,.file-tile.attn .read .csv-row.hd i,.file-tile.ok .read .csv-top i,.file-tile.attn .read .csv-top i{background:#cfd6e0}
+.drop.sealed .read .csv-row.hd i,.drop.sealed .read .csv-top i{background:repeating-linear-gradient(90deg,rgb(var(--t)/.4) 0 3px,transparent 3px 6px)}
 .doc-sig{position:absolute;right:12px;bottom:10px;width:38px;height:22px;fill:none;stroke:#cdd3dd;stroke-width:1.4;stroke-linecap:round;stroke-linejoin:round}
 
 /* the read layer: a clipped copy of the page, tinted, that grows down with --fill */
@@ -236,9 +258,9 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
 .folder-card.needs{border-color:#d9e3f5}
 .folder{position:relative;width:200px;height:150px;filter:drop-shadow(0 14px 16px rgba(16,33,59,.10)) drop-shadow(0 2px 3px rgba(16,33,59,.06));transition:transform .35s var(--ease)}
 .folder>svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
-.f-sheet{position:absolute;left:22px;right:22px;top:22px;height:100px;border-radius:6px;background:#fff;padding:11px 14px;display:flex;flex-direction:column;gap:6px;box-shadow:0 1px 2px rgba(16,33,59,.08);transition:transform .45s var(--ease)}
-.f-sheet i{display:block;height:4px;border-radius:2px;background:#eceff3}
-.f-sheet i:first-child{width:46%;background:#e2e6ec}.f-sheet i:nth-child(2){width:72%}.f-sheet i:nth-child(3){width:58%}
+.f-sheet{position:absolute;left:22px;right:22px;top:22px;height:100px;border-radius:6px;background:#fff;padding:8px 12px;display:flex;flex-direction:column;gap:5px;box-shadow:0 1px 2px rgba(16,33,59,.08);transition:transform .45s var(--ease)}
+.f-sheet b{align-self:flex-start;font:700 7px/1 var(--mono);letter-spacing:.05em;padding:3px 4px;border-radius:3px;background:#e7f4ec;color:#1f8f5c}
+.f-grid{flex:1;border:1px solid #e6eaf0;border-radius:3px;background:linear-gradient(#f2f4f8,#f2f4f8) 0 0/100% 10px no-repeat,repeating-linear-gradient(180deg,transparent 0 9px,#eceff3 9px 10px),repeating-linear-gradient(90deg,transparent 0 27px,#eceff3 27px 28px)}
 .f-sheet.s2{left:30px;right:14px;top:28px;background:#f6f7f9;transform:rotate(3deg)}
 .folder-card:hover .f-sheet{transform:translateY(-7px)}
 .folder-card:hover .f-sheet.s2{transform:translateY(-4px) rotate(4deg)}
@@ -281,7 +303,9 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
 .empty-art{position:relative;width:92px;height:116px;margin:0 auto 22px}
 .e-back{position:absolute;inset:0;border-radius:7px;background:#f3f5f9;border:1px solid #e6eaf0;transform:translate(9px,5px) rotate(5deg)}
 .e-sheet{position:absolute;inset:0;border-radius:7px;background:#fff;border:1.5px dashed #cdd5e2;padding:16px 12px;display:flex;flex-direction:column;gap:9px;animation:efloat 4s ease-in-out infinite}
-.e-sheet i{display:block;height:4px;border-radius:2px;background:#eef1f5}
+.e-sheet{padding:12px 10px;gap:8px}
+.e-sheet b{align-self:flex-start;font:700 7.5px/1 var(--mono);letter-spacing:.05em;padding:3px 4px;border-radius:3px;background:#f0f2f6;color:var(--ink-4)}
+.e-grid{flex:1;border:1px dashed #d8dee8;border-radius:4px;background:linear-gradient(#f4f6f9,#f4f6f9) 0 0/100% 12px no-repeat,repeating-linear-gradient(180deg,transparent 0 11px,#eef1f5 11px 12px),repeating-linear-gradient(90deg,transparent 0 17px,#eef1f5 17px 18px)}
 .e-badge{position:absolute;right:-14px;bottom:-10px;width:36px;height:36px;border-radius:50%;background:#fff;border:1px solid var(--line);box-shadow:var(--sh-2);display:grid;place-items:center;color:var(--ink-4)}
 .e-badge svg{width:17px;height:17px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round}
 @keyframes efloat{50%{transform:translateY(-4px)}}
@@ -627,7 +651,7 @@ html[data-vt] .act,html[data-vt] #focusPane{animation:none}
             </button>
           </div>
         </div>
-        <p class="stage-hint" id="hint">Each page fills as the agent reads it.</p>
+        <p class="stage-hint" id="hint">Each file fills as the agent reads it.</p>
         <div id="canvas"></div>
       </section>
     </div>
@@ -758,16 +782,17 @@ html[data-vt] .act,html[data-vt] #focusPane{animation:none}
     let x = (n * 2654435761) >>> 0 || 1;
     return () => { x ^= x << 13; x >>>= 0; x ^= x >>> 17; x ^= x << 5; x >>>= 0; return x / 4294967296; };
   }
+  /* the page is a CSV: a file tag, then a header row and data rows in a ruled grid */
   function docHTML(id) {
     const r = seeded(id + 7), w = (a, b) => Math.round(a + r() * (b - a));
-    const L = ws => ws.map(x => `<i style="width:${x}%"></i>`).join('');
-    return `<div class="doc">
-      <div class="doc-head"><span class="doc-img"></span><span class="doc-hl">${L([w(58,74), w(82,96), w(40,56)])}</span></div>
-      <div class="doc-p">${L([100, w(86,98), w(58,78)])}</div>
-      <div class="doc-p">${L([w(94,100), w(72,90), w(80,96), w(36,56)])}</div>
-      <svg class="doc-sig" viewBox="0 0 40 24"><path d="${SIG}"/></svg>
+    const row = (cls, ws) => `<div class="csv-row${cls}">${ws.map(x => `<span><i style="width:${x}%"></i></span>`).join('')}</div>`;
+    const rows = Array.from({ length: 8 }, () => row('', [w(40, 70), w(55, 95), w(45, 90), w(35, 80)])).join('');
+    return `<div class="doc csv">
+      <div class="csv-top"><span class="csv-tag">CSV</span><i style="width:${w(38, 54)}%"></i></div>
+      <div class="csv-grid">${row(' hd', [60, w(60, 85), w(55, 80), w(50, 75)])}${rows}</div>
     </div>`;
   }
+
 
   /* stamp on the page: a tick once submitted, a pen when it needs sign-off, ! when errors need review */
   const STAMP = { submitted: 'M6 12.5l4 4 8-9', ready: 'M4 20l4-1 10-10-3-3L5 16l-1 4zM13 8l3 3', fix_review: 'M12 7v6M12 17h.01' };
@@ -835,7 +860,7 @@ html[data-vt] .act,html[data-vt] #focusPane{animation:none}
     return `<div class="folder" aria-hidden="true">
       <svg viewBox="0 0 200 150"><path d="${F_BACK}" fill="url(#fBack)"/><path d="M146 17h14M166 17h7" stroke="#e6e7ea" stroke-width="3" stroke-linecap="round"/></svg>
       ${files.length > 1 ? '<span class="f-sheet s2"></span>' : ''}
-      <span class="f-sheet"><i></i><i></i><i></i></span>
+      <span class="f-sheet"><b>CSV</b><span class="f-grid"></span></span>
       <div class="f-front"><span class="f-fill"></span></div>
       <svg class="f-edge" viewBox="0 0 200 150"><path d="${F_FRONT}"/></svg>
       <div class="f-label">
@@ -912,7 +937,7 @@ html[data-vt] .act,html[data-vt] #focusPane{animation:none}
 
   /* empty state: a blank, dashed page with a magnifier, so "nothing here" reads at a glance */
   function empty(msg, sub) {
-    return `<div class="empty"><div class="empty-art" aria-hidden="true"><span class="e-back"></span><span class="e-sheet"><i style="width:46%"></i><i></i><i style="width:80%"></i><i style="width:64%"></i></span><span class="e-badge"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="6"/><path d="M20 20l-4.5-4.5M8.5 11h5"/></svg></span></div><h3>${msg}</h3><p>${sub}</p></div>`;
+    return `<div class="empty"><div class="empty-art" aria-hidden="true"><span class="e-back"></span><span class="e-sheet"><b>CSV</b><span class="e-grid"></span></span><span class="e-badge"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="6"/><path d="M20 20l-4.5-4.5M8.5 11h5"/></svg></span></div><h3>${msg}</h3><p>${sub}</p></div>`;
   }
   const EMPTY_FOR = {
     needs: ['Nothing needs you right now', 'Files that need a review or your go-ahead will show up here.'],
@@ -1223,8 +1248,8 @@ html[data-vt] .act,html[data-vt] #focusPane{animation:none}
     fp.dataset.sig = '';
 
     if (!jobs.length) {
-      $('#hint').innerHTML = 'Upload on the left — pages appear here and <strong>fill as the agent reads them</strong>.';
-      patch(canvas, empty('No files yet', 'Your first upload will show up in the page grid.'));
+      $('#hint').innerHTML = 'Upload on the left — files appear here and <strong>fill as the agent reads them</strong>.';
+      patch(canvas, empty('No files yet', 'Your first upload will show up here.'));
       return;
     }
 
@@ -1237,7 +1262,7 @@ html[data-vt] .act,html[data-vt] #focusPane{animation:none}
       return;
     }
 
-    $('#hint').innerHTML = 'Each page fills as the agent reads it. Open one to see its timeline.';
+    $('#hint').innerHTML = 'Each file fills as the agent reads it. Open one to see its timeline.';
     patch(canvas, list.length
       ? `<div class="page-grid" data-view="page">${list.map(fileTile).join('')}</div>`
       : emptyFor());
