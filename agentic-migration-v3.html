@@ -248,6 +248,8 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
 .f-edge path{fill:none;stroke:rgba(255,255,255,.55);stroke-width:1}
 .f-label{position:absolute;left:20px;right:16px;bottom:17px;display:flex;align-items:center;gap:10px;color:#fff;min-width:0}
 .f-hex{width:30px;height:32px;flex-shrink:0}
+.f-logo{width:30px;height:30px;flex-shrink:0;border-radius:8px;background:#fff;display:grid;place-items:center;box-shadow:0 1px 3px rgba(60,62,70,.2)}
+.f-logo img{max-width:22px;max-height:22px;display:block}
 .f-hex path{fill:rgba(110,112,120,.32);stroke:rgba(110,112,120,.32);stroke-width:3;stroke-linejoin:round}
 .f-hex text{font:700 10.5px var(--font);fill:#fff;letter-spacing:-.2px}
 .f-label>span{min-width:0;display:flex;flex-direction:column}
@@ -416,6 +418,35 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
 @keyframes off{to{opacity:0}}
 @keyframes pop{from{opacity:0;transform:scale(.5)}to{opacity:1;transform:none}}
 .next{font-size:13px;color:var(--ink-2)}
+/* View transitions — rail and stage slide, the opened page morphs between them */
+.upload-rail{view-transition-name:rail}
+.stage{view-transition-name:stage}
+::view-transition-old(root),::view-transition-new(root){animation:none}
+::view-transition-group(*){animation-duration:.6s;animation-timing-function:cubic-bezier(.22,1,.36,1)}
+::view-transition-group(hero){animation-duration:.7s;animation-timing-function:cubic-bezier(.16,1,.3,1);z-index:10}
+::view-transition-old(hero){animation:vt-fade-out .25s ease both}
+::view-transition-new(hero){animation:vt-fade-in .25s ease both}
+::view-transition-image-pair(hero){filter:drop-shadow(0 18px 30px rgba(16,33,59,.18))}
+html[data-vt="in"]::view-transition-old(stage){animation:vt-out-left .16s cubic-bezier(.4,0,1,1) both}
+html[data-vt="in"]::view-transition-new(stage){animation:vt-in-right .55s cubic-bezier(.22,1,.36,1) .16s both}
+html[data-vt="in"]::view-transition-old(rail){animation:vt-out-left .16s cubic-bezier(.4,0,1,1) both}
+html[data-vt="in"]::view-transition-new(rail){animation:vt-in-up .5s cubic-bezier(.22,1,.36,1) .18s both}
+html[data-vt="back"]::view-transition-old(stage){animation:vt-out-right .16s cubic-bezier(.4,0,1,1) both}
+html[data-vt="back"]::view-transition-new(stage){animation:vt-in-left .55s cubic-bezier(.22,1,.36,1) .16s both}
+html[data-vt="back"]::view-transition-old(rail){animation:vt-out-down .16s cubic-bezier(.4,0,1,1) both}
+html[data-vt="back"]::view-transition-new(rail){animation:vt-in-up .5s cubic-bezier(.22,1,.36,1) .18s both}
+html[data-vt="fade"]::view-transition-old(stage){animation:vt-fade-out .15s ease both}
+html[data-vt="fade"]::view-transition-new(stage){animation:vt-in-up .45s cubic-bezier(.22,1,.36,1) .1s both}
+html[data-vt] .act,html[data-vt] #focusPane{animation:none}
+@keyframes vt-fade-in{from{opacity:0}}
+@keyframes vt-fade-out{to{opacity:0}}
+@keyframes vt-in-right{from{opacity:0;transform:translateX(28px)}}
+@keyframes vt-in-left{from{opacity:0;transform:translateX(-28px)}}
+@keyframes vt-out-left{to{opacity:0;transform:translateX(-16px)}}
+@keyframes vt-out-right{to{opacity:0;transform:translateX(16px)}}
+@keyframes vt-in-up{from{opacity:0;transform:translateY(10px)}}
+@keyframes vt-out-down{to{opacity:0;transform:translateY(8px)}}
+
 /* Migration metrics — a compact strip that expands into charts */
 .metrics{background:#fff;border:1px solid var(--line);border-radius:16px;box-shadow:var(--sh);padding:14px 16px}
 .is-focus .metrics{display:none}
@@ -436,9 +467,14 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
 .m-legend i{width:8px;height:8px;border-radius:2px}
 .m-legend b{color:var(--ink);font-weight:650;font-variant-numeric:tabular-nums}
 .m-legend em{font-style:normal;color:var(--ink-4);font-size:11px;font-variant-numeric:tabular-nums}
-.m-more{display:grid;grid-template-rows:0fr;transition:grid-template-rows .45s var(--ease)}
+.m-more{display:grid;grid-template-rows:0fr;transition:grid-template-rows .55s cubic-bezier(.22,1,.36,1)}
 .metrics.open .m-more{grid-template-rows:1fr}
 .m-more-in{overflow:hidden;min-height:0}
+.m-charts{opacity:0;transform:translateY(-8px);transition:opacity .3s ease,transform .45s var(--ease)}
+.metrics.open .m-charts{opacity:1;transform:none;transition-delay:.08s}
+.metrics.grow .m-lob rect,.metrics.grow .m-lob path{transform-box:fill-box;transform-origin:50% 100%;animation:mgrow .8s cubic-bezier(.22,1,.36,1) both}
+.metrics.grow .m-lob .tot{animation:vt-fade-in .4s ease .5s both}
+@keyframes mgrow{from{transform:scaleY(0)}}
 .m-charts{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:14px;padding-top:14px;margin-top:14px;border-top:1px solid var(--line-2)}
 .m-card{border:1px solid var(--line-2);border-radius:12px;padding:14px 16px}
 .m-donut-wrap{position:relative;max-width:250px;margin:10px auto 0}
@@ -791,6 +827,9 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
   const F_FRONT = 'M8,56 Q8,46 18,46 H70 C77,46 79,58 88,58 H182 Q192,58 192,68 V130 Q192,142 180,142 H20 Q8,142 8,130 Z';
   const HEX = 'M15 2.5 L26.5 9 V23 L15 29.5 L3.5 23 V9 Z';
 
+  /* Client logo for the folder badge: set this to the official logo file from the brand kit
+     (e.g. 'assets/client-logo.svg'). Left empty, folders show the LOB initials instead. */
+  const BRAND_LOGO = '';
   function folderArt(lob, files) {
     const initials = lob.split(/\s+/).map(w => w[0]).join('').slice(0, 2).toUpperCase();
     return `<div class="folder" aria-hidden="true">
@@ -800,7 +839,9 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
       <div class="f-front"><span class="f-fill"></span></div>
       <svg class="f-edge" viewBox="0 0 200 150"><path d="${F_FRONT}"/></svg>
       <div class="f-label">
-        <svg class="f-hex" viewBox="0 0 30 32"><path d="${HEX}"/><text x="15" y="19.6" text-anchor="middle">${esc(initials)}</text></svg>
+        ${BRAND_LOGO
+          ? `<span class="f-logo"><img src="${esc(BRAND_LOGO)}" alt=""></span>`
+          : `<svg class="f-hex" viewBox="0 0 30 32"><path d="${HEX}"/><text x="15" y="19.6" text-anchor="middle">${esc(initials)}</text></svg>`}
         <span><b>${esc(lob)}</b><small>${num(files.reduce((s,j)=>s+(j.total||0),0))} records</small></span>
       </div>
     </div>`;
@@ -834,7 +875,11 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
     const keys = el => [...el.children].map(c => c.dataset.key).join('|');
     if (cur && next && next.dataset.view && cur.dataset.view === next.dataset.view && keys(cur) === keys(next)) {
       const curKids = [...cur.children];
-      [...next.children].forEach((n, i) => { if (curKids[i].dataset.sig !== n.dataset.sig) curKids[i].replaceWith(n); });
+      [...next.children].forEach((n, i) => {
+        if (curKids[i].dataset.sig === n.dataset.sig) return;
+        curKids[i].replaceWith(n);
+        if (!RM) n.animate([{ opacity: .55, transform: 'scale(.985)' }, { opacity: 1, transform: 'none' }], { duration: 420, easing: 'cubic-bezier(.22,1,.36,1)' });
+      });
     } else {
       canvas.replaceChildren(tpl.content);
     }
@@ -1119,6 +1164,15 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
         if (!e.target.closest('#mToggle') && (metricsOpen || !e.target.closest('.m-compact'))) return;
         metricsOpen = !metricsOpen;
         el.classList.toggle('open', metricsOpen);
+        if (metricsOpen && !RM) {
+          /* replay the charts: arcs sweep in, columns grow from the baseline */
+          $$('.arc[data-k]', el).forEach(a => { a.style.transition = 'none'; a.style.strokeDasharray = '0 200'; a.style.strokeDashoffset = '0'; });
+          el.getBoundingClientRect();
+          $$('.arc[data-k]', el).forEach(a => { a.style.transition = ''; });
+          el.classList.add('grow');
+          requestAnimationFrame(() => renderMetrics());
+          setTimeout(() => el.classList.remove('grow'), 1200);
+        }
         $('#mToggle').setAttribute('aria-expanded', metricsOpen);
         $('#mToggle span').textContent = metricsOpen ? 'Hide charts' : 'View charts';
       });
@@ -1231,40 +1285,64 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
     a.onfinish = done; a.oncancel = done;
   }
 
+  /* View transitions: the opened page or folder morphs between grid and rail while
+     the rail and stage slide; browsers without them fall back to the flying ghost. */
+  const HAS_VT = !!document.startViewTransition;
+  function morph(mode, update, from, toSel) {
+    if (!HAS_VT || RM) return false;
+    document.documentElement.dataset.vt = mode;
+    if (from) from.style.viewTransitionName = 'hero';
+    const vt = document.startViewTransition(() => {
+      if (from) from.style.viewTransitionName = '';
+      update();
+      const to = toSel && toSel();
+      if (to) to.style.viewTransitionName = 'hero';
+    });
+    vt.finished.finally(() => {
+      delete document.documentElement.dataset.vt;
+      $$('[style*="view-transition-name"]').forEach(el => { el.style.viewTransitionName = ''; });
+    });
+    return true;
+  }
+
   function openFile(id, host) {
     const j = jobs.find(x => x.id === id);
     if (!j) return;
-    const snap = snapshot(host, '.paper');
     lastFill.set(`r${id}`, progress(j));
-    focus = { type: 'file', id, from: focus && focus.type === 'folder' ? focus.lob : null };
-    render();
-    scrollTo({ top: 0 });
+    const next = { type: 'file', id, from: focus && focus.type === 'folder' ? focus.lob : null };
+    const src = host.querySelector('.paper');
+    if (morph('in', () => { focus = next; render(); scrollTo({ top: 0 }); }, src, () => $('#focusPane .paper'))) return;
+    const snap = snapshot(host, '.paper');
+    focus = next; render(); scrollTo({ top: 0 });
     fly(snap, $('#focusPane .paper'));
   }
   function openFolder(lob, host) {
-    const snap = snapshot(host, '.folder');
     lastFill.set(`rf${lob}`, +host.dataset.to);
-    focus = { type: 'folder', lob };
-    render();
-    scrollTo({ top: 0 });
+    const src = host.querySelector('.folder');
+    if (morph('in', () => { focus = { type: 'folder', lob }; render(); scrollTo({ top: 0 }); }, src, () => $('#focusPane .folder'))) return;
+    const snap = snapshot(host, '.folder');
+    focus = { type: 'folder', lob }; render(); scrollTo({ top: 0 });
     fly(snap, $('#focusPane .folder'));
   }
   function navigate(to) {
     if (!focus) return;
     const prev = focus;
     if (to === 'upload-more') {
-      focus = null; render();
-      $('#lob').value = prev.lob; updateUpload();
+      const go = () => { focus = null; render(); $('#lob').value = prev.lob; updateUpload(); };
+      if (!morph('back', go)) go();
       $('#drop').focus();
       return;
     }
-    const snap = snapshot($('#focusPane .focus-tile'), prev.type === 'file' ? '.paper' : '.folder');
-    focus = to === 'back' && prev.type === 'file' && prev.from ? { type: 'folder', lob: prev.from } : null;
-    render();
-    const dst = prev.type === 'file'
+    const next = to === 'back' && prev.type === 'file' && prev.from ? { type: 'folder', lob: prev.from } : null;
+    const findDst = () => prev.type === 'file'
       ? $(`#canvas [data-key="t${prev.id}"] .paper`)
       : ($$('#canvas .folder-card').find(c => c.dataset.lob === prev.lob) || null)?.querySelector('.folder');
-    if (dst) { dst.closest('article').scrollIntoView({ block: 'nearest' }); fly(snap, dst); }
+    const src = $(`#focusPane .focus-tile ${prev.type === 'file' ? '.paper' : '.folder'}`);
+    const go = () => { focus = next; render(); const d = findDst(); if (d) d.closest('article').scrollIntoView({ block: 'nearest' }); };
+    if (morph('back', go, src, findDst)) return;
+    const snap = snapshot($('#focusPane .focus-tile'), prev.type === 'file' ? '.paper' : '.folder');
+    go();
+    fly(snap, findDst());
   }
   document.addEventListener('click', e => { const n = e.target.closest('[data-nav]'); if (n) navigate(n.dataset.nav); });
 
@@ -1399,12 +1477,12 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
   $$('.filters .chip-btn').forEach(btn=>btn.onclick=()=>{
     filter=btn.dataset.filter;
     $$('.filters .chip-btn').forEach(b=>b.classList.toggle('is-on',b===btn));
-    render();
+    if(!morph('fade',render)) render();
   });
   $$('.layouts .chip-btn').forEach(btn=>btn.onclick=()=>{
     layout=btn.dataset.layout;
     $$('.layouts .chip-btn').forEach(b=>b.classList.toggle('is-on',b===btn));
-    render();
+    if(!morph('fade',render)) render();
   });
 
   $('#canvas').addEventListener('click', e => {
