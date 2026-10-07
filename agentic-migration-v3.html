@@ -51,8 +51,34 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
 .secure svg{width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:2;flex-shrink:0}
 .field label{display:block;font-size:11px;font-weight:650;color:var(--ink-3);margin-bottom:5px}
 .field select{width:100%;height:40px;border:1px solid var(--line);border-radius:9px;padding:0 11px;background:#fcfdff}
-.drop{border:1.5px dashed var(--blue-border);border-radius:12px;background:linear-gradient(180deg,#fbfcff,#f3f7ff);padding:22px 14px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:8px;transition:border-color .18s var(--ease),background .18s,box-shadow .18s}
-.drop.is-drag,.drop.is-picked{border-color:var(--blue);border-style:solid;background:var(--blue-soft);box-shadow:0 0 0 4px rgba(37,96,246,.08)}
+.drop{--t:37 96 246;--fill:0%;border:1.5px dashed #d3dcec;border-radius:14px;background:radial-gradient(120% 90% at 50% 0%,#fcfdfe 0%,#f2f4f8 100%);padding:14px 14px 16px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:6px;cursor:pointer;transition:border-color .18s var(--ease),box-shadow .18s}
+.drop:hover{border-color:#bccdec}
+.drop.is-drag{--fill:55%;border-color:var(--blue);border-style:solid;box-shadow:0 0 0 4px rgba(37,96,246,.07)}
+.drop.is-picked{--fill:100%;border-style:solid;border-color:var(--blue-border)}
+.drop-art{height:150px;width:100%;display:grid;place-items:center}
+.drop .paper{scale:.82;margin:-11px 0}
+.drop:hover .paper,.drop.is-drag .paper{transform:translateY(-3px)}
+.drop:hover .paper .back:not(.b2),.drop.is-drag .paper .back:not(.b2){transform:translate(12px,4px) rotate(6.5deg)}
+.paper .back.b2{transform:translate(-9px,7px) rotate(-4deg);opacity:0;transition:opacity .3s,transform .35s var(--ease)}
+.drop.multi .paper .back.b2{opacity:1}
+.drop.is-drag .scan{opacity:1;animation:breathe 2.4s ease-in-out infinite}
+.drop-plus{position:absolute;left:50%;top:50%;width:38px;height:38px;margin:-19px 0 0 -19px;border-radius:50%;background:#fff;border:1px solid var(--blue-border);box-shadow:0 6px 14px rgba(37,96,246,.14);display:grid;place-items:center;color:var(--blue);transition:opacity .25s,transform .25s var(--ease)}
+.drop-plus svg{width:17px;height:17px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.drop.is-picked .drop-plus{opacity:0;transform:scale(.7)}
+.drop.is-drag .drop-plus{transform:translateY(-4px)}
+.drop-count{position:absolute;top:-10px;right:-18px;height:26px;padding:0 10px;border-radius:999px;background:var(--blue);color:#fff;font-size:13px;font-weight:650;display:grid;place-items:center;box-shadow:0 4px 10px rgba(37,96,246,.25);opacity:0;transform:scale(.7);transition:opacity .25s,transform .25s var(--ease)}
+.drop.multi .drop-count{opacity:1;transform:none}
+.drop b{font-size:13px;font-weight:650;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.drop-btns{display:flex;gap:4px;margin-top:4px}
+.picked-list{list-style:none;display:flex;flex-direction:column;gap:6px}
+.picked-list li{display:flex;align-items:center;gap:9px;padding:6px 6px 6px 10px;border:1px solid var(--line);border-radius:10px;background:#fff;font-size:12px;animation:enter .3s var(--ease)}
+.picked-list .pi{position:relative;width:15px;height:19px;border-radius:3px;border:1px solid #dbe2ec;background:#fff;flex-shrink:0;box-shadow:0 1px 2px rgba(16,33,59,.06)}
+.picked-list .pi::before{content:'';position:absolute;left:3px;right:3px;top:4px;height:8px;background:repeating-linear-gradient(180deg,#d5dce8 0 1.5px,transparent 1.5px 3.5px)}
+.picked-list b{flex:1;min-width:0;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.picked-list span{color:var(--ink-4);font-size:11px;font-family:var(--mono);flex-shrink:0}
+.picked-list button{width:24px;height:24px;border-radius:6px;color:var(--ink-4);display:grid;place-items:center;flex-shrink:0}
+.picked-list button:hover{background:var(--bg-2);color:var(--ink)}
+.picked-list button svg{width:12px;height:12px;stroke:currentColor;stroke-width:2.2;fill:none;stroke-linecap:round}
 .drop b{font-size:13px;font-weight:650}
 .drop p,.caption{font-size:11.5px;color:var(--ink-4);line-height:1.4}
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;height:38px;padding:0 14px;border-radius:9px;font-size:12.5px;font-weight:600;border:1px solid var(--line);background:#fff;transition:transform .12s,background .15s,border-color .15s,box-shadow .15s}
@@ -267,7 +293,7 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
       <aside class="upload-rail" aria-label="Upload consents">
         <div>
           <h1>Upload</h1>
-          <p class="lead">One CSV per LoB. The agent prepares files — you only act when asked.</p>
+          <p class="lead">Add one or more CSVs per LoB. The agent prepares each file — you only act when asked.</p>
         </div>
         <div class="secure">
           <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg>
@@ -284,13 +310,28 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
             <option>Insurance</option>
           </select>
         </div>
-        <div class="drop" id="drop" role="button" tabindex="0">
-          <b id="fileLabel">Drop CSV here</b>
-          <p>Up to 500 MB · One LoB per file</p>
-          <button type="button" class="btn btn-sm" id="browse">Choose file</button>
-          <button type="button" class="btn btn-ghost btn-sm" id="sample">Try sample</button>
-          <input type="file" id="file" accept=".csv" hidden>
+        <div class="drop" id="drop" role="button" tabindex="0" aria-label="Add CSV files">
+          <div class="drop-art">
+            <div class="paper" aria-hidden="true">
+              <span class="back b2"></span>
+              <span class="back"></span>
+              <div class="sheet">
+                <div class="sheet-clip" id="dropSheet"></div>
+                <span class="scan"></span>
+                <span class="drop-plus"><svg viewBox="0 0 24 24"><path d="M12 16V5M7 10l5-5 5 5M5 19h14"/></svg></span>
+              </div>
+              <span class="drop-count" id="dropCount"></span>
+            </div>
+          </div>
+          <b id="fileLabel">Drop CSVs here</b>
+          <p>Up to 500 MB each · as many files per LoB as you need</p>
+          <div class="drop-btns">
+            <button type="button" class="btn btn-sm" id="browse">Choose files</button>
+            <button type="button" class="btn btn-ghost btn-sm" id="sample">Try sample</button>
+          </div>
+          <input type="file" id="file" accept=".csv" multiple hidden>
         </div>
+        <ul class="picked-list" id="pickedList" hidden></ul>
         <div id="uploadError" class="error" hidden></div>
         <label class="declare">
           <input type="checkbox" id="declare">
@@ -360,7 +401,7 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
 
   let jobs = [];
   let nextId = 1;
-  let picked = null;
+  let picked = [];
   let filter = 'all';
   let layout = 'page';
   let openLob = null;
@@ -403,20 +444,36 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
   }
 
   function updateUpload() {
-    $('#uploadBtn').disabled = !(picked && $('#declare').checked && $('#lob').value);
+    const n = picked.length;
+    $('#uploadBtn').disabled = !(n && $('#declare').checked && $('#lob').value);
+    $('#uploadBtn').textContent = n > 1 ? `Upload & prepare ${n} files` : 'Upload & prepare';
   }
 
-  function pick(name, size) {
-    const err=$('#uploadError'); err.hidden=true; picked=null;
-    $('#fileLabel').textContent='Drop CSV here';
-    $('#drop').classList.remove('is-picked');
+  const fmtSize = b => b >= 1048576 ? `${(b/1048576).toFixed(1)} MB` : `${Math.max(1, Math.round(b/1024))} KB`;
+  function renderPicked() {
+    const n = picked.length, d = $('#drop');
+    d.classList.toggle('is-picked', n > 0);
+    d.classList.toggle('multi', n > 1);
+    $('#dropCount').textContent = n > 1 ? `${n} files` : '';
+    $('#fileLabel').textContent = n === 0 ? 'Drop CSVs here' : n === 1 ? picked[0].name : `${n} files ready`;
+    $('#browse').textContent = n ? 'Add more' : 'Choose files';
+    const ul = $('#pickedList');
+    ul.hidden = !n;
+    ul.innerHTML = picked.map((f, i) => `<li><span class="pi"></span><b title="${esc(f.name)}">${esc(f.name)}</b><span>${fmtSize(f.size)}</span><button type="button" data-rm="${i}" aria-label="Remove ${esc(f.name)}"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button></li>`).join('');
     updateUpload();
-    if (!name.toLowerCase().endsWith('.csv')) { err.textContent='Choose a CSV file.'; err.hidden=false; return; }
-    if (size > 500*1024*1024) { err.textContent='Over 500 MB limit.'; err.hidden=false; return; }
-    picked={name,size};
-    $('#drop').classList.add('is-picked');
-    $('#fileLabel').textContent=name;
-    updateUpload();
+  }
+
+  function addFiles(list) {
+    const err = $('#uploadError'), bad = [];
+    err.hidden = true;
+    for (const f of list) {
+      if (!f.name.toLowerCase().endsWith('.csv')) { bad.push(`${f.name} isn’t a CSV`); continue; }
+      if (f.size > 500*1024*1024) { bad.push(`${f.name} is over 500 MB`); continue; }
+      if (picked.some(p => p.name === f.name)) continue;
+      picked.push({ name: f.name, size: f.size });
+    }
+    if (bad.length) { err.textContent = bad.join(' · '); err.hidden = false; }
+    renderPicked();
   }
 
   function filtered() {
@@ -657,19 +714,13 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
   }
 
   function startJob({lob,name,size,autofix}) {
-    if (jobs.some(j => j.lob===lob && !isDone(j))) {
-      $('#uploadError').textContent=`${lob} already has a file in progress.`;
-      $('#uploadError').hidden=false; return;
-    }
     const job = {
       id:nextId++, lob, name, size, autofix, phase:'upload',
       total:80000+Math.floor(Math.random()*180000),
       valid:0,fixed:0,manual:0,dup:0,verified:0,failed:0,fixedApplied:0
     };
     jobs=[job,...jobs];
-    picked=null; $('#declare').checked=false; $('#file').value='';
-    $('#drop').classList.remove('is-picked'); $('#fileLabel').textContent='Drop CSV here';
-    updateUpload(); render(); schedule(job); toast(`Received ${name}`);
+    schedule(job);
   }
 
   function openDrawer(job, mode) {
@@ -716,18 +767,25 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
   $('#sample').onclick=e=>{
     e.stopPropagation();
     if(!$('#lob').value)$('#lob').value='Credit Cards';
-    pick(`${$('#lob').value.toLowerCase().replace(/\s+/g,'_')}_sample.csv`,12.4*1048576);
+    const slug=$('#lob').value.toLowerCase().replace(/\s+/g,'_'), k=picked.length;
+    addFiles([{name:`${slug}_part${k+1}.csv`,size:12.4*1048576},{name:`${slug}_part${k+2}.csv`,size:8.7*1048576}]);
   };
-  $('#file').onchange=()=>{const f=$('#file').files[0];if(f)pick(f.name,f.size);};
+  $('#file').onchange=()=>{addFiles([...$('#file').files]);$('#file').value='';};
   $('#drop').onclick=e=>{if(!e.target.closest('button'))$('#file').click();};
+  $('#drop').onkeydown=e=>{if((e.key==='Enter'||e.key===' ')&&e.target===$('#drop')){e.preventDefault();$('#file').click();}};
+  $('#pickedList').onclick=e=>{const b=e.target.closest('[data-rm]');if(b){picked.splice(+b.dataset.rm,1);renderPicked();}};
   ['dragenter','dragover'].forEach(ev=>$('#drop').addEventListener(ev,e=>{e.preventDefault();$('#drop').classList.add('is-drag');}));
   ['dragleave','drop'].forEach(ev=>$('#drop').addEventListener(ev,e=>{e.preventDefault();$('#drop').classList.remove('is-drag');}));
-  $('#drop').addEventListener('drop',e=>{const f=e.dataTransfer.files[0];if(f)pick(f.name,f.size);});
+  $('#drop').addEventListener('drop',e=>addFiles([...e.dataTransfer.files]));
   $('#declare').onchange=updateUpload;
   $('#lob').onchange=updateUpload;
   $('#uploadBtn').onclick=()=>{
-    if(!picked||!$('#lob').value||!$('#declare').checked)return;
-    startJob({lob:$('#lob').value,name:picked.name,size:picked.size,autofix:$('#autofix').checked});
+    if(!picked.length||!$('#lob').value||!$('#declare').checked)return;
+    const lob=$('#lob').value, autofix=$('#autofix').checked, n=picked.length, first=picked[0].name;
+    [...picked].reverse().forEach(f=>startJob({lob,name:f.name,size:f.size,autofix}));
+    picked=[]; $('#declare').checked=false;
+    renderPicked(); render();
+    toast(n>1?`Received ${n} files for ${lob}`:`Received ${first}`);
   };
 
   $$('.filters .chip-btn').forEach(btn=>btn.onclick=()=>{
@@ -797,8 +855,10 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
     toast('Sample queue · try Page and Folders');
   };
 
+  const dropDoc = docHTML(3);
+  $('#dropSheet').innerHTML = `${dropDoc}<div class="read">${dropDoc}<span class="trail"></span></div>`;
   render();
-  updateUpload();
+  renderPicked();
 })();
 </script>
 </body>
