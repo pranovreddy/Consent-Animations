@@ -702,21 +702,55 @@ html[data-vt] .act,html[data-vt] #focusPane{animation:none}
 .vs-dl svg,.x-dl svg{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 .x-dl{align-self:flex-start;margin:10px 0 12px;gap:6px}
 .x-gap{margin-top:14px}
+.ap{display:flex;flex-direction:column;gap:12px;padding:16px 18px;border:1px solid var(--line);border-radius:14px;background:#fff;box-shadow:0 10px 28px rgba(16,33,59,.08);animation:vt-in-up .35s var(--ease)}
+.ap-h{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.ap-h b{font-size:15px;font-weight:700;letter-spacing:-.2px}
+.ap-close{width:28px;height:28px;border-radius:8px;display:grid;place-items:center;color:var(--ink-4)}
+.ap-close:hover{background:var(--bg-2);color:var(--ink)}
+.ap-close svg,.ap-x svg{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round}
+.ap-lead{font-size:12px;color:var(--ink-3);line-height:1.5;margin-top:-6px}
+.ap-f{display:flex;flex-direction:column;gap:4px}
+.ap-f>b{font-size:12.5px;font-weight:650}
+.ap-f>p{font-size:11.5px;color:var(--ink-3);line-height:1.4}
+.ap-drop{margin-top:4px;padding:14px 12px;border:1.5px dashed #c9d6ec;border-radius:12px;background:#fafcff;display:flex;flex-direction:column;align-items:center;gap:4px;text-align:center;cursor:pointer;transition:border-color .2s,background .2s}
+.ap-drop:hover,.ap-drop.drag{border-color:var(--blue);background:var(--blue-soft)}
+.ap-drop.has{cursor:default;border-style:solid;border-color:#b7e4c7;background:var(--green-soft);padding:10px 12px}
+.ap-up{width:28px;height:28px;border-radius:8px;background:var(--blue-soft);display:grid;place-items:center;color:var(--blue)}
+.ap-up svg,.ap-tpl svg{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+.ap-drop p{font-size:12.5px;color:var(--ink-2)}
+.ap-drop small{font-size:11px;color:var(--ink-4)}
+.ap-link{color:var(--blue);font-weight:600}
+.ap-tpl{display:inline-flex;align-items:center;gap:5px;font-size:12px;margin-top:2px}
+.ap-more{align-self:flex-end;font-size:11.5px;font-weight:500;color:var(--ink-3);margin-top:4px}
+.ap-more:hover{color:var(--blue)}
+.ap-file-chip{display:flex;align-items:center;gap:10px;width:100%;text-align:left}
+.ap-fi{width:30px;height:34px;border-radius:5px;background:#fff;border:1px solid #cfe6d8;display:grid;place-items:center;font:700 8px var(--mono);color:var(--green)}
+.ap-file-chip>span:nth-child(2){flex:1;min-width:0;display:flex;flex-direction:column}
+.ap-file-chip b{font-size:12.5px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ap-x{width:26px;height:26px;border-radius:7px;display:grid;place-items:center;color:var(--ink-4)}
+.ap-x:hover{background:#fff;color:var(--ink)}
+.ap-desc{width:100%;margin-top:4px;padding:9px 11px;border:1px solid var(--line);border-radius:10px;font:inherit;font-size:12.5px;resize:vertical;min-height:64px}
+.ap-desc:focus{outline:2px solid var(--blue);outline-offset:0;border-color:transparent}
+.ap-warn{padding:10px 12px;border-radius:10px;background:#fffbea;border:1px solid #f3dd8f;font-size:12px;color:#8a5a00;text-align:center;line-height:1.45}
+.ap-warn b{text-transform:uppercase}
+.ap-ok{font-size:12px}
+.ap-submit{width:100%;height:40px}
 .x-cols.even{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
-.vb{display:flex;flex-direction:column;gap:10px;margin-bottom:12px}
+.vb{display:flex;flex-direction:column;gap:8px;margin-bottom:10px}
 .vb-h{display:flex;align-items:center;justify-content:space-between}
 .vb-h .auth-lbl{margin:0}
 .vb-dl{display:inline-flex;align-items:center;gap:5px;font-size:12px}
 .vb-dl svg{width:13px;height:13px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
 .vb-big{font-size:13px;color:var(--ink-3)}
-.vb-big b{font-size:24px;font-weight:700;letter-spacing:-.6px;color:var(--ink);margin-right:2px}
+.vb-big b{font-size:19px;font-weight:700;letter-spacing:-.6px;color:var(--ink);margin-right:2px}
 .vb-big span{color:var(--ink-4);margin-left:4px}
-.vb-bar{display:flex;gap:2px;height:10px;border-radius:5px;overflow:hidden}
+.vb-bar{display:flex;gap:2px;height:7px;border-radius:4px;overflow:hidden}
 .vb-bar i{flex:0 1 0;min-width:3px}
 .vb-rows{background:#fff;border-radius:10px}
 .vb-rows li{display:grid;grid-template-columns:8px minmax(0,1fr) auto 46px;gap:10px;align-items:center}
-.vb-rows li span{display:flex;flex-direction:column;font-size:12.5px;color:var(--ink-2)}
-.vb-rows li small{font-size:10.5px;color:var(--ink-4)}
+.vb-rows li{padding:6px 0!important}
+.vb-rows li span{font-size:12px;color:var(--ink-2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.vb-rows li small{font-size:11px;color:var(--ink-4)}
 .vb-rows em{font-style:normal;text-align:right;font-size:11.5px;color:var(--ink-4);font-variant-numeric:tabular-nums}
 .x-right>.auth-lbl{margin-bottom:-2px}
 .vsc{display:grid;grid-template-columns:64px minmax(0,1fr);gap:14px;align-items:center;padding:10px 12px;border-radius:10px;background:#fff;border:1px solid var(--line-2)}
@@ -1211,6 +1245,35 @@ html[data-vt] .act,html[data-vt] #focusPane{animation:none}
   /* ---------- V3: the row expands in place to review it ---------- */
   let V3 = false, openRow = null;
 
+  /* appeal with the registrar: replaces the submission summary on the right until sent or closed */
+  const UPL = '<svg viewBox="0 0 24 24"><path d="M12 15V4M7 9l5-5 5 5M5 20h14"/></svg>';
+  const DLI = '<svg viewBox="0 0 24 24"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg>';
+  function apDrop(kind, f, title, hint, accept, extra) {
+    const file = f[kind];
+    const body = file
+      ? `<div class="ap-file-chip"><span class="ap-fi">${kind === 'zip' ? 'ZIP' : 'CSV'}</span><span><b>${esc(file.name)}</b><small>${fmtSize(file.size)}</small></span><button type="button" class="ap-x" data-do="appeal-rm" data-k="${kind}" aria-label="Remove file"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>`
+      : `<span class="ap-up">${UPL}</span><p>Drag and drop ${kind === 'zip' ? 'ZIP' : 'files'} here or <span class="ap-link">Browse</span></p><small>${hint}</small>${extra || ''}`;
+    return `<div class="ap-drop${file ? ' has' : ''}" data-do="${file ? '' : 'appeal-pick'}" data-k="${kind}" tabindex="0">${body}<input type="file" class="ap-file" data-k="${kind}" accept="${accept}" hidden></div>`;
+  }
+  function appealForm(j) {
+    const f = j.appealForm || (j.appealForm = { map: null, zip: null, desc: '', ok: false });
+    const ready = f.map && f.zip && f.ok;
+    return `<div class="ap">
+      <div class="ap-h"><b>Submit an appeal with Registrar</b><button type="button" class="ap-close" data-do="appeal-close" aria-label="Close appeal"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
+      <p class="ap-lead">Submit a formal appeal for up to ${num(j.failed)} failed records (partially or in full). You may only submit an appeal once. The registrar typically responds within 24 hours.</p>
+      <div class="ap-f"><b>Mapping data *</b><p>Upload a CSV or Excel file mapping mobile numbers to evidence filenames in the ZIP below.</p>
+        ${apDrop('map', f, '', '.CSV, .XLSX files only · Max 25 MB', '.csv,.xlsx', `<button type="button" class="ap-link ap-tpl" data-do="appeal-template">${DLI}Download template (CSV)</button>`)}</div>
+      <div class="ap-f"><b>Supporting evidence *</b><p>Upload a ZIP with proof of consent that shows the relationship between your entity and the subscriber.</p>
+        ${apDrop('zip', f, '', '.ZIP files only · Max 500 MB', '.zip')}
+        <button type="button" class="ap-link ap-more" data-do="appeal-large">Need to upload more than 500 MB?</button></div>
+      <div class="ap-f"><b>Description</b><textarea class="ap-desc" rows="3" placeholder="Add context for the registrar: relationship details, consent source, or why the flag is incorrect.">${esc(f.desc)}</textarea></div>
+      <div class="ap-warn">You can appeal <b>only once</b>. Make sure your evidence and mapping are complete before submitting.</div>
+      <label class="declare ap-ok"><input type="checkbox" class="ap-okbox"${f.ok ? ' checked' : ''}><span>I confirm all provided details are accurate. I understand that inaccurate evidence will be rejected, and I can appeal only once.</span></label>
+      <button type="button" class="btn btn-pri ap-submit" data-do="appeal-submit"${ready ? '' : ' disabled'}>Submit appeal</button>
+    </div>`;
+  }
+  const rerenderRow = (rowEl, j) => { const m = rowEl && $('.r-more', rowEl); if (m) m.outerHTML = xDetails(j); };
+
   /* failed records can only be appealed before submission, so this gets its own callout */
   function xAppeal(j) {
     const f = j.failed;
@@ -1219,7 +1282,7 @@ html[data-vt] .act,html[data-vt] #focusPane{animation:none}
       <div class="xa-body"><b>${num(f)} records failed authenticity checks</b>
         <p>Appeal them now: this is only possible before you submit. The ${num(j.verified)} verified consents aren't held up.</p>
       </div>
-      <button type="button" class="btn btn-sm xa-btn" data-do="appeal">Appeal ${num(f)} records</button></div>`;
+      <button type="button" class="btn btn-sm xa-btn" data-do="appeal"${j.appealOpen ? ' disabled' : ''}>${j.appealOpen ? 'Appeal open →' : `Appeal ${num(f)} records`}</button></div>`;
   }
   /* one row per AI step with the counts that step produced */
   /* every AI stage as its own collapsible row: status at a glance, the counts once it's done */
@@ -1268,7 +1331,7 @@ html[data-vt] .act,html[data-vt] #focusPane{animation:none}
       <div class="vb-h"><span class="auth-lbl">Validation summary</span><button type="button" class="link-btn vb-dl" data-do="download-errors"><svg viewBox="0 0 24 24"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg>Error report</button></div>
       <div class="vb-big"><b>${pc(j.valid)}</b> valid <span>of ${num(j.total)} records</span></div>
       <div class="vb-bar">${rows.map(([l, , v, c]) => `<i style="flex-grow:${v};background:${c}" title="${l} ${num(v)}"></i>`).join('')}</div>
-      <ul class="mix vb-rows">${rows.map(([l, sub, v, c]) => `<li><i style="background:${c}"></i><span>${l}<small>${sub}</small></span><b>${num(v)}</b><em>${pc(v)}</em></li>`).join('')}</ul>
+      <ul class="mix vb-rows">${rows.map(([l, sub, v, c]) => `<li><i style="background:${c}"></i><span>${l} <small>· ${sub}</small></span><b>${num(v)}</b><em>${pc(v)}</em></li>`).join('')}</ul>
     </div>`;
   }
   function vSummaryCompact(j) {
@@ -1290,7 +1353,7 @@ html[data-vt] .act,html[data-vt] #focusPane{animation:none}
           ${xStageList(j)}
           ${j.failed ? xAppeal(j) : ''}
         </div>
-        <div class="x-right">
+        <div class="x-right">${j.appealOpen ? appealForm(j) : `
           <div class="auth-lbl">Submission summary</div>
           <div class="x-stats"><div><small>Eligible</small><b>${num(j.verified)}</b></div><div><small>Estimate</small><b>${inr2(total)}</b><span>incl. sample tax</span></div><div><small>Excluded</small><b>${num(excluded)}</b></div></div>
         <div class="x-side">
@@ -1301,7 +1364,7 @@ html[data-vt] .act,html[data-vt] #focusPane{animation:none}
           <label class="declare x-check"><input type="checkbox" class="authz"><span>I authorize <b>${num(j.verified)} consents</b> for <b>${inr2(total)}</b>. Excluded records are not part of this submission.</span></label>
           <button type="button" class="btn btn-pri x-submit" data-do="submit" disabled>Submit ${num(j.verified)} consents</button>
           <p class="x-fine">*Illustrative rate and tax. Other roles send this summary for approval.</p>
-        </div>
+        </div>`}
         </div>
       </div>`;
     } else if (j.phase === 'fix_review') {
@@ -1892,7 +1955,7 @@ html[data-vt] .act,html[data-vt] #focusPane{animation:none}
   }
   document.addEventListener('click', e => { const n = e.target.closest('[data-nav]'); if (n) navigate(n.dataset.nav); });
 
-  function doAction(a, rowEl) {
+  function doAction(a, rowEl, extra) {
     const j = rowEl ? jobs.find(x => x.id === +rowEl.dataset.id) : focus && focus.type === 'file' && jobs.find(x => x.id === focus.id);
     if (!j) return;
     if (a === 'apply' || a === 'skip') {
@@ -1909,8 +1972,17 @@ html[data-vt] .act,html[data-vt] #focusPane{animation:none}
     if (a === 'receipt') toast('Receipt downloaded');
     if (a === 'download-errors') toast(`Error report for ${j.name} downloaded`);
     if (a === 'appeal') {
-      if (rowEl) { j.appealed = true; const m = $('.r-more', rowEl); if (m) m.outerHTML = xDetails(j); toast(`Appeal raised for ${num(j.failed)} records`); }
+      if (rowEl) { j.appealOpen = true; rerenderRow(rowEl, j); }
       else toast('Appeal review opens separately');
+    }
+    if (a === 'appeal-close') { j.appealOpen = false; rerenderRow(rowEl, j); }
+    if (a === 'appeal-pick') { const inp = rowEl && $(`.ap-file[data-k="${extra}"]`, rowEl); if (inp) inp.click(); }
+    if (a === 'appeal-rm') { j.appealForm[extra] = null; rerenderRow(rowEl, j); }
+    if (a === 'appeal-template') toast('Mapping template downloaded');
+    if (a === 'appeal-large') toast('Large uploads go through secure transfer · contact support');
+    if (a === 'appeal-submit' && j.appealForm && j.appealForm.map && j.appealForm.zip && j.appealForm.ok) {
+      j.appealed = true; j.appealOpen = false; rerenderRow(rowEl, j);
+      toast(`Appeal submitted to the registrar for ${num(j.failed)} records`);
     }
   }
 
@@ -2040,7 +2112,7 @@ html[data-vt] .act,html[data-vt] #focusPane{animation:none}
 
   $('#canvas').addEventListener('click', e => {
     const d=e.target.closest('[data-do]');
-    if(d){ doAction(d.dataset.do, V3 ? d.closest('.file-row2') : null); return; }
+    if(d){ if(d.dataset.do) doAction(d.dataset.do, V3 ? d.closest('.file-row2') : null, d.dataset.k); return; }
     if(V3){
       const row=e.target.closest('.file-row2');
       if(row){
@@ -2058,8 +2130,22 @@ html[data-vt] .act,html[data-vt] #focusPane{animation:none}
     if((e.key==='Enter'||e.key===' ')&&e.target.matches('.file-tile,.file-row2,.folder-card')){
       if(V3&&e.target.matches('.file-row2')){ e.preventDefault(); toggleRow(e.target); return; } e.preventDefault(); e.target.click(); }
   });
+  $('#canvas').addEventListener('input', e => {
+    if(e.target.matches('.ap-desc')){ const j=jobs.find(x=>x.id===+e.target.closest('.file-row2').dataset.id); j.appealForm.desc=e.target.value; }
+  });
+  ['dragover','dragleave','drop'].forEach(ev => $('#canvas').addEventListener(ev, e => {
+    const z=e.target.closest&&e.target.closest('.ap-drop:not(.has)'); if(!z) return;
+    e.preventDefault(); z.classList.toggle('drag', ev==='dragover');
+    if(ev==='drop'){ const f=e.dataTransfer.files[0], row=z.closest('.file-row2'), j=jobs.find(x=>x.id===+row.dataset.id); if(f){ j.appealForm[z.dataset.k]={name:f.name,size:f.size}; rerenderRow(row,j); } }
+  }));
   $('#canvas').addEventListener('change', e => {
     if(e.target.id==='authz') $('#submitBtn').disabled=!e.target.checked;
+    if(e.target.matches('.ap-file')||e.target.matches('.ap-okbox')){
+      const row=e.target.closest('.file-row2'), j=jobs.find(x=>x.id===+row.dataset.id);
+      if(e.target.matches('.ap-file')){ const f=e.target.files[0]; if(f){ j.appealForm[e.target.dataset.k]={name:f.name,size:f.size}; rerenderRow(row,j); } }
+      else { j.appealForm.ok=e.target.checked; const b=$('.ap-submit',row); if(b) b.disabled=!(j.appealForm.map&&j.appealForm.zip&&j.appealForm.ok); }
+      return;
+    }
     if(e.target.matches('.authz')){ const b=e.target.closest('.file-row2').querySelector('.x-submit'); if(b) b.disabled=!e.target.checked; }
   });
 
