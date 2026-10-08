@@ -678,7 +678,17 @@ html[data-vt] .act,html[data-vt] #focusPane{animation:none}
 .x-appeal.done .xa-ic{border-color:#b7e4c7;color:var(--green)}
 .x-appeal.done .xa-ic svg{stroke-width:2.8;width:13px;height:13px}
 .x-right{display:flex;flex-direction:column;gap:10px;min-width:0}
-.x-stages{list-style:none;border:1px solid var(--line-2);border-radius:12px;padding:2px 14px}
+.x-stg{border:1px solid var(--line-2);border-radius:12px;background:#fff}
+.x-stg summary{display:flex;align-items:center;gap:9px;padding:11px 14px;cursor:pointer;list-style:none;border-radius:12px}
+.x-stg summary::-webkit-details-marker{display:none}
+.x-stg summary:hover{background:#f8fafd}
+.x-stg summary b{font-size:12.5px;font-weight:650;color:var(--ink);white-space:nowrap}
+.xs-tease{font-size:12px;color:var(--ink-4);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+.xs-chev{margin-left:auto;width:16px;height:16px;flex-shrink:0;fill:none;stroke:var(--ink-4);stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;transition:transform .3s var(--ease)}
+.x-stg[open] .xs-chev{transform:rotate(180deg)}
+.x-stg[open] .xs-tease{display:none}
+.x-stg[open] .x-stages{animation:vt-in-up .35s var(--ease)}
+.x-stages{list-style:none;border-top:1px solid var(--line-2);padding:2px 14px}
 .x-stages li{display:grid;grid-template-columns:132px minmax(0,1fr);gap:12px;align-items:center;padding:9px 0;border-top:1px dashed var(--line)}
 .x-stages li:first-child{border-top:0}
 .xs-n{display:flex;align-items:center;gap:8px;font-size:12.5px;font-weight:600;color:var(--ink-2);white-space:nowrap}
@@ -688,6 +698,25 @@ html[data-vt] .act,html[data-vt] #focusPane{animation:none}
 .xs-f span{display:inline-flex;align-items:center;gap:6px;white-space:nowrap}
 .xs-f i{width:7px;height:7px;border-radius:50%}
 .xs-f b{color:var(--ink);font-weight:650;font-variant-numeric:tabular-nums}
+.x-cols.wide{grid-template-columns:minmax(0,1.75fr) minmax(0,1fr)}
+.vsum{display:grid;grid-template-columns:96px repeat(4,minmax(0,1fr));align-items:start;gap:0;padding:14px 16px;border:1px solid var(--line-2);border-radius:14px;background:#fff}
+.vs-ring{position:relative;width:88px;height:88px;align-self:center}
+.vs-ring svg{width:100%;height:100%;transform:rotate(-90deg)}
+.vs-ring circle{fill:none;stroke-width:10}
+.vs-ring span{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.vs-ring b{font-size:16px;font-weight:700;letter-spacing:-.4px}
+.vs-ring small{font-size:9px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-2)}
+.vs-col{display:flex;flex-direction:column;gap:4px;padding:2px 14px;border-left:1px solid var(--line-2);min-width:0}
+.vs-col:nth-child(2){border-left:0}
+.vs-col small{display:flex;align-items:center;gap:6px;font-size:10px;font-weight:650;letter-spacing:.07em;text-transform:uppercase;color:var(--ink-4);white-space:nowrap}
+.vs-col small i{width:7px;height:7px;border-radius:50%}
+.vs-col>b{display:flex;align-items:center;gap:6px;font-size:21px;font-weight:700;letter-spacing:-.5px;font-variant-numeric:tabular-nums;white-space:nowrap}
+.vs-col>span{font-size:11.5px;color:var(--ink-3);line-height:1.35;overflow:hidden;text-overflow:ellipsis}
+.vs-dl{width:22px;height:22px;border-radius:6px;display:grid;place-items:center;color:var(--ink-3)}
+.vs-dl:hover{background:var(--bg-2);color:var(--blue)}
+.vs-dl svg,.x-dl svg{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.x-dl{align-self:flex-start;margin:10px 0 12px;gap:6px}
+@media(max-width:1180px){.vsum{grid-template-columns:88px repeat(2,minmax(0,1fr));row-gap:12px}.vs-col:nth-child(4){border-left:0}}
 .x-note,.x-lead{font-size:12.5px;color:var(--ink-3);line-height:1.5}
 .x-lead b{color:var(--ink);font-weight:650}
 .x-note .link-btn{padding:2px 4px}
@@ -695,13 +724,6 @@ html[data-vt] .act,html[data-vt] #focusPane{animation:none}
 .x-check b{font-weight:650;color:var(--ink)}
 .x-submit{width:100%;height:40px}
 .x-fine{font-size:11px;color:var(--ink-4);margin-top:8px;line-height:1.45}
-.x-fixes{display:flex;flex-direction:column;margin-bottom:12px}
-.x-fixes div{display:grid;grid-template-columns:76px minmax(0,1fr) 14px minmax(0,1fr);gap:8px;align-items:center;padding:6px 0;border-top:1px dashed var(--line);font-size:11.5px}
-.x-fixes div:first-child{border-top:0}
-.x-fixes .k{color:var(--ink-4);font-weight:600}
-.x-fixes s{font-family:var(--mono);color:var(--red);opacity:.7;white-space:pre;overflow:hidden;text-overflow:ellipsis}
-.x-fixes .arr{color:var(--ink-4)}
-.x-fixes ins{justify-self:start;font-family:var(--mono);color:var(--green);text-decoration:none;background:var(--green-soft);padding:1px 6px;border-radius:5px;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .x-btns{display:flex;gap:8px;justify-content:flex-end}
 .x-receipt{display:flex;flex-wrap:wrap;align-items:center;gap:10px 28px;padding:12px 16px;border-radius:12px;background:#f5f7fb}
 .x-receipt small{display:block;font-size:10px;font-weight:650;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-4)}
@@ -1205,6 +1227,20 @@ html[data-vt] .act,html[data-vt] #focusPane{animation:none}
       return `<li><span class="xs-n"><span class="xs-d">${CHECK}</span>${t}</span><span class="xs-f">${facts.map(([c, l, v]) => `<span><i style="background:${c}"></i>${l} <b>${v}</b></span>`).join('')}</span></li>`;
     }).join('')}</ul>`;
   }
+  /* validation summary strip: % valid ring, then total / valid / errors / duplicates */
+  function vSummary(j) {
+    const errs = j.fixed + j.manual, t = j.total || 1;
+    const segs = [[j.valid, '#93bdfa'], [errs, '#2563eb'], [j.dup, '#1e3a8a']];
+    let off = 0;
+    const arcs = segs.map(([v, c]) => { const len = v / t * 100, a = `<circle cx="50" cy="50" r="40" pathLength="100" stroke="${c}" stroke-dasharray="${Math.max(0, len - .8)} 100" stroke-dashoffset="${-off}"/>`; off += len; return a; }).join('');
+    return `<div class="vsum">
+      <div class="vs-ring"><svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="40" stroke="var(--bg-2)"/>${arcs}</svg><span><b>${(j.valid / t * 100).toFixed(1)}%</b><small>Valid</small></span></div>
+      <div class="vs-col"><small>Total records</small><b>${num(j.total)}</b><span>${esc(j.name)}</span></div>
+      <div class="vs-col"><small><i style="background:#93bdfa"></i>Valid</small><b>${num(j.valid)}</b><span>ready as-is</span></div>
+      <div class="vs-col"><small><i style="background:#2563eb"></i>Errors</small><b>${num(errs)}<button type="button" class="vs-dl" data-do="download-errors" title="Download error report" aria-label="Download error report"><svg viewBox="0 0 24 24"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg></button></b><span>${num(j.fixed)} auto-fixable · ${num(j.manual)} manual</span></div>
+      <div class="vs-col"><small><i style="background:#1e3a8a"></i>Duplicates</small><b>${num(j.dup)}</b><span>removed automatically</span></div>
+    </div>`;
+  }
   function xDetails(j) {
     let body;
     if (j.phase === 'ready') {
@@ -1212,8 +1248,7 @@ html[data-vt] .act,html[data-vt] #focusPane{animation:none}
       const skipped = (j.fixed || 0) - (j.fixedApplied || 0), excluded = j.total - j.verified;
       body = `<div class="x-cols">
         <div class="x-main">
-          <div class="auth-lbl">Stage-wise summary</div>
-          ${xStages(j)}
+          <details class="x-stg"><summary><span class="xs-d">${CHECK}</span><b>Stage-wise summary</b><span class="xs-tease">All 5 steps done · ${num(j.verified)} eligible · ${num(j.total - j.verified)} excluded</span><svg class="xs-chev" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></summary>${xStages(j)}</details>
           ${j.failed ? xAppeal(j) : ''}
         </div>
         <div class="x-right">
@@ -1230,14 +1265,13 @@ html[data-vt] .act,html[data-vt] #focusPane{animation:none}
         </div>
       </div>`;
     } else if (j.phase === 'fix_review') {
-      body = `<div class="x-cols">
-        <div class="x-main">
-          <p class="x-lead">Validation found <b>${num(j.fixed)}</b> rows with format errors the agent can fix safely. Autofix includes them; skip continues with clean rows only. Originals are always kept.</p>
-          <div class="x-stats"><div><small>Fixable</small><b>${num(j.fixed)}</b></div><div><small>Manual edits</small><b>${num(j.manual)}</b><span>left out</span></div><div><small>Clean</small><b>${num(j.valid)}</b></div></div>
-        </div>
+      const errs = j.fixed + j.manual;
+      body = `<div class="x-cols wide">
+        <div class="x-main">${vSummary(j)}</div>
         <div class="x-side">
-          <div class="auth-lbl">Sample of the fixes</div>
-          <div class="x-fixes">${FIXES.map(([f, a, b]) => `<div><span class="k">${f}</span><s>${esc(a)}</s><span class="arr">→</span><ins>${esc(b)}</ins></div>`).join('')}</div>
+          <div class="auth-lbl">Review errors</div>
+          <p class="x-lead"><b>${num(errs)}</b> rows have errors. <b>${num(j.fixed)}</b> can be fixed automatically; <b>${num(j.manual)}</b> need manual edits and are left out. Originals are always kept.</p>
+          <button type="button" class="btn btn-sm x-dl" data-do="download-errors"><svg viewBox="0 0 24 24"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg>Download error report (CSV)</button>
           <div class="x-btns"><button type="button" class="btn" data-do="skip">Skip</button><button type="button" class="btn btn-pri" data-do="apply">Autofix ${num(j.fixed)} errors</button></div>
         </div>
       </div>`;
@@ -1482,7 +1516,6 @@ html[data-vt] .act,html[data-vt] #focusPane{animation:none}
   };
   const SEG_OF = { upload:[0,20], validate:[20,42], fix:[42,60], verify:[60,100] };
   const NEXT = { upload:'Validation', validate:'Autofix', fix:'Verification', verify:'Your go-ahead to submit' };
-  const FIXES = [['Phone', '98450 12345', '+91 98450 12345'], ['Consent date', '12/9/23', '2023-09-12'], ['Email', ' Ravi.M@Mail.com', 'ravi.m@mail.com'], ['Channel', 'sms ', 'SMS']];
 
   function actionPanel(j) {
     const pct = progress(j), k = stepKey(j.phase), st = stageInfo(j);
@@ -1491,8 +1524,8 @@ html[data-vt] .act,html[data-vt] #focusPane{animation:none}
       body = `
       <span class="tile-stage attn act-eyebrow"><i class="pulse"></i>Action needed</span>
       <div><h2>Review errors</h2><p class="lead">Validation found <b>${num(j.fixed)}</b> rows in <b>${esc(j.name)}</b> with format errors the agent can fix safely. Autofix them to include those rows, or skip and continue with the clean rows only. Originals are always kept.</p></div>
-      <div class="act-stats">${stat('Fixable errors', num(j.fixed), 'Format only, values unchanged')}${stat('Manual edits', num(j.manual), 'Left out of this run')}${stat('Clean rows', num(j.valid), 'Ready as they are')}</div>
-      <div class="act-sec"><h3>Sample of the fixes</h3><div class="fix-table">${FIXES.map(([f, a, b]) => `<div class="fix-row"><span class="k">${f}</span><s>${esc(a)}</s><span class="arr">→</span><ins>${esc(b)}</ins></div>`).join('')}</div></div>
+      ${vSummary(j)}
+      <button type="button" class="btn btn-sm x-dl" data-do="download-errors"><svg viewBox="0 0 24 24"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg>Download error report (CSV)</button>
       <div class="act-foot"><span class="note">Skipping leaves these rows out of the submission.</span><button type="button" class="btn" data-do="skip">Skip</button><button type="button" class="btn btn-pri" data-do="apply">Autofix ${num(j.fixed)} errors</button></div>`;
     } else if (j.phase === 'ready') {
       const base = j.verified * .05, tax = base * .18, total = base + tax;
@@ -1825,6 +1858,7 @@ html[data-vt] .act,html[data-vt] #focusPane{animation:none}
       render(); toast(`${j.name} submitted`);
     }
     if (a === 'receipt') toast('Receipt downloaded');
+    if (a === 'download-errors') toast(`Error report for ${j.name} downloaded`);
     if (a === 'appeal') {
       if (rowEl) { j.appealed = true; const m = $('.r-more', rowEl); if (m) m.outerHTML = xDetails(j); toast(`Appeal raised for ${num(j.failed)} records`); }
       else toast('Appeal review opens separately');
