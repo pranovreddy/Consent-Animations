@@ -701,6 +701,19 @@ html[data-vt] .act,html[data-vt] #focusPane{animation:none}
 .vs-dl:hover{background:var(--bg-2);color:var(--blue)}
 .vs-dl svg,.x-dl svg{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 .x-dl{align-self:flex-start;margin:10px 0 12px;gap:6px}
+.x-gap{margin-top:14px}
+.x-right>.auth-lbl{margin-bottom:-2px}
+.vsc{display:grid;grid-template-columns:64px minmax(0,1fr);gap:14px;align-items:center;padding:10px 12px;border-radius:10px;background:#fff;border:1px solid var(--line-2)}
+.vs-ring.sm{width:64px;height:64px}
+.vs-ring.sm circle{stroke-width:12}
+.vs-ring.sm b{font-size:12.5px;letter-spacing:-.3px}
+.vs-ring.sm small{font-size:7.5px}
+.vsc-g{display:grid;grid-template-columns:1fr 1fr;gap:8px 14px}
+.vsc-g div{display:flex;flex-direction:column;min-width:0}
+.vsc-g small{display:flex;align-items:center;gap:5px;font-size:9.5px;font-weight:650;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-4)}
+.vsc-g small i{width:6px;height:6px;border-radius:50%}
+.vsc-g b{font-size:14px;font-weight:700;font-variant-numeric:tabular-nums}
+.vsc-g span{font-size:10.5px;color:var(--ink-4);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 @media(max-width:1180px){.vsum{grid-template-columns:88px repeat(2,minmax(0,1fr));row-gap:12px}.vs-col:nth-child(4){border-left:0}}
 .x-note,.x-lead{font-size:12.5px;color:var(--ink-3);line-height:1.5}
 .x-lead b{color:var(--ink);font-weight:650}
@@ -1211,7 +1224,7 @@ html[data-vt] .act,html[data-vt] #focusPane{animation:none}
       else if (st === 'now') { const A = AI_AT[k], B = AI_AT[k + 1], items = AI_SUB[k]; body = `<ul class="sub">${items.map((x, i) => `<li style="--s:${ms(A + (B - A) * i / items.length)};--e:${ms(A + (B - A) * (i + 1) / items.length)}"><span class="ic"><span class="spin"></span><span class="ok">${CHECK}</span></span>${x}</li>`).join('')}</ul><p class="x-fine">Counts appear once this stage finishes.</p>`; }
       else body = `<p class="x-fine">Starts after ${AI_STEPS[k - 1]}.</p>`;
       const open = st === 'now' || st === 'wait' ? ' open' : '';
-      return `<details class="xsl-i ${st}"${open}><summary><span class="xsl-d">${st === 'done' ? CHECK : '<i></i>'}</span><b>${t}</b><span class="xsl-t">${tease}</span><span class="xsl-s">${label}</span><svg class="xs-chev" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></summary><div class="xsl-b">${body}</div></details>`;
+      return `<details class="xsl-i ${st}" name="stg-${j.id}"${open}><summary><span class="xsl-d">${st === 'done' ? CHECK : '<i></i>'}</span><b>${t}</b><span class="xsl-t">${tease}</span><span class="xsl-s">${label}</span><svg class="xs-chev" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></summary><div class="xsl-b">${body}</div></details>`;
     }).join('')}</div>`;
   }
   /* validation summary strip: % valid ring, then total / valid / errors / duplicates */
@@ -1228,6 +1241,20 @@ html[data-vt] .act,html[data-vt] #focusPane{animation:none}
       <div class="vs-col"><small><i style="background:#1e3a8a"></i>Duplicates</small><b>${num(j.dup)}</b><span>removed automatically</span></div>
     </div>`;
   }
+  function vRing(j, cls = '') {
+    const errs = j.fixed + j.manual, t = j.total || 1;
+    let off = 0;
+    const arcs = [[j.valid, '#93bdfa'], [errs, '#2563eb'], [j.dup, '#1e3a8a']].map(([v, c]) => { const len = v / t * 100, a = `<circle cx="50" cy="50" r="40" pathLength="100" stroke="${c}" stroke-dasharray="${Math.max(0, len - .8)} 100" stroke-dashoffset="${-off}"/>`; off += len; return a; }).join('');
+    return `<div class="vs-ring ${cls}"><svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="40" stroke="#e3e8f0"/>${arcs}</svg><span><b>${(j.valid / t * 100).toFixed(1)}%</b><small>Valid</small></span></div>`;
+  }
+  function vSummaryCompact(j) {
+    return `<div class="vsc">${vRing(j, 'sm')}<div class="vsc-g">
+      <div><small>Total</small><b>${num(j.total)}</b></div>
+      <div><small><i style="background:#93bdfa"></i>Valid</small><b>${num(j.valid)}</b></div>
+      <div><small><i style="background:#2563eb"></i>Errors</small><b>${num(j.fixed + j.manual)}</b><span>${num(j.fixed)} fixable · ${num(j.manual)} manual</span></div>
+      <div><small><i style="background:#1e3a8a"></i>Duplicates</small><b>${num(j.dup)}</b><span>removed automatically</span></div>
+    </div></div>`;
+  }
   function xDetails(j) {
     let body;
     if (j.phase === 'ready') {
@@ -1240,6 +1267,7 @@ html[data-vt] .act,html[data-vt] #focusPane{animation:none}
           ${j.failed ? xAppeal(j) : ''}
         </div>
         <div class="x-right">
+          <div class="auth-lbl">Submission summary</div>
           <div class="x-stats"><div><small>Eligible</small><b>${num(j.verified)}</b></div><div><small>Estimate</small><b>${inr2(total)}</b><span>incl. sample tax</span></div><div><small>Excluded</small><b>${num(excluded)}</b></div></div>
         <div class="x-side">
           <div class="auth-lbl">Migration authorization</div>
@@ -1255,9 +1283,11 @@ html[data-vt] .act,html[data-vt] #focusPane{animation:none}
     } else if (j.phase === 'fix_review') {
       const errs = j.fixed + j.manual;
       body = `<div class="x-cols wide">
-        <div class="x-main">${vSummary(j)}<div class="auth-lbl">Stages</div>${xStageList(j)}</div>
+        <div class="x-main"><div class="auth-lbl">Stages</div>${xStageList(j)}</div>
         <div class="x-side">
-          <div class="auth-lbl">Review errors</div>
+          <div class="auth-lbl">Validation summary</div>
+          ${vSummaryCompact(j)}
+          <div class="auth-lbl x-gap">Review errors</div>
           <p class="x-lead"><b>${num(errs)}</b> rows have errors. <b>${num(j.fixed)}</b> can be fixed automatically; <b>${num(j.manual)}</b> need manual edits and are left out. Originals are always kept.</p>
           <button type="button" class="btn btn-sm x-dl" data-do="download-errors"><svg viewBox="0 0 24 24"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg>Download error report (CSV)</button>
           <div class="x-btns"><button type="button" class="btn" data-do="skip">Skip</button><button type="button" class="btn btn-pri" data-do="apply">Autofix ${num(j.fixed)} errors</button></div>
@@ -1285,6 +1315,11 @@ html[data-vt] .act,html[data-vt] #focusPane{animation:none}
     }
     return `<div class="r-more"><div><div class="x">${body}</div></div></div>`;
   }
+  document.addEventListener('toggle', e => {
+    const d = e.target;
+    if (!(d instanceof HTMLDetailsElement) || !d.classList.contains('xsl-i') || !d.open) return;
+    d.parentElement.querySelectorAll('.xsl-i[open]').forEach(o => { if (o !== d) o.open = false; });
+  }, true);
   function toggleRow(row, force) {
     const id = +row.dataset.id, open = force ?? !row.classList.contains('open');
     $$('#canvas .file-row2.open').forEach(r => { if (r !== row) r.classList.remove('open'); });
