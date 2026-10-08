@@ -734,7 +734,27 @@ html[data-vt] .act,html[data-vt] #focusPane{animation:none}
 .ap-warn{padding:10px 12px;border-radius:10px;background:#fffbea;border:1px solid #f3dd8f;font-size:12px;color:#8a5a00;text-align:center;line-height:1.45}
 .ap-warn b{text-transform:uppercase}
 .ap-ok{font-size:12px}
-.ap-submit{width:100%;height:40px}
+.ap-submit{width:100%;height:38px}
+.ap{gap:10px;padding:14px 16px}
+.ap-lead{font-size:11.5px;margin-top:-4px}
+.ap-files{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.ap-f{gap:2px;min-width:0}
+.ap-f>b{font-size:12px}
+.ap-f>p{font-size:11px;color:var(--ink-4);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ap-drop{flex-direction:row;align-items:center;gap:9px;padding:9px 10px;text-align:left;margin-top:4px;border-radius:10px}
+.ap-drop.has{padding:7px 8px}
+.ap-up{width:26px;height:26px;flex-shrink:0}
+.ap-tx{display:flex;flex-direction:column;min-width:0}
+.ap-drop p{font-size:12px}
+.ap-drop small{font-size:10.5px}
+.ap-tpl{font-size:11px;margin-top:4px;align-self:flex-start}
+.ap-more{align-self:flex-start;color:var(--ink-3);font-weight:600}
+.ap-fi{width:26px;height:30px}
+.ap-file-chip b{font-size:12px}
+.ap-desc{margin-top:0;min-height:46px;font-size:12px;padding:8px 10px}
+.ap-warn{display:flex;align-items:center;gap:7px;padding:7px 10px;text-align:left;font-size:11.5px}
+.ap-warn svg{width:14px;height:14px;flex-shrink:0;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round}
+.ap-ok{font-size:11.5px}
 .x-cols.even{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
 .vb{display:flex;flex-direction:column;gap:8px;margin-bottom:10px}
 .vb-h{display:flex;align-items:center;justify-content:space-between}
@@ -1252,7 +1272,7 @@ html[data-vt] .act,html[data-vt] #focusPane{animation:none}
     const file = f[kind];
     const body = file
       ? `<div class="ap-file-chip"><span class="ap-fi">${kind === 'zip' ? 'ZIP' : 'CSV'}</span><span><b>${esc(file.name)}</b><small>${fmtSize(file.size)}</small></span><button type="button" class="ap-x" data-do="appeal-rm" data-k="${kind}" aria-label="Remove file"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>`
-      : `<span class="ap-up">${UPL}</span><p>Drag and drop ${kind === 'zip' ? 'ZIP' : 'files'} here or <span class="ap-link">Browse</span></p><small>${hint}</small>${extra || ''}`;
+      : `<span class="ap-up">${UPL}</span><span class="ap-tx"><p>Drop ${kind === 'zip' ? 'ZIP' : 'file'} or <span class="ap-link">browse</span></p><small>${hint}</small></span>`;
     return `<div class="ap-drop${file ? ' has' : ''}" data-do="${file ? '' : 'appeal-pick'}" data-k="${kind}" tabindex="0">${body}<input type="file" class="ap-file" data-k="${kind}" accept="${accept}" hidden></div>`;
   }
   function appealForm(j) {
@@ -1260,15 +1280,18 @@ html[data-vt] .act,html[data-vt] #focusPane{animation:none}
     const ready = f.map && f.zip && f.ok;
     return `<div class="ap">
       <div class="ap-h"><b>Submit an appeal with Registrar</b><button type="button" class="ap-close" data-do="appeal-close" aria-label="Close appeal"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
-      <p class="ap-lead">Submit a formal appeal for up to ${num(j.failed)} failed records (partially or in full). You may only submit an appeal once. The registrar typically responds within 24 hours.</p>
-      <div class="ap-f"><b>Mapping data *</b><p>Upload a CSV or Excel file mapping mobile numbers to evidence filenames in the ZIP below.</p>
-        ${apDrop('map', f, '', '.CSV, .XLSX files only · Max 25 MB', '.csv,.xlsx', `<button type="button" class="ap-link ap-tpl" data-do="appeal-template">${DLI}Download template (CSV)</button>`)}</div>
-      <div class="ap-f"><b>Supporting evidence *</b><p>Upload a ZIP with proof of consent that shows the relationship between your entity and the subscriber.</p>
-        ${apDrop('zip', f, '', '.ZIP files only · Max 500 MB', '.zip')}
-        <button type="button" class="ap-link ap-more" data-do="appeal-large">Need to upload more than 500 MB?</button></div>
-      <div class="ap-f"><b>Description</b><textarea class="ap-desc" rows="3" placeholder="Add context for the registrar: relationship details, consent source, or why the flag is incorrect.">${esc(f.desc)}</textarea></div>
-      <div class="ap-warn">You can appeal <b>only once</b>. Make sure your evidence and mapping are complete before submitting.</div>
-      <label class="declare ap-ok"><input type="checkbox" class="ap-okbox"${f.ok ? ' checked' : ''}><span>I confirm all provided details are accurate. I understand that inaccurate evidence will be rejected, and I can appeal only once.</span></label>
+      <p class="ap-lead">Appeal up to ${num(j.failed)} failed records, in part or in full. The registrar typically responds within 24 hours.</p>
+      <div class="ap-files">
+        <div class="ap-f"><b>Mapping data *</b><p>Mobile numbers → evidence filenames</p>
+          ${apDrop('map', f, '', 'CSV, XLSX · max 25 MB', '.csv,.xlsx')}
+          <button type="button" class="ap-link ap-tpl" data-do="appeal-template">${DLI}Template (CSV)</button></div>
+        <div class="ap-f"><b>Supporting evidence *</b><p>ZIP with proof of consent</p>
+          ${apDrop('zip', f, '', 'ZIP · max 500 MB', '.zip')}
+          <button type="button" class="ap-link ap-tpl ap-more" data-do="appeal-large">Over 500 MB?</button></div>
+      </div>
+      <textarea class="ap-desc" rows="2" placeholder="Description (optional): relationship details, consent source, or why the flag is incorrect.">${esc(f.desc)}</textarea>
+      <div class="ap-warn"><svg viewBox="0 0 24 24"><path d="M12 8v5M12 16.5h.01"/><circle cx="12" cy="12" r="9"/></svg><span>You can appeal <b>only once</b>. Check your mapping and evidence before submitting.</span></div>
+      <label class="declare ap-ok"><input type="checkbox" class="ap-okbox"${f.ok ? ' checked' : ''}><span>I confirm these details are accurate and understand inaccurate evidence will be rejected.</span></label>
       <button type="button" class="btn btn-pri ap-submit" data-do="appeal-submit"${ready ? '' : ' disabled'}>Submit appeal</button>
     </div>`;
   }
