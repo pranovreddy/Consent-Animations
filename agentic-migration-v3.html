@@ -572,18 +572,25 @@ html[data-vt] .act,html[data-vt] #focusPane{animation:none}
 .r-meta .chip-lob{font-family:var(--font)}
 .r-act{display:flex;flex-direction:column;align-items:flex-end;justify-content:center;gap:8px}
 /* AI activity: one live line, a five-part progress, and the current sub-step */
+.r-ai{display:grid;grid-template-columns:54px minmax(0,1fr);gap:14px;align-items:center}
+.ai-body{min-width:0}
+.ai-blob{position:relative;width:54px;height:54px;display:grid;place-items:center}
+.ai-blob canvas{position:absolute;left:-15%;top:-15%;width:130%;height:130%;pointer-events:none}
+.ai-blob .mark{position:relative;width:24px;height:24px;border-radius:50%;display:grid;place-items:center;color:#fff;
+  background:linear-gradient(135deg,#5b87f8,#1f4fd1);box-shadow:0 4px 10px rgba(37,96,246,.42),0 0 0 4px rgba(255,255,255,.92);animation:blob-breathe 1.8s ease-in-out infinite;transition:background .4s}
+.ai-blob .mark svg{position:absolute;width:62%;height:62%;transition:opacity .3s,transform .3s}
+.ai-blob .mark .m-check{width:52%;height:52%;fill:none;stroke:#fff;stroke-width:3;stroke-linecap:round;stroke-linejoin:round;opacity:0;transform:scale(.6)}
+@keyframes blob-breathe{50%{box-shadow:0 6px 16px rgba(37,96,246,.55),0 0 0 6px rgba(255,255,255,.75)}}
+.file-row2.attn .ai-blob .mark{background:linear-gradient(135deg,#f0c062,#c98a1a);box-shadow:0 4px 10px rgba(201,138,26,.38),0 0 0 4px rgba(255,255,255,.92);animation-duration:3s}
+.file-row2.ok .ai-blob .mark{background:linear-gradient(135deg,#3fbf86,#118252);box-shadow:0 4px 10px rgba(17,130,82,.35),0 0 0 4px rgba(255,255,255,.92);animation:none}
+.file-row2.ok .ai-blob .mark .m-logo{opacity:0;transform:scale(.6)}
+.file-row2.ok .ai-blob .mark .m-check{opacity:1;transform:none}
 .ai-top{display:flex;align-items:center;gap:9px;min-width:0}
-.ai-orb{position:relative;width:18px;height:18px;flex-shrink:0;border-radius:50%;background:conic-gradient(from 0deg,#2560f6,#7aa5ff,#c3d6ff,#2560f6);animation:spin 2.4s linear infinite}
-.ai-orb::after{content:'';position:absolute;inset:3px;border-radius:50%;background:#fff}
-.ai-orb::before{content:'';position:absolute;inset:6px;border-radius:50%;background:#2560f6;z-index:1;animation:pulse 1.6s var(--ease) infinite}
-.file-row2:not(.run) .ai-orb{animation:none;background:var(--line-2)}
-.file-row2.attn .ai-orb{background:#f1d9a6}.file-row2.attn .ai-orb::before{background:#d9a54a;animation:none}
-.file-row2.ok .ai-orb{background:#bfe6cf}.file-row2.ok .ai-orb::before{background:var(--green);animation:none}
 .ai-now{font-size:13px;font-weight:650;color:var(--ink);white-space:nowrap}
 .file-row2.run .ai-now{background:linear-gradient(90deg,var(--ink) 0%,var(--ink) 40%,#7aa5ff 50%,var(--ink) 60%,var(--ink) 100%);background-size:250% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:shimmer 2.2s linear infinite}
 @keyframes shimmer{from{background-position:100% 0}to{background-position:-150% 0}}
 .ai-step{margin-left:auto;font-size:11px;color:var(--ink-4);font-variant-numeric:tabular-nums;white-space:nowrap}
-.ai-seg{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:4px;margin:9px 0 7px}
+.ai-seg{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:4px;margin:8px 0 6px}
 .ai-seg i{height:4px;border-radius:2px;background:var(--bg-2);overflow:hidden}
 .ai-seg b{display:block;height:100%;width:0;border-radius:inherit;background:linear-gradient(90deg,#a9c3fb,var(--blue))}
 .file-row2.attn .ai-seg b{background:#c4cede}
@@ -1000,6 +1007,67 @@ html[data-vt] .act,html[data-vt] #focusPane{animation:none}
     </article>`;
   }
 
+const AI_MARK = '<svg class="m-logo" viewBox="0 0 26 26" fill="#fff"><path opacity=".95" transform="translate(13 3.094)" d="M0 0L4.952 3.714L0 7.429Z"/><path opacity=".85" transform="translate(16.715 8.047)" d="M4.952 0V6.19L0 4.333Z"/><path opacity=".75" transform="translate(16.715 15.475)" d="M4.952 2.476L0 5.571V0Z"/><path opacity=".95" transform="translate(8.047 15.475)" d="M4.952 7.429L0 3.714L4.952 0Z"/><path opacity=".85" transform="translate(4.334 11.762)" d="M0 6.19V0L4.952 1.857Z"/><path opacity=".75" transform="translate(4.334 4.953)" d="M0 3.095L4.952 0V5.571Z"/></svg>';
+  /* ---------- AI blob: a rotating sphere of particles around the agent mark
+     (ported from Agent Loaders). Colour and spin follow the row: working,
+     waiting on you, or done. One frame loop draws every blob on screen. ---------- */
+  const AI_BLOB = (() => {
+    const PAL = { run: [24, 58, 214, 102, 156, 255], wait: [168, 98, 6, 246, 192, 92], done: [5, 118, 80, 92, 214, 160] };
+    const SPEED = { run: 2.1, wait: .45, done: .35 };
+    const state = new WeakMap();
+    let raf = 0;
+    function setup(cv) {
+      const host = cv.parentElement, s = host.offsetWidth || 52, C = Math.round(s * 1.3), dpr = Math.min(3, devicePixelRatio || 1);
+      cv.width = C * dpr; cv.height = C * dpr;
+      const g = cv.getContext('2d'); g.setTransform(dpr, 0, 0, dpr, 0, 0);
+      const count = 170, pts = [];
+      for (let i = 0; i < count; i++) {
+        const y = 1 - (i / (count - 1)) * 2, r = Math.sqrt(Math.max(0, 1 - y * y)), th = i * 2.399963;
+        pts.push({ x: Math.cos(th) * r, y, z: Math.sin(th) * r, s: .82 + (i % 7) * .06 });
+      }
+      const b = { g, C, R: s * .44, pts, rotY: Math.random() * 6, rotX: .55 };
+      state.set(cv, b);
+      return b;
+    }
+    function kind(cv) {
+      const row = cv.closest('.file-row2');
+      return row && row.classList.contains('ok') ? 'done' : row && row.classList.contains('attn') ? 'wait' : 'run';
+    }
+    function draw(cv, step) {
+      const b = state.get(cv) || setup(cv), k = kind(cv), [r0, g0, b0, r1, g1, b1] = PAL[k];
+      const { g, C, pts } = b, cx = C / 2, cy = C / 2, R = b.R;
+      b.rotY += .016 * SPEED[k] * step; b.rotX += .0044 * SPEED[k] * step;
+      const cY = Math.cos(b.rotY), sY = Math.sin(b.rotY), cX = Math.cos(b.rotX), sX = Math.sin(b.rotX);
+      g.clearRect(0, 0, C, C);
+      const glow = g.createRadialGradient(cx, cy, 0, cx, cy, R * 1.35);
+      glow.addColorStop(0, `rgba(${r1},${g1},${b1},.26)`);
+      glow.addColorStop(.55, `rgba(${(r0 + r1) >> 1},${(g0 + g1) >> 1},${(b0 + b1) >> 1},.1)`);
+      glow.addColorStop(1, `rgba(${r0},${g0},${b0},0)`);
+      g.fillStyle = glow; g.beginPath(); g.arc(cx, cy, R * 1.35, 0, 6.283); g.fill();
+      const P = pts.map(p => { const x1 = p.x * cY - p.z * sY, z1 = p.x * sY + p.z * cY; return { x: x1, y: p.y * cX - z1 * sX, z: p.y * sX + z1 * cX, s: p.s }; });
+      P.sort((a, c) => a.z - c.z);
+      for (const p of P) {
+        const depth = (p.z + 1) / 2, r = (.3 + depth * .86) * p.s, f = .24 + depth * depth * .76, a = .14 + f * .82;
+        g.beginPath(); g.arc(cx + p.x * R, cy + p.y * R, r, 0, 6.283);
+        g.fillStyle = `rgba(${r0 + f * (r1 - r0) | 0},${g0 + f * (g1 - g0) | 0},${b0 + f * (b1 - b0) | 0},${a})`;
+        g.fill();
+      }
+    }
+    let last = 0;
+    function loop(now) {
+      const step = Math.min(3, (now - last) / 16.7 || 1); last = now;
+      const cvs = $$('#canvas .ai-blob canvas');
+      cvs.forEach(cv => draw(cv, step));
+      raf = cvs.length ? requestAnimationFrame(loop) : 0;
+    }
+    return {
+      wake() {
+        if (RM) { $$('#canvas .ai-blob canvas').forEach(cv => draw(cv, 0)); return; }
+        if (!raf) { last = performance.now(); raf = requestAnimationFrame(loop); }
+      },
+    };
+  })();
+
   /* ---------- V2: one file per row ---------- */
   let V2 = false;
   const AI_STEPS = ['Analyze', 'Validate', 'Autofix', 'Verify consent', 'Prepare review'];
@@ -1048,9 +1116,12 @@ html[data-vt] .act,html[data-vt] #focusPane{animation:none}
       <div class="r-file"><span class="r-ico" aria-hidden="true"><span class="rg"></span><span class="read"></span><span class="st">${stamp}</span></span>
         <div style="min-width:0"><b title="${esc(j.name)}">${esc(j.name)}</b><div class="r-meta"><span class="chip-lob">${esc(j.lob)}</span>${fmtSize(sizeOf(j))} · ${num(j.total)} records</div></div></div>
       <div class="r-ai">
-        <div class="ai-top"><span class="ai-orb" aria-hidden="true"></span><span class="ai-now" data-live-now="${j.id}">${now}</span><span class="ai-step" data-live-stepno="${j.id}">${stepNo}</span></div>
+        <span class="ai-blob" aria-hidden="true"><canvas></canvas><span class="mark">${AI_MARK}${CHECK.replace('<svg', '<svg class="m-check"')}</span></span>
+        <div class="ai-body">
+        <div class="ai-top"><span class="ai-now" data-live-now="${j.id}">${now}</span><span class="ai-step" data-live-stepno="${j.id}">${stepNo}</span></div>
         <div class="ai-seg" aria-hidden="true">${AI_STEPS.map((t, k) => `<i class="${j.phase === 'fix_review' && k === 2 ? 'paused' : ''}" title="${t}"><b style="width:${j.phase === 'fix_review' && k === 2 ? 30 : segFill(j, k)}%"></b></i>`).join('')}</div>
         <p class="ai-sub" data-live-sub="${j.id}">${res || esc(a.sub)}</p>
+        </div>
       </div>
       <div class="r-act"><div class="tile-row">${isRunning(j) ? `<span class="tile-pct" data-live-pct="${j.id}">${pct}%</span>` : ''}${act}${V3 ? '<span class="x-caret" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></span>' : ''}</div></div>
       ${V3 ? xDetails(j) : ''}
@@ -1227,6 +1298,7 @@ html[data-vt] .act,html[data-vt] #focusPane{animation:none}
       canvas.replaceChildren(tpl.content);
     }
     animateFills(canvas);
+    if (V2) AI_BLOB.wake();
   }
   function animateFills(root) {
     const moving = [];
