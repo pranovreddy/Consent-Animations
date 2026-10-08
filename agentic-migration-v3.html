@@ -645,16 +645,12 @@ html[data-vt] .act,html[data-vt] #focusPane{animation:none}
 .x-chips{display:flex;flex-wrap:wrap;gap:6px}
 .x-chips span{display:inline-flex;gap:5px;align-items:center;height:24px;padding:0 9px;border-radius:999px;background:var(--bg-2);font-size:11.5px;color:var(--ink-3)}
 .x-chips b{color:var(--ink);font-weight:650;font-variant-numeric:tabular-nums}
-.x-appeal{display:grid;grid-template-columns:26px minmax(0,1fr) auto;gap:12px;align-items:start;padding:12px 14px;border-radius:12px;border:1px solid #f0d9a8;background:linear-gradient(180deg,#fffbf2,#fff6e4)}
+.x-appeal{display:grid;grid-template-columns:26px minmax(0,1fr) auto;gap:12px;align-items:center;padding:12px 14px;border-radius:12px;border:1px solid #f0d9a8;background:linear-gradient(180deg,#fffbf2,#fff6e4)}
 .xa-ic{width:26px;height:26px;border-radius:50%;background:#fff;border:1px solid #f0d9a8;display:grid;place-items:center;color:var(--amber)}
 .xa-ic svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round}
 .xa-body{min-width:0}
 .xa-body>b{font-size:13px;font-weight:650;color:var(--ink)}
 .xa-body p{font-size:12px;color:var(--ink-3);margin-top:2px;line-height:1.45}
-.xa-why{list-style:none;margin-top:8px}
-.xa-why li{display:flex;justify-content:space-between;gap:10px;font-size:11.5px;color:var(--ink-3);padding:4px 0;border-top:1px dashed #efdcb6}
-.xa-why li:first-child{border-top:0}
-.xa-why b{color:var(--ink-2);font-weight:650;font-variant-numeric:tabular-nums}
 .xa-btn{align-self:center;background:#fff;border-color:#e8c98e;color:var(--amber)}
 .xa-btn:hover{background:#fff9ec;border-color:#d9a54a}
 .x-appeal.done{grid-template-columns:26px minmax(0,1fr);border-color:#b7e4c7;background:var(--green-soft)}
@@ -1185,12 +1181,11 @@ html[data-vt] .act,html[data-vt] #focusPane{animation:none}
 
   /* failed records can only be appealed before submission, so this gets its own callout */
   function xAppeal(j) {
-    const f = j.failed, a = Math.round(f * .52), b = Math.round(f * .33), c = f - a - b;
+    const f = j.failed;
     if (j.appealed) return `<div class="x-appeal done"><span class="xa-ic">${CHECK}</span><div class="xa-body"><b>Appeal raised for ${num(f)} records</b><p>They'll be reviewed separately and you'll be notified. The ${num(j.verified)} verified consents can go ahead now.</p></div></div>`;
     return `<div class="x-appeal"><span class="xa-ic"><svg viewBox="0 0 24 24"><path d="M12 8v5M12 16.5h.01"/><circle cx="12" cy="12" r="9"/></svg></span>
       <div class="xa-body"><b>${num(f)} records failed authenticity checks</b>
         <p>Appeal them now: this is only possible before you submit. The ${num(j.verified)} verified consents aren't held up.</p>
-        <ul class="xa-why"><li>Consent older than 12 months<b>${num(a)}</b></li><li>Opt-in source missing<b>${num(b)}</b></li><li>Number doesn't match consent record<b>${num(c)}</b></li></ul>
       </div>
       <button type="button" class="btn btn-sm xa-btn" data-do="appeal">Appeal ${num(f)} records</button></div>`;
   }
