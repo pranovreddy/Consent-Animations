@@ -657,26 +657,32 @@ html[data-vt] .act,html[data-vt] #focusPane{animation:none}
 .x-appeal.done .xa-ic{border-color:#b7e4c7;color:var(--green)}
 .x-appeal.done .xa-ic svg{stroke-width:2.8;width:13px;height:13px}
 .x-right{display:flex;flex-direction:column;gap:10px;min-width:0}
-.x-stg{border:1px solid var(--line-2);border-radius:12px;background:#fff}
-.x-stg summary{display:flex;align-items:center;gap:9px;padding:11px 14px;cursor:pointer;list-style:none;border-radius:12px}
-.x-stg summary::-webkit-details-marker{display:none}
-.x-stg summary:hover{background:#f8fafd}
-.x-stg summary b{font-size:12.5px;font-weight:650;color:var(--ink);white-space:nowrap}
-.xs-tease{font-size:12px;color:var(--ink-4);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
-.xs-chev{margin-left:auto;width:16px;height:16px;flex-shrink:0;fill:none;stroke:var(--ink-4);stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;transition:transform .3s var(--ease)}
-.x-stg[open] .xs-chev{transform:rotate(180deg)}
-.x-stg[open] .xs-tease{display:none}
-.x-stg[open] .x-stages{animation:vt-in-up .35s var(--ease)}
-.x-stages{list-style:none;border-top:1px solid var(--line-2);padding:2px 14px}
-.x-stages li{display:grid;grid-template-columns:132px minmax(0,1fr);gap:12px;align-items:center;padding:9px 0;border-top:1px dashed var(--line)}
-.x-stages li:first-child{border-top:0}
-.xs-n{display:flex;align-items:center;gap:8px;font-size:12.5px;font-weight:600;color:var(--ink-2);white-space:nowrap}
-.xs-d{width:16px;height:16px;border-radius:50%;background:var(--green);display:grid;place-items:center;flex-shrink:0}
-.xs-d svg{width:9px;height:9px;fill:none;stroke:#fff;stroke-width:3.2;stroke-linecap:round;stroke-linejoin:round}
-.xs-f{display:flex;flex-wrap:wrap;gap:4px 14px;font-size:12px;color:var(--ink-3)}
-.xs-f span{display:inline-flex;align-items:center;gap:6px;white-space:nowrap}
-.xs-f i{width:7px;height:7px;border-radius:50%}
-.xs-f b{color:var(--ink);font-weight:650;font-variant-numeric:tabular-nums}
+.xsl{border:1px solid var(--line-2);border-radius:12px;background:#fff;overflow:hidden}
+.xsl-i+.xsl-i{border-top:1px solid var(--line-2)}
+.xsl-i summary{display:grid;grid-template-columns:18px auto minmax(0,1fr) auto 16px;align-items:center;gap:10px;padding:10px 14px;cursor:pointer;list-style:none}
+.xsl-i summary::-webkit-details-marker{display:none}
+.xsl-i summary:hover{background:#f8fafd}
+.xsl-d{width:18px;height:18px;border-radius:50%;border:1.5px solid #d5dce8;background:#fff;display:grid;place-items:center}
+.xsl-d svg{width:10px;height:10px;fill:none;stroke:#fff;stroke-width:3.2;stroke-linecap:round;stroke-linejoin:round}
+.xsl-d i{width:6px;height:6px;border-radius:50%}
+.xsl-i.done .xsl-d{background:var(--green);border-color:var(--green)}
+.xsl-i.now .xsl-d{border-color:var(--blue)}.xsl-i.now .xsl-d i{background:var(--blue);animation:pulse 1.6s var(--ease) infinite}
+.xsl-i.wait .xsl-d{border-color:#d9a54a}.xsl-i.wait .xsl-d i{background:#d9a54a}
+.xsl-i summary b{font-size:12.5px;font-weight:650;color:var(--ink);white-space:nowrap}
+.xsl-i.todo summary b{color:var(--ink-4);font-weight:550}
+.xsl-t{font-size:11.5px;color:var(--ink-4);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+.xsl-i[open] .xsl-t{visibility:hidden}
+.xsl-s{font-size:10.5px;font-weight:650;padding:2px 8px;border-radius:999px;background:var(--bg-2);color:var(--ink-4);white-space:nowrap}
+.xsl-i.done .xsl-s{background:var(--green-soft);color:var(--green)}
+.xsl-i.now .xsl-s{background:var(--blue-soft);color:var(--blue-d)}
+.xsl-i.wait .xsl-s{background:var(--amber-soft);color:var(--amber)}
+.xsl-i[open] .xs-chev{transform:rotate(180deg)}
+.xsl-b{padding:0 14px 12px 42px;animation:vt-in-up .3s var(--ease)}
+.xsl-b .mix{padding:0 12px}
+.xsl-b .mix li{font-size:12px;padding:7px 0}
+.xsl-b .sub li{font-size:12.5px}
+.xsl-b .x-fine{margin-top:6px}
+.xs-chev{width:16px;height:16px;flex-shrink:0;fill:none;stroke:var(--ink-4);stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;transition:transform .3s var(--ease)}
 .x-cols.wide{grid-template-columns:minmax(0,1.75fr) minmax(0,1fr)}
 .vsum{display:grid;grid-template-columns:96px repeat(4,minmax(0,1fr));align-items:start;gap:0;padding:14px 16px;border:1px solid var(--line-2);border-radius:14px;background:#fff}
 .vs-ring{position:relative;width:88px;height:88px;align-self:center}
@@ -1190,12 +1196,23 @@ html[data-vt] .act,html[data-vt] #focusPane{animation:none}
       <button type="button" class="btn btn-sm xa-btn" data-do="appeal">Appeal ${num(f)} records</button></div>`;
   }
   /* one row per AI step with the counts that step produced */
-  function xStages(j) {
-    const keep = [['Records found', 'Columns detected'], ['Passed', 'Fixable errors', 'Need manual edits', 'Duplicates'], ['Auto-fixed', 'Skipped'], ['Consent valid', 'Failed authenticity'], ['Eligible', 'Excluded']];
-    return `<ul class="x-stages">${AI_STEPS.map((t, k) => {
-      const facts = stepFacts(j, k).filter(f => keep[k].includes(f[1]));
-      return `<li><span class="xs-n"><span class="xs-d">${CHECK}</span>${t}</span><span class="xs-f">${facts.map(([c, l, v]) => `<span><i style="background:${c}"></i>${l} <b>${v}</b></span>`).join('')}</span></li>`;
-    }).join('')}</ul>`;
+  /* every AI stage as its own collapsible row: status at a glance, the counts once it's done */
+  function xStageList(j) {
+    const keep = [['Records found', 'Columns detected'], ['Passed', 'Fixable errors', 'Need manual edits', 'Duplicates'], ['Auto-fixed', 'Skipped', 'Fixable errors', 'Waiting for you'], ['Consent valid', 'Failed authenticity'], ['Eligible', 'Excluded']];
+    const a = aiState(j), all = j.phase === 'ready' || j.phase === 'submitted', p = progressF(j);
+    const ms = thr => `${Math.max(0, Math.round((thr - p) / RATE))}ms`;
+    return `<div class="xsl">${AI_STEPS.map((t, k) => {
+      const st = all || k < a.i ? 'done' : k === a.i ? (a.wait ? 'wait' : 'now') : 'todo';
+      const facts = st === 'done' || st === 'wait' ? stepFacts(j, k).filter(f => keep[k].includes(f[1])) : [];
+      const label = { done: 'Done', now: 'In progress', wait: 'Waiting for you', todo: 'Pending' }[st];
+      const tease = facts.slice(0, 2).map(([, l, v]) => `${l} ${v}`).join(' · ');
+      let body;
+      if (facts.length) body = `<ul class="mix">${facts.map(([c, l, v]) => `<li><i style="background:${c}"></i>${l}<b>${v}</b></li>`).join('')}</ul>`;
+      else if (st === 'now') { const A = AI_AT[k], B = AI_AT[k + 1], items = AI_SUB[k]; body = `<ul class="sub">${items.map((x, i) => `<li style="--s:${ms(A + (B - A) * i / items.length)};--e:${ms(A + (B - A) * (i + 1) / items.length)}"><span class="ic"><span class="spin"></span><span class="ok">${CHECK}</span></span>${x}</li>`).join('')}</ul><p class="x-fine">Counts appear once this stage finishes.</p>`; }
+      else body = `<p class="x-fine">Starts after ${AI_STEPS[k - 1]}.</p>`;
+      const open = st === 'now' || st === 'wait' ? ' open' : '';
+      return `<details class="xsl-i ${st}"${open}><summary><span class="xsl-d">${st === 'done' ? CHECK : '<i></i>'}</span><b>${t}</b><span class="xsl-t">${tease}</span><span class="xsl-s">${label}</span><svg class="xs-chev" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></summary><div class="xsl-b">${body}</div></details>`;
+    }).join('')}</div>`;
   }
   /* validation summary strip: % valid ring, then total / valid / errors / duplicates */
   function vSummary(j) {
@@ -1218,7 +1235,8 @@ html[data-vt] .act,html[data-vt] #focusPane{animation:none}
       const skipped = (j.fixed || 0) - (j.fixedApplied || 0), excluded = j.total - j.verified;
       body = `<div class="x-cols">
         <div class="x-main">
-          <details class="x-stg"><summary><span class="xs-d">${CHECK}</span><b>Stage-wise summary</b><span class="xs-tease">All 5 steps done · ${num(j.verified)} eligible · ${num(j.total - j.verified)} excluded</span><svg class="xs-chev" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></summary>${xStages(j)}</details>
+          <div class="auth-lbl">Stages</div>
+          ${xStageList(j)}
           ${j.failed ? xAppeal(j) : ''}
         </div>
         <div class="x-right">
@@ -1237,7 +1255,7 @@ html[data-vt] .act,html[data-vt] #focusPane{animation:none}
     } else if (j.phase === 'fix_review') {
       const errs = j.fixed + j.manual;
       body = `<div class="x-cols wide">
-        <div class="x-main">${vSummary(j)}</div>
+        <div class="x-main">${vSummary(j)}<div class="auth-lbl">Stages</div>${xStageList(j)}</div>
         <div class="x-side">
           <div class="auth-lbl">Review errors</div>
           <p class="x-lead"><b>${num(errs)}</b> rows have errors. <b>${num(j.fixed)}</b> can be fixed automatically; <b>${num(j.manual)}</b> need manual edits and are left out. Originals are always kept.</p>
@@ -1254,13 +1272,14 @@ html[data-vt] .act,html[data-vt] #focusPane{animation:none}
         <div><small>Amount</small><b>${inr(amt)}</b></div>
         <div><small>Time</small><b>${j.at && j.at.submitted ? fmtTime(j.at.submitted) : '—'}</b></div>
         <button type="button" class="btn" data-do="receipt">Download receipt</button>
-      </div>`;
+      </div>
+      <div class="x-cols"><div class="x-main"><div class="auth-lbl">Stages</div>${xStageList(j)}</div></div>`;
     } else {
       const si = aiState(j).i, a = AI_AT[si], b = AI_AT[si + 1], items = AI_SUB[si], p = progressF(j);
       const ms = thr => `${Math.max(0, Math.round((thr - p) / RATE))}ms`;
       const next = si === 1 && !j.autofix ? 'Review errors (autofix is off)' : si < 4 ? AI_STEPS[si + 1] : 'Your go-ahead to submit';
       body = `<div class="x-cols">
-        <div class="x-main"><div class="auth-lbl">Right now · ${AI_NOW[si]}</div><ul class="sub">${items.map((t, i) => `<li style="--s:${ms(a + (b - a) * i / items.length)};--e:${ms(a + (b - a) * (i + 1) / items.length)}"><span class="ic"><span class="spin"></span><span class="ok">${CHECK}</span></span>${t}</li>`).join('')}</ul></div>
+        <div class="x-main"><div class="auth-lbl">Stages</div>${xStageList(j)}</div>
         <div class="x-side"><div class="auth-lbl">Up next</div><p class="next">${next}</p><p class="x-fine">Nothing is needed from you right now. Autofix: ${j.autofix ? 'automatic' : 'ask me first'}.</p></div>
       </div>`;
     }
