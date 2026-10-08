@@ -581,8 +581,18 @@ html[data-vt] .act,html[data-vt] #focusPane{animation:none}
 .file-row2.run .ai-now{background:linear-gradient(90deg,var(--ink) 0%,var(--ink) 40%,#7aa5ff 50%,var(--ink) 60%,var(--ink) 100%);background-size:250% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:shimmer 2.2s linear infinite}
 @keyframes shimmer{from{background-position:100% 0}to{background-position:-150% 0}}
 .ai-step{margin-left:auto;font-size:11px;color:var(--ink-4);font-variant-numeric:tabular-nums;white-space:nowrap}
-.ai-seg{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:4px;margin:8px 0 6px}
-.ai-seg i{height:4px;border-radius:2px;background:var(--bg-2);overflow:hidden}
+.ai-seg{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:4px;margin:2px 0 0;padding:6px 0;cursor:help}
+.ai-seg i{height:4px;border-radius:2px;background:var(--bg-2);overflow:hidden;transition:transform .2s var(--ease),box-shadow .2s}
+.ai-seg i.hov{transform:scaleY(1.75);box-shadow:0 0 0 2px rgba(37,96,246,.12)}
+.seg-pop{position:fixed;z-index:85;width:250px;padding:12px 14px 10px;background:#fff;border:1px solid var(--line);border-radius:12px;box-shadow:0 14px 34px rgba(16,33,59,.16);pointer-events:none;opacity:0;transform:translateY(4px);transition:opacity .15s ease,transform .2s var(--ease)}
+.seg-pop.on{opacity:1;transform:none}
+.sp-h{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px}
+.sp-h b{font-size:13px;font-weight:700}
+.sp-st{font-size:10.5px;font-weight:650;padding:2px 8px;border-radius:999px;background:var(--bg-2);color:var(--ink-3)}
+.sp-st.done{background:var(--green-soft);color:var(--green)}.sp-st.now{background:var(--blue-soft);color:var(--blue-d)}.sp-st.wait{background:var(--amber-soft);color:var(--amber)}
+.seg-pop .mix{padding:0 10px}
+.seg-pop .mix li{font-size:12px;padding:7px 0}
+.sp-empty{font-size:12px;color:var(--ink-3);line-height:1.45}
 .ai-seg b{display:block;height:100%;width:0;border-radius:inherit;background:linear-gradient(90deg,#a9c3fb,var(--blue))}
 .file-row2.attn .ai-seg i.paused b{background:linear-gradient(90deg,#f1d9a6,#d9a54a)}
 .file-row2.ok .ai-seg b{background:linear-gradient(90deg,#9fd8b8,var(--green))}
@@ -1114,7 +1124,7 @@ html[data-vt] .act,html[data-vt] #focusPane{animation:none}
       <div class="r-ai">
         <div class="ai-body">
         <div class="ai-top"><span class="ai-blob" aria-hidden="true"><canvas></canvas></span><span class="ai-now" data-live-now="${j.id}">${now}</span><span class="ai-step" data-live-stepno="${j.id}">${stepNo}</span></div>
-        <div class="ai-seg" aria-hidden="true">${AI_STEPS.map((t, k) => `<i class="${j.phase === 'fix_review' && k === 2 ? 'paused' : ''}" title="${t}"><b style="width:${j.phase === 'fix_review' && k === 2 ? 30 : segFill(j, k)}%"></b></i>`).join('')}</div>
+        <div class="ai-seg" aria-hidden="true">${AI_STEPS.map((t, k) => `<i class="${j.phase === 'fix_review' && k === 2 ? 'paused' : ''}"><b style="width:${j.phase === 'fix_review' && k === 2 ? 30 : segFill(j, k)}%"></b></i>`).join('')}</div>
         <p class="ai-sub" data-live-sub="${j.id}">${res || esc(a.sub)}</p>
         </div>
       </div>
@@ -1950,6 +1960,54 @@ html[data-vt] .act,html[data-vt] #focusPane{animation:none}
     startTicker();
     toast('Sample queue · try Files and LOBs');
   };
+
+  /* ---------- hover a segment: what that AI step found, in the "What's inside" table style ---------- */
+  function stepFacts(j, k) {
+    const failed = j.failed || Math.round(j.total * .04), fixedApplied = j.fixedApplied || 0;
+    const verified = j.verified || (j.valid + fixedApplied - failed);
+    const C = { ok: 'var(--green)', bad: 'var(--red)', fix: 'var(--blue)', warn: '#d9a54a', mute: '#a3adbd' };
+    if (k === 0) return [[C.mute, 'Records found', num(j.total)], [C.mute, 'Columns detected', '8'], [C.mute, 'File size', fmtSize(sizeOf(j))]];
+    if (k === 1) return [[C.mute, 'Rows checked', num(j.total)], [C.ok, 'Passed', num(j.valid)], [C.fix, 'Fixable errors', num(j.fixed)], [C.warn, 'Need manual edits', num(j.manual)], [C.bad, 'Duplicates', num(j.dup)]];
+    if (k === 2) {
+      if (j.phase === 'fix_review') return [[C.fix, 'Fixable errors', num(j.fixed)], [C.warn, 'Waiting for you', 'Autofix or skip']];
+      return [[C.fix, 'Errors found', num(j.fixed)], [C.ok, 'Auto-fixed', num(fixedApplied)], [C.mute, 'Skipped', num(j.fixed - fixedApplied)], [C.mute, 'Mode', j.autofix ? 'Automatic' : 'Reviewed by you']];
+    }
+    if (k === 3) return [[C.mute, 'Records verified', num(j.valid + fixedApplied)], [C.ok, 'Consent valid', num(verified)], [C.bad, 'Failed authenticity', num(failed)]];
+    const base = verified * .05;
+    return [[C.ok, 'Eligible', num(verified)], [C.mute, 'Excluded', num(j.total - verified)], [C.mute, 'Estimate', inr2(base * 1.18)]];
+  }
+  const segPop = document.createElement('div');
+  segPop.className = 'seg-pop'; segPop.setAttribute('role', 'tooltip'); document.body.appendChild(segPop);
+  let segKey = '';
+  function showSegPop(seg, k) {
+    const row = seg.closest('.file-row2'), j = row && jobs.find(x => x.id === +row.dataset.id);
+    if (!j) return;
+    const a = aiState(j), reached = a.i > k || j.phase === 'ready' || j.phase === 'submitted';
+    const st = reached ? ['done', 'Done'] : a.i === k ? (a.wait ? ['wait', 'Waiting for you'] : ['now', 'In progress']) : ['todo', 'Not started'];
+    const key = `${j.id}|${k}|${st[0]}`;
+    $$('i', seg).forEach((el, n) => el.classList.toggle('hov', n === k));
+    if (key !== segKey) {
+      segKey = key;
+      const body = st[0] === 'done' || (st[0] === 'wait' && k === 2)
+        ? `<ul class="mix">${stepFacts(j, k).map(([c, l, v]) => `<li><i style="background:${c}"></i>${l}<b>${v}</b></li>`).join('')}</ul>`
+        : `<p class="sp-empty">${st[0] === 'now' ? `${AI_NOW[k]}… counts appear once this step finishes.` : 'This step hasn’t started yet.'}</p>`;
+      segPop.innerHTML = `<div class="sp-h"><b>${AI_STEPS[k]}</b><span class="sp-st ${st[0]}">${st[1]}</span></div>${body}`;
+    }
+    const r = seg.children[k].getBoundingClientRect();
+    segPop.classList.add('on');
+    const w = segPop.offsetWidth, h = segPop.offsetHeight;
+    segPop.style.left = `${Math.max(8, Math.min(innerWidth - w - 8, r.left + r.width / 2 - w / 2))}px`;
+    segPop.style.top = `${r.top - h - 12 < 8 ? r.bottom + 12 : r.top - h - 12}px`;
+  }
+  function hideSegPop() { segPop.classList.remove('on'); segKey = ''; $$('.ai-seg i.hov').forEach(el => el.classList.remove('hov')); }
+  $('#canvas').addEventListener('mousemove', e => {
+    const seg = e.target.closest && e.target.closest('.ai-seg');
+    if (!seg) { if (segPop.classList.contains('on')) hideSegPop(); return; }
+    const r = seg.getBoundingClientRect(), k = Math.max(0, Math.min(4, Math.floor((e.clientX - r.left) / r.width * 5)));
+    showSegPop(seg, k);
+  });
+  $('#canvas').addEventListener('mouseleave', hideSegPop);
+  addEventListener('scroll', hideSegPop, { passive: true });
 
   /* ---------- tray (V2) and version switcher ---------- */
   function openTray() {
