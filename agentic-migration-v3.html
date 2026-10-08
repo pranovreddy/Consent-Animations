@@ -519,6 +519,108 @@ html[data-vt] .act,html[data-vt] #focusPane{animation:none}
 .m-tip{position:fixed;z-index:80;pointer-events:none;background:var(--ink);color:#fff;font-size:11.5px;padding:6px 9px;border-radius:7px;opacity:0;transition:opacity .12s;white-space:nowrap}
 @media(max-width:1100px){.m-charts{grid-template-columns:1fr}}
 
+/* Version switcher */
+.ver{padding:12px 14px;border-top:1px solid var(--line)}
+.ver .nav-lbl{padding:0 0 6px}
+.ver-seg{display:grid;grid-template-columns:1fr 1fr;padding:3px;background:var(--bg-2);border-radius:10px;gap:2px}
+.ver-seg button{height:30px;border-radius:8px;font-size:11.5px;font-weight:600;color:var(--ink-3);transition:background .2s,color .2s,box-shadow .2s}
+.ver-seg button.is-on{background:#fff;color:var(--ink);box-shadow:0 1px 2px rgba(11,26,51,.08)}
+
+/* V2 — upload lives in a tray, files are rows */
+.bar-r{display:flex;align-items:center;gap:10px}
+.up-btn{display:none;height:36px}
+.v2 #uploadPane #seedDemo{display:none}
+.v2 .up-btn{display:inline-flex}
+.v2 .workspace{grid-template-columns:minmax(0,1fr)}
+.v2 .upload-rail{display:none}
+.v2.is-focus .workspace{grid-template-columns:var(--upload) minmax(0,1fr)}
+.v2.is-focus .upload-rail{display:flex}
+.tray-bg{position:fixed;inset:0;background:rgba(16,33,59,.26);backdrop-filter:blur(2px);z-index:45;opacity:0;pointer-events:none;transition:opacity .35s ease}
+.tray-bg.open{opacity:1;pointer-events:auto}
+.tray{position:fixed;top:0;right:0;bottom:0;width:min(400px,100%);background:linear-gradient(180deg,#fff 0%,#fff 55%,#f6fbfa 100%);z-index:50;box-shadow:-24px 0 60px rgba(16,33,59,.16);transform:translateX(104%);transition:transform .5s cubic-bezier(.22,1,.36,1);display:flex;flex-direction:column}
+.tray::before{content:'';position:absolute;left:0;right:0;top:0;height:3px;background:linear-gradient(90deg,#0f766e,#2bb39f)}
+.tray.open{transform:none}
+.tray-x{position:absolute;top:16px;right:16px;z-index:2;width:32px;height:32px;border-radius:9px;display:grid;place-items:center;color:var(--ink-3)}
+.tray-x:hover{background:var(--bg-2);color:var(--ink)}
+.tray-x svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round}
+.tray-body{flex:1;overflow:auto;padding:22px 20px 24px}
+.tray #uploadPane>div:first-child{padding-right:36px}
+.tray.open #uploadPane>*{animation:vt-in-up .5s cubic-bezier(.22,1,.36,1) both}
+.tray.open #uploadPane>*:nth-child(2){animation-delay:.04s}.tray.open #uploadPane>*:nth-child(3){animation-delay:.08s}.tray.open #uploadPane>*:nth-child(4){animation-delay:.12s}.tray.open #uploadPane>*:nth-child(n+5){animation-delay:.16s}
+
+.row-list{display:flex;flex-direction:column;gap:8px}
+.row-head,.file-row2{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,.85fr) minmax(0,1.75fr) 150px;gap:22px;align-items:center}
+.row-head{padding:0 18px 2px;font-size:10.5px;font-weight:650;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-4)}
+.row-head span:last-child{text-align:right}
+.file-row2{padding:14px 18px;background:#fff;border:1px solid var(--line);border-radius:14px;box-shadow:var(--sh);cursor:pointer;transition:transform .22s var(--ease),box-shadow .22s var(--ease),border-color .22s}
+.file-row2:hover{transform:translateY(-2px);box-shadow:var(--sh-2);border-color:#d6e1f7}
+.file-row2:focus-visible{outline:2px solid var(--blue);outline-offset:3px}
+.file-row2.needs{border-color:#d9e3f5}
+.r-file{display:flex;align-items:center;gap:12px;min-width:0}
+.r-ico{position:relative;width:32px;height:40px;flex-shrink:0;border-radius:5px;background:#fff;border:1px solid #e3e7ee;box-shadow:0 2px 6px rgba(16,33,59,.08);overflow:hidden}
+.r-ico .rg,.r-ico .read{position:absolute;inset:0}
+.r-ico .rg{top:9px;left:4px;right:4px;bottom:5px;border:1px solid #e6eaf0;border-radius:2px;background:linear-gradient(#eef1f5,#eef1f5) 0 0/100% 5px no-repeat,repeating-linear-gradient(180deg,transparent 0 4px,#eef1f5 4px 5px),repeating-linear-gradient(90deg,transparent 0 7px,#eef1f5 7px 8px)}
+.r-ico::before{content:'CSV';position:absolute;top:3px;left:4px;font:700 4.5px/1 var(--mono);color:#1f8f5c;letter-spacing:.04em}
+.r-ico .read{background:rgb(var(--t)/.16)}
+.file-row2.ok .r-ico .read,.file-row2.attn .r-ico .read{background:none}
+.r-ico .st{position:absolute;right:2px;bottom:2px;width:11px;height:11px;border-radius:50%;display:grid;place-items:center;opacity:0}
+.r-ico .st svg{width:7px;height:7px;fill:none;stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
+.file-row2.ok .r-ico .st{opacity:1;background:var(--green-soft)}.file-row2.ok .r-ico .st svg{stroke:var(--green)}
+.file-row2.attn .r-ico .st{opacity:1;background:var(--amber-soft)}.file-row2.attn .r-ico .st svg{stroke:var(--amber)}
+.r-file b{display:block;font-size:13px;font-weight:650;letter-spacing:-.15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.r-meta{display:flex;align-items:center;gap:6px;margin-top:4px;font-size:11px;color:var(--ink-4);font-family:var(--mono);white-space:nowrap}
+.r-meta .chip-lob{font-family:var(--font)}
+.r-rec-n{font-size:12.5px;color:var(--ink-4);white-space:nowrap}
+.r-rec-n b{font-size:13.5px;color:var(--ink);font-weight:650;font-variant-numeric:tabular-nums}
+.r-bar{height:5px;border-radius:3px;background:var(--bg-2);margin:7px 0 5px;overflow:hidden}
+.r-bar i{display:block;height:100%;width:var(--fill,0%);border-radius:inherit;background:linear-gradient(90deg,#a9c3fb,var(--blue));transition:width .9s var(--ease-out)}
+.file-row2.run .r-bar i{transition:none}
+.file-row2.ok .r-bar i{background:linear-gradient(90deg,#8fd3ae,var(--green))}
+.file-row2.attn .r-bar i{background:linear-gradient(90deg,#c8d2e2,#8d9ab1)}
+.r-rec small{font-size:10.5px;color:var(--ink-4)}
+.r-steps{list-style:none;display:grid;grid-template-columns:repeat(5,minmax(0,1fr))}
+.r-steps li{position:relative;display:flex;flex-direction:column;align-items:center;gap:5px;font-size:10.5px;font-weight:550;color:var(--ink-4);text-align:center;white-space:nowrap}
+.r-steps li+li::before{content:'';position:absolute;top:6px;left:calc(-50% + 9px);right:calc(50% + 9px);height:2px;border-radius:2px;background:var(--line-2);transition:background .4s}
+.r-steps li.done::before,.r-steps li.now::before,.r-steps li.wait::before{background:#a9c3fb}
+.r-steps .d{position:relative;width:14px;height:14px;border-radius:50%;background:#fff;border:1.5px solid #d5dce8;display:grid;place-items:center;transition:background .3s,border-color .3s,box-shadow .3s}
+.r-steps .d svg{width:8px;height:8px;fill:none;stroke:#fff;stroke-width:3.2;stroke-linecap:round;stroke-linejoin:round;opacity:0}
+.r-steps li.done .d{background:var(--blue);border-color:var(--blue)}
+.r-steps li.done .d svg{opacity:1}
+.r-steps li.now .d{border-color:var(--blue);box-shadow:0 0 0 3px rgba(37,96,246,.14)}
+.r-steps li.now .d::after{content:'';width:6px;height:6px;border-radius:50%;background:var(--blue);animation:pulse 1.6s var(--ease) infinite}
+.r-steps li.wait .d{border-color:#d9a54a;box-shadow:0 0 0 3px rgba(217,165,74,.16)}
+.r-steps li.wait .d::after{content:'';width:6px;height:6px;border-radius:50%;background:#d9a54a}
+.r-steps li.done,.r-steps li.now,.r-steps li.wait{color:var(--ink-2)}
+.file-row2.ok .r-steps li.done .d{background:var(--green);border-color:var(--green)}
+.file-row2.ok .r-steps li.done::before{background:#9fd8b8}
+.r-now{display:flex;align-items:center;gap:7px;margin-top:10px;font-size:12px;color:var(--ink-3);min-width:0}
+.r-now svg{width:14px;height:14px;flex-shrink:0;fill:none;stroke:var(--blue);stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.file-row2.run .r-now svg{animation:twinkle 2s ease-in-out infinite}
+@keyframes twinkle{50%{opacity:.45;transform:scale(.85) rotate(12deg)}}
+.r-now b{font-weight:650;color:var(--ink-2);white-space:nowrap}
+.r-now span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+.r-now [data-live-sub]{animation:subin .35s var(--ease)}
+@keyframes subin{from{opacity:0;transform:translateY(3px)}}
+.file-row2.attn .r-now svg{stroke:var(--amber)}
+.file-row2.ok .r-now svg{stroke:var(--green)}
+.r-act{display:flex;flex-direction:column;align-items:flex-end;gap:8px}
+.r-act .tile-row{gap:8px}
+.r-act .btn{white-space:nowrap}
+.r-now [data-live-sub]{flex:1}
+@media(max-width:1180px){
+  .row-head{display:none}
+  .file-row2{grid-template-columns:minmax(0,1fr) auto;row-gap:14px}
+  .r-ai{grid-column:1/-1;grid-row:2}
+  .r-rec{grid-column:1;grid-row:3}
+  .r-act{grid-column:2;grid-row:1}
+}
+/* with the rail open the stage is narrower: stack each row */
+.v2.is-focus .row-head{display:none}
+.v2.is-focus .file-row2{grid-template-columns:minmax(0,1fr) auto;row-gap:14px}
+.v2.is-focus .r-ai{grid-column:1/-1;grid-row:2}
+.v2.is-focus .r-rec{grid-column:1;grid-row:3}
+.v2.is-focus .r-act{grid-column:2;grid-row:1}
+
 /* Ready for your go-ahead */
 .rd-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;padding-bottom:18px;border-bottom:1px solid var(--line-2)}
 .rd-file{font-size:13px;color:var(--ink-3);margin-top:8px}
@@ -567,6 +669,13 @@ html[data-vt] .act,html[data-vt] #focusPane{animation:none}
       <a class="nav-item is-muted" href="#">Integrations</a>
       <a class="nav-item is-muted" href="#">Consent Acquisition</a>
     </nav>
+    <div class="ver">
+      <div class="nav-lbl">Version</div>
+      <div class="ver-seg" role="group" aria-label="Layout version">
+        <button type="button" class="is-on" data-ver="1">V1 · Grid</button>
+        <button type="button" data-ver="2">V2 · Rows</button>
+      </div>
+    </div>
     <div class="sidebar-user"><b>Ravi Menon</b><span>Super Admin</span></div>
   </aside>
 
@@ -640,6 +749,7 @@ html[data-vt] .act,html[data-vt] #focusPane{animation:none}
             <button type="button" class="chip-btn" data-filter="run">In progress <span class="n" id="cRun">0</span></button>
             <button type="button" class="chip-btn" data-filter="done">Done <span class="n" id="cDone">0</span></button>
           </div>
+          <div class="bar-r">
           <div class="layouts" role="group" aria-label="Layout">
             <button type="button" class="chip-btn is-on" data-layout="page" title="All files">
               <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
@@ -650,6 +760,9 @@ html[data-vt] .act,html[data-vt] #focusPane{animation:none}
               LOBs
             </button>
           </div>
+          <button type="button" class="btn up-btn" id="seedDemo2">Load sample queue</button>
+          <button type="button" class="btn btn-pri up-btn" id="openTray" aria-controls="tray" aria-expanded="false"><svg viewBox="0 0 24 24"><path d="M12 16V5M7 10l5-5 5 5M5 19h14"/></svg>Upload</button>
+          </div>
         </div>
         <p class="stage-hint" id="hint">Each file fills as the agent reads it.</p>
         <div id="canvas"></div>
@@ -658,6 +771,11 @@ html[data-vt] .act,html[data-vt] #focusPane{animation:none}
   </main>
 </div>
 
+<div class="tray-bg" id="trayBg"></div>
+<aside class="tray" id="tray" aria-label="Upload files" aria-hidden="true">
+  <button type="button" class="tray-x" id="trayClose" aria-label="Close upload"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+  <div class="tray-body" id="trayBody"></div>
+</aside>
 <div class="toast" id="toast" role="status"></div>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
   <linearGradient id="fBack" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#d4d5d9"/><stop offset="1" stop-color="#bdbec3"/></linearGradient>
@@ -829,6 +947,61 @@ html[data-vt] .act,html[data-vt] #focusPane{animation:none}
         <div class="tile-row"><span class="tile-tip">${esc(st.tip || st.label)}</span>${act}</div>
       </div>
     </article>`;
+  }
+
+  /* ---------- V2: one file per row ---------- */
+  let V2 = false;
+  const AI_STEPS = ['Analyze', 'Validate', 'Autofix', 'Verify consent', 'Prepare review'];
+  const AI_NOW = ['Analyzing', 'Validating', 'Autofixing', 'Verifying consent', 'Preparing review'];
+  const AI_AT = [0, 12, 42, 60, 88, 100];
+  const AI_SUB = [
+    ['Reading file structure', 'Detecting columns and encoding', 'Profiling every row'],
+    ['Checking required columns', 'Validating phone and date formats', 'Flagging duplicate rows'],
+    ['Normalising phone numbers', 'Standardising consent dates', 'Trimming stray whitespace'],
+    ['Matching consent signals', 'Checking consent validity', 'Scoring each record'],
+    ['Compiling eligible records', 'Calculating the estimate', 'Writing the review summary'],
+  ];
+  const SPARK = '<svg viewBox="0 0 24 24"><path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z"/><path d="M19 15l.8 2.2L22 18l-2.2.8L19 21l-.8-2.2L16 18l2.2-.8z"/></svg>';
+  function aiState(j) {
+    if (j.phase === 'submitted') return { i: 5, now: 'Submitted', sub: `${num(j.verified)} consents migrated` };
+    if (j.phase === 'ready') return { i: 5, now: 'Prepared for review', sub: `${num(j.verified)} eligible · waiting for your go-ahead` };
+    if (j.phase === 'fix_review') return { i: 2, wait: true, now: 'Waiting for you', sub: `${num(j.fixed)} errors to autofix or skip` };
+    const p = progressF(j);
+    let i = AI_AT.findIndex((a, k) => p >= a && p < AI_AT[k + 1]);
+    if (i < 0) i = 4;
+    const items = AI_SUB[i], f = (p - AI_AT[i]) / (AI_AT[i + 1] - AI_AT[i]);
+    return { i, now: AI_NOW[i], sub: items[Math.min(items.length - 1, Math.floor(f * items.length))] };
+  }
+  const recordsDone = j => isRunning(j) || j.phase === 'fix_review' ? Math.round(j.total * progressF(j) / 100) : (j.phase === 'cancelled' ? 0 : j.total);
+  function stepsHTML(a) {
+    return AI_STEPS.map((t, k) => `<li class="${k < a.i ? 'done' : k === a.i ? (a.wait ? 'wait' : 'now') : ''}"><span class="d">${CHECK}</span>${t}</li>`).join('');
+  }
+  function fileRow(j) {
+    const pct = progress(j), st = stageInfo(j), a = aiState(j);
+    const act = j.phase==='ready' ? `<button class="btn btn-pri btn-sm" data-act="review">Submit</button>`
+      : j.phase==='fix_review' ? `<button class="btn btn-pri btn-sm" data-act="fix">Review errors</button>`
+      : j.phase==='submitted' ? `<button class="btn btn-sm" data-act="receipt">Receipt</button>` : '';
+    const stamp = j.phase==='submitted' ? CHECK : `<svg viewBox="0 0 24 24"><path d="${STAMP[j.phase] || ''}"/></svg>`;
+    return `<article class="file-row2 ${tileClass(j)}" style="--fill:${pct}%" data-key="t${j.id}" data-sig="${j.phase}" data-fk="t${j.id}" data-to="${pct}" data-id="${j.id}" data-step="${a.i}" tabindex="0" role="button" aria-label="${esc(j.name)}, ${pct}% ${st.label}">
+      <div class="r-file"><span class="r-ico" aria-hidden="true"><span class="rg"></span><span class="read"></span><span class="st">${stamp}</span></span>
+        <div style="min-width:0"><b title="${esc(j.name)}">${esc(j.name)}</b><div class="r-meta"><span class="chip-lob">${esc(j.lob)}</span>${fmtSize(sizeOf(j))}</div></div></div>
+      <div class="r-rec"><div class="r-rec-n"><b data-live-rec="${j.id}">${num(recordsDone(j))}</b> / ${num(j.total)}</div><div class="r-bar"><i></i></div><small>records processed</small></div>
+      <div class="r-ai"><ol class="r-steps">${stepsHTML(a)}</ol><p class="r-now">${SPARK}<b data-live-now="${j.id}">${a.now}</b><span>·</span><span data-live-sub="${j.id}">${esc(a.sub)}</span></p></div>
+      <div class="r-act"><div class="tile-row"><span class="tile-stage ${st.cls}">${pulseFor(st.cls)}${esc(st.label)}</span></div><div class="tile-row"><span class="tile-pct" data-live-pct="${j.id}">${pct}%</span>${act}</div></div>
+    </article>`;
+  }
+  const ROW_HEAD = '<div class="row-head"><span>File</span><span>Records</span><span>What the AI is doing</span><span>Status</span></div>';
+  const fileList = (list, view) => V2
+    ? `<div class="row-list" data-view="rows-${view}">${ROW_HEAD}${list.map(fileRow).join('')}</div>`
+    : `<div class="page-grid" data-view="${view}">${list.map(fileTile).join('')}</div>`;
+  function paintRow(j) {
+    const row = $(`#canvas .file-row2[data-id="${j.id}"]`);
+    if (!row) return;
+    $$(`[data-live-rec="${j.id}"]`, row).forEach(el => { el.textContent = num(recordsDone(j)); });
+    const a = aiState(j);
+    if (row.dataset.step !== String(a.i)) { row.dataset.step = a.i; $('.r-steps', row).innerHTML = stepsHTML(a); $('[data-live-now]', row).textContent = a.now; }
+    const sub = $('[data-live-sub]', row);
+    if (sub.textContent !== a.sub) { const n = sub.cloneNode(); n.textContent = a.sub; sub.replaceWith(n); }
   }
 
   function miniTile(j) {
@@ -1262,10 +1435,8 @@ html[data-vt] .act,html[data-vt] #focusPane{animation:none}
       return;
     }
 
-    $('#hint').innerHTML = 'Each file fills as the agent reads it. Open one to see its timeline.';
-    patch(canvas, list.length
-      ? `<div class="page-grid" data-view="page">${list.map(fileTile).join('')}</div>`
-      : emptyFor());
+    $('#hint').innerHTML = V2 ? 'Each row shows what the AI is doing on that file. Open one to see its timeline.' : 'Each file fills as the agent reads it. Open one to see its timeline.';
+    patch(canvas, list.length ? fileList(list, 'page') : emptyFor());
   }
 
   function renderFocus(canvas, fp) {
@@ -1280,7 +1451,7 @@ html[data-vt] .act,html[data-vt] #focusPane{animation:none}
       const sig = `d|${focus.lob}|${files.map(j => j.id + j.phase).join()}`;
       if (fp.dataset.sig !== sig) { fp.innerHTML = folderRail(focus.lob, files); fp.dataset.sig = sig; animateFills(fp); }
       $('#hint').innerHTML = `<strong>${esc(focus.lob)}</strong> · ${files.length} file${files.length===1?'':'s'}. Open one to see its timeline and what it needs.`;
-      patch(canvas, `<div class="page-grid" data-view="lob-${esc(focus.lob)}">${files.map(fileTile).join('')}</div>`);
+      patch(canvas, fileList(files, `lob-${esc(focus.lob)}`));
     }
   }
 
@@ -1335,9 +1506,9 @@ html[data-vt] .act,html[data-vt] #focusPane{animation:none}
     if (!j) return;
     lastFill.set(`r${id}`, progress(j));
     const next = { type: 'file', id, from: focus && focus.type === 'folder' ? focus.lob : null };
-    const src = host.querySelector('.paper');
+    const src = host.querySelector('.paper, .r-ico');
     if (morph('in', () => { focus = next; render(); scrollTo({ top: 0 }); }, src, () => $('#focusPane .paper'))) return;
-    const snap = snapshot(host, '.paper');
+    const snap = host.querySelector('.paper') ? snapshot(host, '.paper') : null;
     focus = next; render(); scrollTo({ top: 0 });
     fly(snap, $('#focusPane .paper'));
   }
@@ -1355,15 +1526,16 @@ html[data-vt] .act,html[data-vt] #focusPane{animation:none}
     if (to === 'upload-more') {
       const go = () => { focus = null; render(); $('#lob').value = prev.lob; updateUpload(); };
       if (!morph('back', go)) go();
-      $('#drop').focus();
+      if (V2) openTray(); else $('#drop').focus();
       return;
     }
     const next = to === 'back' && prev.type === 'file' && prev.from ? { type: 'folder', lob: prev.from } : null;
     const findDst = () => prev.type === 'file'
-      ? $(`#canvas [data-key="t${prev.id}"] .paper`)
+      ? $(`#canvas [data-key="t${prev.id}"] .paper, #canvas [data-key="t${prev.id}"] .r-ico`)
       : ($$('#canvas .folder-card').find(c => c.dataset.lob === prev.lob) || null)?.querySelector('.folder');
     const src = $(`#focusPane .focus-tile ${prev.type === 'file' ? '.paper' : '.folder'}`);
     const go = () => { focus = next; render(); const d = findDst(); if (d) d.closest('article').scrollIntoView({ block: 'nearest' }); };
+    if (V2 && prev.type === 'file' && !next) { if (!morph('back', go, src, findDst)) go(); return; }
     if (morph('back', go, src, findDst)) return;
     const snap = snapshot($('#focusPane .focus-tile'), prev.type === 'file' ? '.paper' : '.folder');
     go();
@@ -1435,6 +1607,7 @@ html[data-vt] .act,html[data-vt] #focusPane{animation:none}
       });
       $$(`[data-live-pct="${j.id}"]`).forEach(el => { el.textContent = pr; });
       $$(`[data-live-bar="${j.id}"]`).forEach(el => { el.style.width = `${j.p.toFixed(2)}%`; });
+      if (V2) paintRow(j);
     }
     const pool = focus ? jobs : filtered();
     $$('.folder-card[data-lob]').forEach(el => {
@@ -1489,12 +1662,13 @@ html[data-vt] .act,html[data-vt] #focusPane{animation:none}
     renderPicked(); render();
     created.forEach((j,i)=>{
       const host=$(`#canvas [data-key="t${j.id}"]`); if(!host) return;
-      const dst=host.querySelector('.paper');
+      const dst=host.querySelector('.paper, .r-ico');
       if(!RM){
         host.animate([{opacity:0,transform:'translateY(10px)'},{opacity:1,transform:'none'}],{duration:450,delay:i*140,fill:'backwards',easing:'cubic-bezier(.22,1,.36,1)'});
         if(srcs[i]){ dst.style.visibility='hidden'; setTimeout(()=>fly({rect:srcs[i],node:tplNode(paperHTML(j)),cls:host.className,fill:'0%'},dst,820),i*140); }
       }
     });
+    if(V2) closeTray();
     startTicker();
     toast(n>1?`Received ${n} files for ${lob}`:`Received ${first}`);
   };
@@ -1513,13 +1687,13 @@ html[data-vt] .act,html[data-vt] #focusPane{animation:none}
   $('#canvas').addEventListener('click', e => {
     const d=e.target.closest('[data-do]');
     if(d){ doAction(d.dataset.do); return; }
-    const tile=e.target.closest('.file-tile');
+    const tile=e.target.closest('.file-tile,.file-row2');
     if(tile&&tile.dataset.id){ openFile(+tile.dataset.id, tile); return; }
     const folder=e.target.closest('.folder-card');
     if(folder) openFolder(folder.dataset.lob, folder);
   });
   $('#canvas').addEventListener('keydown', e => {
-    if((e.key==='Enter'||e.key===' ')&&e.target.matches('.file-tile,.folder-card')){ e.preventDefault(); e.target.click(); }
+    if((e.key==='Enter'||e.key===' ')&&e.target.matches('.file-tile,.file-row2,.folder-card')){ e.preventDefault(); e.target.click(); }
   });
   $('#canvas').addEventListener('change', e => {
     if(e.target.id==='authz') $('#submitBtn').disabled=!e.target.checked;
@@ -1553,10 +1727,41 @@ html[data-vt] .act,html[data-vt] #focusPane{animation:none}
     toast('Sample queue · try Files and LOBs');
   };
 
+  /* ---------- tray (V2) and version switcher ---------- */
+  function openTray() {
+    $('#tray').classList.add('open'); $('#trayBg').classList.add('open');
+    $('#tray').setAttribute('aria-hidden', 'false'); $('#openTray').setAttribute('aria-expanded', 'true');
+    setTimeout(() => $('#drop').focus({ preventScroll: true }), 350);
+  }
+  function closeTray() {
+    $('#tray').classList.remove('open'); $('#trayBg').classList.remove('open');
+    $('#tray').setAttribute('aria-hidden', 'true'); $('#openTray').setAttribute('aria-expanded', 'false');
+  }
+  $('#openTray').onclick = openTray;
+  $('#seedDemo2').onclick = () => $('#seedDemo').click();
+  $('#trayClose').onclick = closeTray;
+  $('#trayBg').onclick = closeTray;
+  document.addEventListener('keydown', e => { if (e.key === 'Escape' && $('#tray').classList.contains('open')) closeTray(); });
+  function setVersion(v, animate) {
+    const apply = () => {
+      V2 = v === 2;
+      document.body.classList.toggle('v2', V2);
+      $$('.ver-seg button').forEach(b => b.classList.toggle('is-on', +b.dataset.ver === v));
+      const pane = $('#uploadPane');
+      if (V2) $('#trayBody').appendChild(pane); else { closeTray(); $('.upload-rail').prepend(pane); }
+      focus = null;
+      render();
+    };
+    if (!(animate && morph('fade', apply))) apply();
+    try { localStorage.setItem('am-version', String(v)); } catch (e) {}
+  }
+  $$('.ver-seg button').forEach(b => { b.onclick = () => { if ((+b.dataset.ver === 2) !== V2) setVersion(+b.dataset.ver, true); }; });
+
   const dropDoc = docHTML(3);
   $('#dropSheet').innerHTML = `${dropDoc}<div class="read">${dropDoc}<span class="trail"></span></div>`;
   render();
   renderPicked();
+  try { if (localStorage.getItem('am-version') === '2') setVersion(2, false); } catch (e) {}
 })();
 </script>
 </body>
