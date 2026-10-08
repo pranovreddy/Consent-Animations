@@ -721,12 +721,9 @@ html[data-vt] .act,html[data-vt] #focusPane{animation:none}
 .x-check{font-size:12px;margin:10px 0 8px}
 .x-check b{font-weight:650;color:var(--ink)}
 .x-submit{width:100%;height:40px}
+.x-rcpt{margin-top:12px}
 .x-fine{font-size:11px;color:var(--ink-4);margin-top:8px;line-height:1.45}
 .x-btns{display:flex;gap:8px;justify-content:flex-end}
-.x-receipt{display:flex;flex-wrap:wrap;align-items:center;gap:10px 28px;padding:12px 16px;border-radius:12px;background:#f5f7fb}
-.x-receipt small{display:block;font-size:10px;font-weight:650;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-4)}
-.x-receipt b{font-size:14px;font-weight:650;font-variant-numeric:tabular-nums}
-.x-receipt .btn{margin-left:auto}
 @media(max-width:1000px){.x-cols{grid-template-columns:1fr}}
 
 /* Ready for your go-ahead */
@@ -1295,15 +1292,20 @@ html[data-vt] .act,html[data-vt] #focusPane{animation:none}
       </div>`;
     } else if (j.phase === 'submitted') {
       const amt = (j.verified || 0) * .05 * 1.18;
-      body = `<div class="x-receipt">
-        <div><small>Reference</small><b>MIG-2026-${String(j.id).padStart(4, '0')}</b></div>
-        <div><small>Submitted</small><b>${num(j.verified)}</b></div>
-        <div><small>Failed checks</small><b>${num(j.failed)}</b></div>
-        <div><small>Amount</small><b>${inr(amt)}</b></div>
-        <div><small>Time</small><b>${j.at && j.at.submitted ? fmtTime(j.at.submitted) : '—'}</b></div>
-        <button type="button" class="btn" data-do="receipt">Download receipt</button>
-      </div>
-      <div class="x-cols"><div class="x-main"><div class="auth-lbl">Stages</div>${xStageList(j)}</div></div>`;
+      body = `<div class="x-cols">
+        <div class="x-main"><div class="auth-lbl">Stages</div>${xStageList(j)}</div>
+        <div class="x-right">
+          <div class="auth-lbl">Receipt</div>
+          <div class="x-side">
+            <div class="auth-row"><span>Reference</span><b>MIG-2026-${String(j.id).padStart(4, '0')}</b></div>
+            <div class="auth-row"><span>Consents submitted</span><span>${num(j.verified)}</span></div>
+            <div class="auth-row"><span>Failed checks (not submitted)</span><span>${num(j.failed)}</span></div>
+            <div class="auth-row"><span>Submitted at</span><span>${j.at && j.at.submitted ? fmtTime(j.at.submitted) : '—'}</span></div>
+            <div class="auth-row tot"><span>Amount</span><b>${inr2(amt)}</b></div>
+            <button type="button" class="btn x-submit x-rcpt" data-do="receipt">Download receipt</button>
+          </div>
+        </div>
+      </div>`;
     } else {
       const si = aiState(j).i, a = AI_AT[si], b = AI_AT[si + 1], items = AI_SUB[si], p = progressF(j);
       const ms = thr => `${Math.max(0, Math.round((thr - p) / RATE))}ms`;
