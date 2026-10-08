@@ -549,7 +549,7 @@ html[data-vt] .act,html[data-vt] #focusPane{animation:none}
 .tray.open #uploadPane>*:nth-child(2){animation-delay:.04s}.tray.open #uploadPane>*:nth-child(3){animation-delay:.08s}.tray.open #uploadPane>*:nth-child(4){animation-delay:.12s}.tray.open #uploadPane>*:nth-child(n+5){animation-delay:.16s}
 
 .row-list{display:flex;flex-direction:column;gap:8px}
-.row-head,.file-row2{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,.85fr) minmax(0,1.75fr) 150px;gap:22px;align-items:center}
+.row-head,.file-row2{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1.6fr) 150px;gap:26px;align-items:center}
 .row-head{padding:0 18px 2px;font-size:10.5px;font-weight:650;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-4)}
 .row-head span:last-child{text-align:right}
 .file-row2{padding:14px 18px;background:#fff;border:1px solid var(--line);border-radius:14px;box-shadow:var(--sh);cursor:pointer;transition:transform .22s var(--ease),box-shadow .22s var(--ease),border-color .22s}
@@ -570,55 +570,41 @@ html[data-vt] .act,html[data-vt] #focusPane{animation:none}
 .r-file b{display:block;font-size:13px;font-weight:650;letter-spacing:-.15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .r-meta{display:flex;align-items:center;gap:6px;margin-top:4px;font-size:11px;color:var(--ink-4);font-family:var(--mono);white-space:nowrap}
 .r-meta .chip-lob{font-family:var(--font)}
-.r-rec-n{font-size:12.5px;color:var(--ink-4);white-space:nowrap}
-.r-rec-n b{font-size:13.5px;color:var(--ink);font-weight:650;font-variant-numeric:tabular-nums}
-.r-bar{height:5px;border-radius:3px;background:var(--bg-2);margin:7px 0 5px;overflow:hidden}
-.r-bar i{display:block;height:100%;width:var(--fill,0%);border-radius:inherit;background:linear-gradient(90deg,#a9c3fb,var(--blue));transition:width .9s var(--ease-out)}
-.file-row2.run .r-bar i{transition:none}
-.file-row2.ok .r-bar i{background:linear-gradient(90deg,#8fd3ae,var(--green))}
-.file-row2.attn .r-bar i{background:linear-gradient(90deg,#c8d2e2,#8d9ab1)}
-.r-rec small{font-size:10.5px;color:var(--ink-4)}
-.r-steps{list-style:none;display:grid;grid-template-columns:repeat(5,minmax(0,1fr))}
-.r-steps li{position:relative;display:flex;flex-direction:column;align-items:center;gap:5px;font-size:10.5px;font-weight:550;color:var(--ink-4);text-align:center;white-space:nowrap}
-.r-steps li+li::before{content:'';position:absolute;top:6px;left:calc(-50% + 9px);right:calc(50% + 9px);height:2px;border-radius:2px;background:var(--line-2);transition:background .4s}
-.r-steps li.done::before,.r-steps li.now::before,.r-steps li.wait::before{background:#a9c3fb}
-.r-steps .d{position:relative;width:14px;height:14px;border-radius:50%;background:#fff;border:1.5px solid #d5dce8;display:grid;place-items:center;transition:background .3s,border-color .3s,box-shadow .3s}
-.r-steps .d svg{width:8px;height:8px;fill:none;stroke:#fff;stroke-width:3.2;stroke-linecap:round;stroke-linejoin:round;opacity:0}
-.r-steps li.done .d{background:var(--blue);border-color:var(--blue)}
-.r-steps li.done .d svg{opacity:1}
-.r-steps li.now .d{border-color:var(--blue);box-shadow:0 0 0 3px rgba(37,96,246,.14)}
-.r-steps li.now .d::after{content:'';width:6px;height:6px;border-radius:50%;background:var(--blue);animation:pulse 1.6s var(--ease) infinite}
-.r-steps li.wait .d{border-color:#d9a54a;box-shadow:0 0 0 3px rgba(217,165,74,.16)}
-.r-steps li.wait .d::after{content:'';width:6px;height:6px;border-radius:50%;background:#d9a54a}
-.r-steps li.done,.r-steps li.now,.r-steps li.wait{color:var(--ink-2)}
-.file-row2.ok .r-steps li.done .d{background:var(--green);border-color:var(--green)}
-.file-row2.ok .r-steps li.done::before{background:#9fd8b8}
-.r-now{display:flex;align-items:center;gap:7px;margin-top:10px;font-size:12px;color:var(--ink-3);min-width:0}
-.r-now svg{width:14px;height:14px;flex-shrink:0;fill:none;stroke:var(--blue);stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
-.file-row2.run .r-now svg{animation:twinkle 2s ease-in-out infinite}
-@keyframes twinkle{50%{opacity:.45;transform:scale(.85) rotate(12deg)}}
-.r-now b{font-weight:650;color:var(--ink-2);white-space:nowrap}
-.r-now span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
-.r-now [data-live-sub]{animation:subin .35s var(--ease)}
-@keyframes subin{from{opacity:0;transform:translateY(3px)}}
-.file-row2.attn .r-now svg{stroke:var(--amber)}
-.file-row2.ok .r-now svg{stroke:var(--green)}
 .r-act{display:flex;flex-direction:column;align-items:flex-end;gap:8px}
+/* AI activity: one live line, a five-part progress, and the current sub-step */
+.ai-top{display:flex;align-items:center;gap:9px;min-width:0}
+.ai-orb{position:relative;width:18px;height:18px;flex-shrink:0;border-radius:50%;background:conic-gradient(from 0deg,#2560f6,#7aa5ff,#c3d6ff,#2560f6);animation:spin 2.4s linear infinite}
+.ai-orb::after{content:'';position:absolute;inset:3px;border-radius:50%;background:#fff}
+.ai-orb::before{content:'';position:absolute;inset:6px;border-radius:50%;background:#2560f6;z-index:1;animation:pulse 1.6s var(--ease) infinite}
+.file-row2:not(.run) .ai-orb{animation:none;background:var(--line-2)}
+.file-row2.attn .ai-orb{background:#f1d9a6}.file-row2.attn .ai-orb::before{background:#d9a54a;animation:none}
+.file-row2.ok .ai-orb{background:#bfe6cf}.file-row2.ok .ai-orb::before{background:var(--green);animation:none}
+.ai-now{font-size:13px;font-weight:650;color:var(--ink);white-space:nowrap}
+.file-row2.run .ai-now{background:linear-gradient(90deg,var(--ink) 0%,var(--ink) 40%,#7aa5ff 50%,var(--ink) 60%,var(--ink) 100%);background-size:250% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:shimmer 2.2s linear infinite}
+@keyframes shimmer{from{background-position:100% 0}to{background-position:-150% 0}}
+.ai-step{margin-left:auto;font-size:11px;color:var(--ink-4);font-variant-numeric:tabular-nums;white-space:nowrap}
+.ai-seg{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:4px;margin:9px 0 7px}
+.ai-seg i{height:4px;border-radius:2px;background:var(--bg-2);overflow:hidden}
+.ai-seg b{display:block;height:100%;width:0;border-radius:inherit;background:linear-gradient(90deg,#a9c3fb,var(--blue))}
+.file-row2.attn .ai-seg b{background:#c4cede}
+.file-row2.attn .ai-seg i.paused b{background:linear-gradient(90deg,#f1d9a6,#d9a54a)}
+.file-row2.ok .ai-seg b{background:linear-gradient(90deg,#9fd8b8,var(--green))}
+.ai-sub{font-size:12px;color:var(--ink-3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ai-sub b{color:var(--ink);font-weight:650;font-variant-numeric:tabular-nums}
+.ai-sub.live{animation:subin .4s var(--ease)}
+@keyframes subin{from{opacity:0;transform:translateY(3px)}}
 .r-act .tile-row{gap:8px}
 .r-act .btn{white-space:nowrap}
-.r-now [data-live-sub]{flex:1}
 @media(max-width:1180px){
   .row-head{display:none}
   .file-row2{grid-template-columns:minmax(0,1fr) auto;row-gap:14px}
   .r-ai{grid-column:1/-1;grid-row:2}
-  .r-rec{grid-column:1;grid-row:3}
   .r-act{grid-column:2;grid-row:1}
 }
 /* with the rail open the stage is narrower: stack each row */
 .v2.is-focus .row-head{display:none}
 .v2.is-focus .file-row2{grid-template-columns:minmax(0,1fr) auto;row-gap:14px}
 .v2.is-focus .r-ai{grid-column:1/-1;grid-row:2}
-.v2.is-focus .r-rec{grid-column:1;grid-row:3}
 .v2.is-focus .r-act{grid-column:2;grid-row:1}
 
 /* Ready for your go-ahead */
@@ -972,36 +958,53 @@ html[data-vt] .act,html[data-vt] #focusPane{animation:none}
     const items = AI_SUB[i], f = (p - AI_AT[i]) / (AI_AT[i + 1] - AI_AT[i]);
     return { i, now: AI_NOW[i], sub: items[Math.min(items.length - 1, Math.floor(f * items.length))] };
   }
-  const recordsDone = j => isRunning(j) || j.phase === 'fix_review' ? Math.round(j.total * progressF(j) / 100) : (j.phase === 'cancelled' ? 0 : j.total);
-  function stepsHTML(a) {
-    return AI_STEPS.map((t, k) => `<li class="${k < a.i ? 'done' : k === a.i ? (a.wait ? 'wait' : 'now') : ''}"><span class="d">${CHECK}</span>${t}</li>`).join('');
+  /* the summary shown where the agent stops: records only appear once they are counted */
+  function aiResult(j) {
+    if (j.phase === 'fix_review') return `<b>${num(j.fixed)}</b> of ${num(j.total)} records have fixable errors · autofix or skip`;
+    if (j.phase === 'ready') return `<b>${num(j.verified)}</b> of ${num(j.total)} records eligible · ${num(j.total - j.verified)} excluded`;
+    if (j.phase === 'submitted') return `<b>${num(j.verified)}</b> of ${num(j.total)} records migrated`;
+    return null;
+  }
+  function segFill(j, k) {
+    if (j.phase === 'ready' || j.phase === 'submitted') return 100;
+    const p = progressF(j);
+    return Math.max(0, Math.min(100, (p - AI_AT[k]) / (AI_AT[k + 1] - AI_AT[k]) * 100));
   }
   function fileRow(j) {
-    const pct = progress(j), st = stageInfo(j), a = aiState(j);
+    const pct = progress(j), st = stageInfo(j), a = aiState(j), res = aiResult(j);
     const act = j.phase==='ready' ? `<button class="btn btn-pri btn-sm" data-act="review">Submit</button>`
       : j.phase==='fix_review' ? `<button class="btn btn-pri btn-sm" data-act="fix">Review errors</button>`
       : j.phase==='submitted' ? `<button class="btn btn-sm" data-act="receipt">Receipt</button>` : '';
     const stamp = j.phase==='submitted' ? CHECK : `<svg viewBox="0 0 24 24"><path d="${STAMP[j.phase] || ''}"/></svg>`;
+    const now = j.phase === 'fix_review' ? 'Paused at autofix' : a.now;
+    const stepNo = a.i >= 5 ? 'All 5 steps done' : `Step ${a.i + 1} of 5`;
     return `<article class="file-row2 ${tileClass(j)}" style="--fill:${pct}%" data-key="t${j.id}" data-sig="${j.phase}" data-fk="t${j.id}" data-to="${pct}" data-id="${j.id}" data-step="${a.i}" tabindex="0" role="button" aria-label="${esc(j.name)}, ${pct}% ${st.label}">
       <div class="r-file"><span class="r-ico" aria-hidden="true"><span class="rg"></span><span class="read"></span><span class="st">${stamp}</span></span>
-        <div style="min-width:0"><b title="${esc(j.name)}">${esc(j.name)}</b><div class="r-meta"><span class="chip-lob">${esc(j.lob)}</span>${fmtSize(sizeOf(j))}</div></div></div>
-      <div class="r-rec"><div class="r-rec-n"><b data-live-rec="${j.id}">${num(recordsDone(j))}</b> / ${num(j.total)}</div><div class="r-bar"><i></i></div><small>records processed</small></div>
-      <div class="r-ai"><ol class="r-steps">${stepsHTML(a)}</ol><p class="r-now">${SPARK}<b data-live-now="${j.id}">${a.now}</b><span>·</span><span data-live-sub="${j.id}">${esc(a.sub)}</span></p></div>
+        <div style="min-width:0"><b title="${esc(j.name)}">${esc(j.name)}</b><div class="r-meta"><span class="chip-lob">${esc(j.lob)}</span>${fmtSize(sizeOf(j))} · ${num(j.total)} records</div></div></div>
+      <div class="r-ai">
+        <div class="ai-top"><span class="ai-orb" aria-hidden="true"></span><span class="ai-now" data-live-now="${j.id}">${now}</span><span class="ai-step" data-live-stepno="${j.id}">${stepNo}</span></div>
+        <div class="ai-seg" aria-hidden="true">${AI_STEPS.map((t, k) => `<i class="${j.phase === 'fix_review' && k === 2 ? 'paused' : ''}" title="${t}"><b style="width:${j.phase === 'fix_review' && k === 2 ? 30 : segFill(j, k)}%"></b></i>`).join('')}</div>
+        <p class="ai-sub" data-live-sub="${j.id}">${res || esc(a.sub)}</p>
+      </div>
       <div class="r-act"><div class="tile-row"><span class="tile-stage ${st.cls}">${pulseFor(st.cls)}${esc(st.label)}</span></div><div class="tile-row"><span class="tile-pct" data-live-pct="${j.id}">${pct}%</span>${act}</div></div>
     </article>`;
   }
-  const ROW_HEAD = '<div class="row-head"><span>File</span><span>Records</span><span>What the AI is doing</span><span>Status</span></div>';
+  const ROW_HEAD = '<div class="row-head"><span>File</span><span>What the AI is doing</span><span>Status</span></div>';
   const fileList = (list, view) => V2
     ? `<div class="row-list" data-view="rows-${view}">${ROW_HEAD}${list.map(fileRow).join('')}</div>`
     : `<div class="page-grid" data-view="${view}">${list.map(fileTile).join('')}</div>`;
   function paintRow(j) {
     const row = $(`#canvas .file-row2[data-id="${j.id}"]`);
     if (!row) return;
-    $$(`[data-live-rec="${j.id}"]`, row).forEach(el => { el.textContent = num(recordsDone(j)); });
+    $$('.ai-seg b', row).forEach((b, k) => { b.style.width = `${segFill(j, k)}%`; });
     const a = aiState(j);
-    if (row.dataset.step !== String(a.i)) { row.dataset.step = a.i; $('.r-steps', row).innerHTML = stepsHTML(a); $('[data-live-now]', row).textContent = a.now; }
+    if (row.dataset.step !== String(a.i)) {
+      row.dataset.step = a.i;
+      $('[data-live-now]', row).textContent = a.now;
+      $('[data-live-stepno]', row).textContent = a.i >= 5 ? 'All 5 steps done' : `Step ${a.i + 1} of 5`;
+    }
     const sub = $('[data-live-sub]', row);
-    if (sub.textContent !== a.sub) { const n = sub.cloneNode(); n.textContent = a.sub; sub.replaceWith(n); }
+    if (sub.textContent !== a.sub) { const n = sub.cloneNode(); n.textContent = a.sub; n.classList.add('live'); sub.replaceWith(n); }
   }
 
   function miniTile(j) {
