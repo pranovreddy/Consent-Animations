@@ -570,7 +570,7 @@ html[data-vt] .act,html[data-vt] #focusPane{animation:none}
 .r-file b{display:block;font-size:13px;font-weight:650;letter-spacing:-.15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .r-meta{display:flex;align-items:center;gap:6px;margin-top:4px;font-size:11px;color:var(--ink-4);font-family:var(--mono);white-space:nowrap}
 .r-meta .chip-lob{font-family:var(--font)}
-.r-act{display:flex;flex-direction:column;align-items:flex-end;gap:8px}
+.r-act{display:flex;flex-direction:column;align-items:flex-end;justify-content:center;gap:8px}
 /* AI activity: one live line, a five-part progress, and the current sub-step */
 .ai-top{display:flex;align-items:center;gap:9px;min-width:0}
 .ai-orb{position:relative;width:18px;height:18px;flex-shrink:0;border-radius:50%;background:conic-gradient(from 0deg,#2560f6,#7aa5ff,#c3d6ff,#2560f6);animation:spin 2.4s linear infinite}
@@ -1005,7 +1005,6 @@ html[data-vt] .act,html[data-vt] #focusPane{animation:none}
   const AI_STEPS = ['Analyze', 'Validate', 'Autofix', 'Verify consent', 'Prepare review'];
   const AI_NOW = ['Analyzing', 'Validating', 'Autofixing', 'Verifying consent', 'Preparing review'];
   const AI_AT = [0, 12, 42, 60, 88, 100];
-  const AI_PILL = ['Analyzing', 'Validating', 'Autofixing', 'Verifying', 'Preparing'];
   const AI_SUB = [
     ['Reading file structure', 'Detecting columns and encoding', 'Profiling every row'],
     ['Checking required columns', 'Validating phone and date formats', 'Flagging duplicate rows'],
@@ -1043,7 +1042,6 @@ html[data-vt] .act,html[data-vt] #focusPane{animation:none}
       : j.phase==='submitted' ? `<button class="btn btn-sm" data-act="receipt">Receipt</button>` : '';
     const stamp = j.phase==='submitted' ? CHECK : `<svg viewBox="0 0 24 24"><path d="${STAMP[j.phase] || ''}"/></svg>`;
     const now = j.phase === 'fix_review' ? 'Paused at autofix' : a.now;
-    if (isRunning(j)) st.label = AI_PILL[a.i];
     const stepNo = a.i >= 5 ? 'All 5 steps done' : `Step ${a.i + 1} of 5`;
     const isOpen = V3 && openRow === j.id;
     return `<article class="file-row2 ${tileClass(j)}${isOpen ? ' open' : ''}" style="--fill:${pct}%" data-key="t${j.id}" data-sig="${j.phase}${V3 ? '|x' : ''}" data-fk="t${j.id}" data-to="${pct}" data-id="${j.id}" data-step="${a.i}" tabindex="0" role="button" aria-label="${esc(j.name)}, ${pct}% ${st.label}">
@@ -1054,11 +1052,11 @@ html[data-vt] .act,html[data-vt] #focusPane{animation:none}
         <div class="ai-seg" aria-hidden="true">${AI_STEPS.map((t, k) => `<i class="${j.phase === 'fix_review' && k === 2 ? 'paused' : ''}" title="${t}"><b style="width:${j.phase === 'fix_review' && k === 2 ? 30 : segFill(j, k)}%"></b></i>`).join('')}</div>
         <p class="ai-sub" data-live-sub="${j.id}">${res || esc(a.sub)}</p>
       </div>
-      <div class="r-act"><div class="tile-row"><span class="tile-stage ${st.cls}">${pulseFor(st.cls)}${esc(st.label)}</span></div><div class="tile-row"><span class="tile-pct" data-live-pct="${j.id}">${pct}%</span>${act}${V3 ? '<span class="x-caret" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></span>' : ''}</div></div>
+      <div class="r-act"><div class="tile-row">${isRunning(j) ? `<span class="tile-pct" data-live-pct="${j.id}">${pct}%</span>` : ''}${act}${V3 ? '<span class="x-caret" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></span>' : ''}</div></div>
       ${V3 ? xDetails(j) : ''}
     </article>`;
   }
-  const ROW_HEAD = '<div class="row-head"><span>File</span><span>What the AI is doing</span><span>Status</span></div>';
+  const ROW_HEAD = '<div class="row-head"><span>File</span><span>What the AI is doing</span><span>Action</span></div>';
   const fileList = (list, view) => V2
     ? `<div class="row-list" data-view="rows${V3 ? 'x' : ''}-${view}">${ROW_HEAD}${list.map(fileRow).join('')}</div>`
     : `<div class="page-grid" data-view="${view}">${list.map(fileTile).join('')}</div>`;
@@ -1071,8 +1069,6 @@ html[data-vt] .act,html[data-vt] #focusPane{animation:none}
       row.dataset.step = a.i;
       $('[data-live-now]', row).textContent = a.now;
       $('[data-live-stepno]', row).textContent = a.i >= 5 ? 'All 5 steps done' : `Step ${a.i + 1} of 5`;
-      const pill = $('.tile-stage.run', row);
-      if (pill && a.i < 5) pill.innerHTML = `${pulseFor('run')}${AI_PILL[a.i]}`;
       if (V3) { const m = $('.r-more', row); if (m) m.outerHTML = xDetails(j); }
     }
     const sub = $('[data-live-sub]', row);
