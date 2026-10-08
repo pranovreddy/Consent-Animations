@@ -522,8 +522,8 @@ html[data-vt] .act,html[data-vt] #focusPane{animation:none}
 /* Version switcher */
 .ver{padding:12px 14px;border-top:1px solid var(--line)}
 .ver .nav-lbl{padding:0 0 6px}
-.ver-seg{display:grid;grid-template-columns:1fr 1fr;padding:3px;background:var(--bg-2);border-radius:10px;gap:2px}
-.ver-seg button{height:30px;border-radius:8px;font-size:11.5px;font-weight:600;color:var(--ink-3);transition:background .2s,color .2s,box-shadow .2s}
+.ver-seg{display:grid;grid-template-columns:repeat(3,1fr);padding:3px;background:var(--bg-2);border-radius:10px;gap:2px}
+.ver-seg button{height:30px;border-radius:8px;font-size:10.5px;white-space:nowrap;font-weight:600;color:var(--ink-3);transition:background .2s,color .2s,box-shadow .2s}
 .ver-seg button.is-on{background:#fff;color:var(--ink);box-shadow:0 1px 2px rgba(11,26,51,.08)}
 
 /* V2 — upload lives in a tray, files are rows */
@@ -607,6 +607,70 @@ html[data-vt] .act,html[data-vt] #focusPane{animation:none}
 .v2.is-focus .r-ai{grid-column:1/-1;grid-row:2}
 .v2.is-focus .r-act{grid-column:2;grid-row:1}
 
+/* V3 — rows expand in place */
+.v3 .file-row2{row-gap:0}
+.v3 .file-row2.open{transform:none;border-color:#c9d8f6;box-shadow:0 12px 32px rgba(20,41,68,.10)}
+.v3 .file-row2.open:hover{transform:none}
+.x-caret{width:26px;height:26px;border-radius:7px;display:grid;place-items:center;color:var(--ink-4);transition:background .2s}
+.x-caret svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;transition:transform .35s var(--ease)}
+.file-row2:hover .x-caret{background:var(--bg-2)}
+.file-row2.open .x-caret svg{transform:rotate(180deg)}
+.v3 .file-row2.open .r-act [data-act]{display:none}
+.r-more{grid-column:1/-1;display:grid;grid-template-rows:0fr;transition:grid-template-rows .5s cubic-bezier(.22,1,.36,1);cursor:default}
+.file-row2.open .r-more{grid-template-rows:1fr}
+.r-more>div{overflow:hidden;min-height:0}
+.x{margin-top:14px;padding-top:16px;border-top:1px solid var(--line-2);display:flex;flex-direction:column;gap:16px;opacity:0;transform:translateY(-6px);transition:opacity .25s ease,transform .4s var(--ease)}
+.file-row2.open .x{opacity:1;transform:none;transition-delay:.1s}
+.x-tl{list-style:none;display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:6px}
+.x-tl li{position:relative;display:grid;grid-template-columns:18px minmax(0,1fr);column-gap:7px;align-items:center}
+.x-tl li+li::before{content:'';position:absolute;top:8px;left:-6px;width:6px;height:2px;background:var(--line-2)}
+.x-tl .dot{grid-row:span 2;width:18px;height:18px;border-radius:50%;border:1.5px solid var(--line);background:#fff;display:grid;place-items:center}
+.x-tl .dot svg{width:10px;height:10px;fill:none;stroke:currentColor;stroke-width:2.8;stroke-linecap:round;stroke-linejoin:round}
+.x-tl .dot i{width:6px;height:6px;border-radius:50%;background:var(--line)}
+.x-tl li.done .dot{background:var(--green-soft);border-color:#b7e4c7;color:var(--green)}
+.x-tl li.now .dot{border-color:var(--blue-border);background:var(--blue-soft)}.x-tl li.now .dot i{background:var(--blue);animation:pulse 1.7s var(--ease) infinite}
+.x-tl li.wait .dot{border-color:#f0d9a8;background:var(--amber-soft)}.x-tl li.wait .dot i{background:#d9a54a}
+.x-tl b{font-size:11.5px;font-weight:650;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.x-tl li.todo b{color:var(--ink-4);font-weight:550}
+.x-tl time{font-size:10.5px;color:var(--ink-4);font-family:var(--mono);min-height:13px}
+.x-cols{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:18px;align-items:start}
+.x-main{display:flex;flex-direction:column;gap:12px;min-width:0}
+.x-side{display:flex;flex-direction:column;gap:2px;padding:14px 16px;border-radius:12px;background:#f5f7fb;min-width:0}
+.x-side .auth-lbl{margin-bottom:4px}
+.x-side .auth-row{padding:5px 0;font-size:12.5px}
+.x-side .auth-row.tot{margin-top:4px;padding-top:9px;font-size:14px}
+.x-side .auth-row.tot b{font-size:14px}
+.x-stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.x-stats div{padding:10px 12px;border-radius:10px;background:var(--bg);border:1px solid var(--line-2);min-width:0}
+.x-stats small{display:block;font-size:10px;font-weight:650;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-4)}
+.x-stats b{display:block;font-size:17px;font-weight:700;letter-spacing:-.4px;font-variant-numeric:tabular-nums;margin-top:2px;white-space:nowrap}
+.x-stats span{font-size:10.5px;color:var(--ink-4)}
+.x-ok{display:flex;align-items:center;gap:8px;padding:9px 12px;border-radius:9px;background:#eaf6ef;font-size:12.5px;color:var(--ink-2)}
+.x-ok svg{width:15px;height:15px;flex-shrink:0;fill:none;stroke:var(--blue);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.x-chips{display:flex;flex-wrap:wrap;gap:6px}
+.x-chips span{display:inline-flex;gap:5px;align-items:center;height:24px;padding:0 9px;border-radius:999px;background:var(--bg-2);font-size:11.5px;color:var(--ink-3)}
+.x-chips b{color:var(--ink);font-weight:650;font-variant-numeric:tabular-nums}
+.x-note,.x-lead{font-size:12.5px;color:var(--ink-3);line-height:1.5}
+.x-lead b{color:var(--ink);font-weight:650}
+.x-note .link-btn{padding:2px 4px}
+.x-check{font-size:12px;margin:10px 0 8px}
+.x-check b{font-weight:650;color:var(--ink)}
+.x-submit{width:100%;height:40px}
+.x-fine{font-size:11px;color:var(--ink-4);margin-top:8px;line-height:1.45}
+.x-fixes{display:flex;flex-direction:column;margin-bottom:12px}
+.x-fixes div{display:grid;grid-template-columns:76px minmax(0,1fr) 14px minmax(0,1fr);gap:8px;align-items:center;padding:6px 0;border-top:1px dashed var(--line);font-size:11.5px}
+.x-fixes div:first-child{border-top:0}
+.x-fixes .k{color:var(--ink-4);font-weight:600}
+.x-fixes s{font-family:var(--mono);color:var(--red);opacity:.7;white-space:pre;overflow:hidden;text-overflow:ellipsis}
+.x-fixes .arr{color:var(--ink-4)}
+.x-fixes ins{justify-self:start;font-family:var(--mono);color:var(--green);text-decoration:none;background:var(--green-soft);padding:1px 6px;border-radius:5px;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.x-btns{display:flex;gap:8px;justify-content:flex-end}
+.x-receipt{display:flex;flex-wrap:wrap;align-items:center;gap:10px 28px;padding:12px 16px;border-radius:12px;background:#f5f7fb}
+.x-receipt small{display:block;font-size:10px;font-weight:650;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-4)}
+.x-receipt b{font-size:14px;font-weight:650;font-variant-numeric:tabular-nums}
+.x-receipt .btn{margin-left:auto}
+@media(max-width:1000px){.x-cols{grid-template-columns:1fr}.x-tl{grid-template-columns:repeat(3,minmax(0,1fr));row-gap:10px}}
+
 /* Ready for your go-ahead */
 .rd-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;padding-bottom:18px;border-bottom:1px solid var(--line-2)}
 .rd-file{font-size:13px;color:var(--ink-3);margin-top:8px}
@@ -660,6 +724,7 @@ html[data-vt] .act,html[data-vt] #focusPane{animation:none}
       <div class="ver-seg" role="group" aria-label="Layout version">
         <button type="button" class="is-on" data-ver="1">V1 · Grid</button>
         <button type="button" data-ver="2">V2 · Rows</button>
+        <button type="button" data-ver="3">V3 · Inline</button>
       </div>
     </div>
     <div class="sidebar-user"><b>Ravi Menon</b><span>Super Admin</span></div>
@@ -940,6 +1005,7 @@ html[data-vt] .act,html[data-vt] #focusPane{animation:none}
   const AI_STEPS = ['Analyze', 'Validate', 'Autofix', 'Verify consent', 'Prepare review'];
   const AI_NOW = ['Analyzing', 'Validating', 'Autofixing', 'Verifying consent', 'Preparing review'];
   const AI_AT = [0, 12, 42, 60, 88, 100];
+  const AI_PILL = ['Analyzing', 'Validating', 'Autofixing', 'Verifying', 'Preparing'];
   const AI_SUB = [
     ['Reading file structure', 'Detecting columns and encoding', 'Profiling every row'],
     ['Checking required columns', 'Validating phone and date formats', 'Flagging duplicate rows'],
@@ -977,8 +1043,10 @@ html[data-vt] .act,html[data-vt] #focusPane{animation:none}
       : j.phase==='submitted' ? `<button class="btn btn-sm" data-act="receipt">Receipt</button>` : '';
     const stamp = j.phase==='submitted' ? CHECK : `<svg viewBox="0 0 24 24"><path d="${STAMP[j.phase] || ''}"/></svg>`;
     const now = j.phase === 'fix_review' ? 'Paused at autofix' : a.now;
+    if (isRunning(j)) st.label = AI_PILL[a.i];
     const stepNo = a.i >= 5 ? 'All 5 steps done' : `Step ${a.i + 1} of 5`;
-    return `<article class="file-row2 ${tileClass(j)}" style="--fill:${pct}%" data-key="t${j.id}" data-sig="${j.phase}" data-fk="t${j.id}" data-to="${pct}" data-id="${j.id}" data-step="${a.i}" tabindex="0" role="button" aria-label="${esc(j.name)}, ${pct}% ${st.label}">
+    const isOpen = V3 && openRow === j.id;
+    return `<article class="file-row2 ${tileClass(j)}${isOpen ? ' open' : ''}" style="--fill:${pct}%" data-key="t${j.id}" data-sig="${j.phase}${V3 ? '|x' : ''}" data-fk="t${j.id}" data-to="${pct}" data-id="${j.id}" data-step="${a.i}" tabindex="0" role="button" aria-label="${esc(j.name)}, ${pct}% ${st.label}">
       <div class="r-file"><span class="r-ico" aria-hidden="true"><span class="rg"></span><span class="read"></span><span class="st">${stamp}</span></span>
         <div style="min-width:0"><b title="${esc(j.name)}">${esc(j.name)}</b><div class="r-meta"><span class="chip-lob">${esc(j.lob)}</span>${fmtSize(sizeOf(j))} · ${num(j.total)} records</div></div></div>
       <div class="r-ai">
@@ -986,12 +1054,13 @@ html[data-vt] .act,html[data-vt] #focusPane{animation:none}
         <div class="ai-seg" aria-hidden="true">${AI_STEPS.map((t, k) => `<i class="${j.phase === 'fix_review' && k === 2 ? 'paused' : ''}" title="${t}"><b style="width:${j.phase === 'fix_review' && k === 2 ? 30 : segFill(j, k)}%"></b></i>`).join('')}</div>
         <p class="ai-sub" data-live-sub="${j.id}">${res || esc(a.sub)}</p>
       </div>
-      <div class="r-act"><div class="tile-row"><span class="tile-stage ${st.cls}">${pulseFor(st.cls)}${esc(st.label)}</span></div><div class="tile-row"><span class="tile-pct" data-live-pct="${j.id}">${pct}%</span>${act}</div></div>
+      <div class="r-act"><div class="tile-row"><span class="tile-stage ${st.cls}">${pulseFor(st.cls)}${esc(st.label)}</span></div><div class="tile-row"><span class="tile-pct" data-live-pct="${j.id}">${pct}%</span>${act}${V3 ? '<span class="x-caret" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></span>' : ''}</div></div>
+      ${V3 ? xDetails(j) : ''}
     </article>`;
   }
   const ROW_HEAD = '<div class="row-head"><span>File</span><span>What the AI is doing</span><span>Status</span></div>';
   const fileList = (list, view) => V2
-    ? `<div class="row-list" data-view="rows-${view}">${ROW_HEAD}${list.map(fileRow).join('')}</div>`
+    ? `<div class="row-list" data-view="rows${V3 ? 'x' : ''}-${view}">${ROW_HEAD}${list.map(fileRow).join('')}</div>`
     : `<div class="page-grid" data-view="${view}">${list.map(fileTile).join('')}</div>`;
   function paintRow(j) {
     const row = $(`#canvas .file-row2[data-id="${j.id}"]`);
@@ -1002,9 +1071,86 @@ html[data-vt] .act,html[data-vt] #focusPane{animation:none}
       row.dataset.step = a.i;
       $('[data-live-now]', row).textContent = a.now;
       $('[data-live-stepno]', row).textContent = a.i >= 5 ? 'All 5 steps done' : `Step ${a.i + 1} of 5`;
+      const pill = $('.tile-stage.run', row);
+      if (pill && a.i < 5) pill.innerHTML = `${pulseFor('run')}${AI_PILL[a.i]}`;
+      if (V3) { const m = $('.r-more', row); if (m) m.outerHTML = xDetails(j); }
     }
     const sub = $('[data-live-sub]', row);
     if (sub.textContent !== a.sub) { const n = sub.cloneNode(); n.textContent = a.sub; n.classList.add('live'); sub.replaceWith(n); }
+  }
+
+  /* ---------- V3: the row expands in place to review it ---------- */
+  let V3 = false, openRow = null;
+  function xTimeline(j) {
+    const cur = j.phase === 'submitted' ? TL.length : STEP_KEYS.indexOf(stepKey(j.phase));
+    return `<ol class="x-tl">${TL.map((s, i) => {
+      const state = i < cur ? 'done' : i === cur ? (needsYou(j) ? 'wait' : 'now') : 'todo';
+      const t = j.at && j.at[s.k] && state !== 'todo' ? fmtTime(j.at[s.k]) : '';
+      return `<li class="${state}"><span class="dot">${state === 'done' ? CHECK : '<i></i>'}</span><b>${s.t}</b><time>${t}</time></li>`;
+    }).join('')}</ol>`;
+  }
+  function xDetails(j) {
+    let body;
+    if (j.phase === 'ready') {
+      const base = j.verified * .05, tax = base * .18, total = base + tax;
+      const skipped = (j.fixed || 0) - (j.fixedApplied || 0), excluded = j.total - j.verified;
+      const why = [['Failed authenticity', j.failed], ['Need manual edits', j.manual], ['Duplicates', j.dup], ['Errors not fixed', skipped]].filter(r => r[1] > 0);
+      body = `<div class="x-cols">
+        <div class="x-main">
+          <div class="x-stats"><div><small>Eligible</small><b>${num(j.verified)}</b></div><div><small>Estimate</small><b>${inr2(total)}</b><span>incl. sample tax</span></div><div><small>Excluded</small><b>${num(excluded)}</b></div></div>
+          <p class="x-ok"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg>Checks complete.${j.fixedApplied ? ` ${num(j.fixedApplied)} records were corrected and revalidated.` : ' No corrections applied.'}</p>
+          <div class="x-chips">${why.map(([t, n]) => `<span>${t} <b>${num(n)}</b></span>`).join('')}</div>
+          ${j.failed ? `<p class="x-note">${num(j.failed)} records failed authenticity checks and can be appealed separately. <button type="button" class="link-btn" data-do="appeal">Review reasons &amp; appeal</button></p>` : ''}
+        </div>
+        <div class="x-side">
+          <div class="auth-lbl">Migration authorization</div>
+          <div class="auth-row"><span>${num(j.verified)} × ₹0.05</span><span>${inr2(base)}</span></div>
+          <div class="auth-row"><span>Sample tax · 18%*</span><span>${inr2(tax)}</span></div>
+          <div class="auth-row tot"><span>Total</span><b>${inr2(total)}</b></div>
+          <label class="declare x-check"><input type="checkbox" class="authz"><span>I authorize <b>${num(j.verified)} consents</b> for <b>${inr2(total)}</b>. Excluded records are not part of this submission.</span></label>
+          <button type="button" class="btn btn-pri x-submit" data-do="submit" disabled>Submit ${num(j.verified)} consents</button>
+          <p class="x-fine">*Illustrative rate and tax. Other roles send this summary for approval.</p>
+        </div>
+      </div>`;
+    } else if (j.phase === 'fix_review') {
+      body = `<div class="x-cols">
+        <div class="x-main">
+          <p class="x-lead">Validation found <b>${num(j.fixed)}</b> rows with format errors the agent can fix safely. Autofix includes them; skip continues with clean rows only. Originals are always kept.</p>
+          <div class="x-stats"><div><small>Fixable</small><b>${num(j.fixed)}</b></div><div><small>Manual edits</small><b>${num(j.manual)}</b><span>left out</span></div><div><small>Clean</small><b>${num(j.valid)}</b></div></div>
+        </div>
+        <div class="x-side">
+          <div class="auth-lbl">Sample of the fixes</div>
+          <div class="x-fixes">${FIXES.map(([f, a, b]) => `<div><span class="k">${f}</span><s>${esc(a)}</s><span class="arr">→</span><ins>${esc(b)}</ins></div>`).join('')}</div>
+          <div class="x-btns"><button type="button" class="btn" data-do="skip">Skip</button><button type="button" class="btn btn-pri" data-do="apply">Autofix ${num(j.fixed)} errors</button></div>
+        </div>
+      </div>`;
+    } else if (j.phase === 'submitted') {
+      const amt = (j.verified || 0) * .05 * 1.18;
+      body = `<div class="x-receipt">
+        <div><small>Reference</small><b>MIG-2026-${String(j.id).padStart(4, '0')}</b></div>
+        <div><small>Submitted</small><b>${num(j.verified)}</b></div>
+        <div><small>Failed checks</small><b>${num(j.failed)}</b></div>
+        <div><small>Amount</small><b>${inr(amt)}</b></div>
+        <div><small>Time</small><b>${j.at && j.at.submitted ? fmtTime(j.at.submitted) : '—'}</b></div>
+        <button type="button" class="btn" data-do="receipt">Download receipt</button>
+      </div>`;
+    } else {
+      const si = aiState(j).i, a = AI_AT[si], b = AI_AT[si + 1], items = AI_SUB[si], p = progressF(j);
+      const ms = thr => `${Math.max(0, Math.round((thr - p) / RATE))}ms`;
+      const next = si === 1 && !j.autofix ? 'Review errors (autofix is off)' : si < 4 ? AI_STEPS[si + 1] : 'Your go-ahead to submit';
+      body = `<div class="x-cols">
+        <div class="x-main"><div class="auth-lbl">Right now · ${AI_NOW[si]}</div><ul class="sub">${items.map((t, i) => `<li style="--s:${ms(a + (b - a) * i / items.length)};--e:${ms(a + (b - a) * (i + 1) / items.length)}"><span class="ic"><span class="spin"></span><span class="ok">${CHECK}</span></span>${t}</li>`).join('')}</ul></div>
+        <div class="x-side"><div class="auth-lbl">Up next</div><p class="next">${next}</p><p class="x-fine">Nothing is needed from you right now. Autofix: ${j.autofix ? 'automatic' : 'ask me first'}.</p></div>
+      </div>`;
+    }
+    return `<div class="r-more"><div><div class="x">${xTimeline(j)}${body}</div></div></div>`;
+  }
+  function toggleRow(row, force) {
+    const id = +row.dataset.id, open = force ?? !row.classList.contains('open');
+    $$('#canvas .file-row2.open').forEach(r => { if (r !== row) r.classList.remove('open'); });
+    row.classList.toggle('open', open);
+    openRow = open ? id : null;
+    if (open) setTimeout(() => row.scrollIntoView({ block: 'nearest', behavior: RM ? 'auto' : 'smooth' }), 260);
   }
 
   function miniTile(j) {
@@ -1438,7 +1584,7 @@ html[data-vt] .act,html[data-vt] #focusPane{animation:none}
       return;
     }
 
-    $('#hint').innerHTML = V2 ? 'Each row shows what the AI is doing on that file. Open one to see its timeline.' : 'Each file fills as the agent reads it. Open one to see its timeline.';
+    $('#hint').innerHTML = V3 ? 'Each row shows what the AI is doing. Click a row to review it right here.' : V2 ? 'Each row shows what the AI is doing on that file. Open one to see its timeline.' : 'Each file fills as the agent reads it. Open one to see its timeline.';
     patch(canvas, list.length ? fileList(list, 'page') : emptyFor());
   }
 
@@ -1546,8 +1692,8 @@ html[data-vt] .act,html[data-vt] #focusPane{animation:none}
   }
   document.addEventListener('click', e => { const n = e.target.closest('[data-nav]'); if (n) navigate(n.dataset.nav); });
 
-  function doAction(a) {
-    const j = focus && focus.type === 'file' && jobs.find(x => x.id === focus.id);
+  function doAction(a, rowEl) {
+    const j = rowEl ? jobs.find(x => x.id === +rowEl.dataset.id) : focus && focus.type === 'file' && jobs.find(x => x.id === focus.id);
     if (!j) return;
     if (a === 'apply' || a === 'skip') {
       j.fixedApplied = a === 'apply' ? j.fixed : 0;
@@ -1555,7 +1701,8 @@ html[data-vt] .act,html[data-vt] #focusPane{animation:none}
       render(); startTicker();
       toast(a === 'apply' ? `Autofixing ${num(j.fixed)} errors` : 'Continuing without fixes');
     }
-    if (a === 'submit' && $('#authz') && $('#authz').checked) {
+    const authz = rowEl ? $('.authz', rowEl) : $('#authz');
+    if (a === 'submit' && authz && authz.checked) {
       j.phase = 'submitted';
       render(); toast(`${j.name} submitted`);
     }
@@ -1689,17 +1836,27 @@ html[data-vt] .act,html[data-vt] #focusPane{animation:none}
 
   $('#canvas').addEventListener('click', e => {
     const d=e.target.closest('[data-do]');
-    if(d){ doAction(d.dataset.do); return; }
+    if(d){ doAction(d.dataset.do, V3 ? d.closest('.file-row2') : null); return; }
+    if(V3){
+      const row=e.target.closest('.file-row2');
+      if(row){
+        if(e.target.closest('.r-more')) return;
+        toggleRow(row, e.target.closest('[data-act]') ? true : undefined);
+        return;
+      }
+    }
     const tile=e.target.closest('.file-tile,.file-row2');
     if(tile&&tile.dataset.id){ openFile(+tile.dataset.id, tile); return; }
     const folder=e.target.closest('.folder-card');
     if(folder) openFolder(folder.dataset.lob, folder);
   });
   $('#canvas').addEventListener('keydown', e => {
-    if((e.key==='Enter'||e.key===' ')&&e.target.matches('.file-tile,.file-row2,.folder-card')){ e.preventDefault(); e.target.click(); }
+    if((e.key==='Enter'||e.key===' ')&&e.target.matches('.file-tile,.file-row2,.folder-card')){
+      if(V3&&e.target.matches('.file-row2')){ e.preventDefault(); toggleRow(e.target); return; } e.preventDefault(); e.target.click(); }
   });
   $('#canvas').addEventListener('change', e => {
     if(e.target.id==='authz') $('#submitBtn').disabled=!e.target.checked;
+    if(e.target.matches('.authz')){ const b=e.target.closest('.file-row2').querySelector('.x-submit'); if(b) b.disabled=!e.target.checked; }
   });
 
   $('#seedDemo').onclick=()=>{
@@ -1747,24 +1904,27 @@ html[data-vt] .act,html[data-vt] #focusPane{animation:none}
   document.addEventListener('keydown', e => { if (e.key === 'Escape' && $('#tray').classList.contains('open')) closeTray(); });
   function setVersion(v, animate) {
     const apply = () => {
-      V2 = v === 2;
+      V2 = v >= 2; V3 = v === 3; openRow = null;
       document.body.classList.toggle('v2', V2);
+      document.body.classList.toggle('v3', V3);
       $$('.ver-seg button').forEach(b => b.classList.toggle('is-on', +b.dataset.ver === v));
       const pane = $('#uploadPane');
       if (V2) $('#trayBody').appendChild(pane); else { closeTray(); $('.upload-rail').prepend(pane); }
       focus = null;
       render();
     };
+    VER = v;
     if (!(animate && morph('fade', apply))) apply();
     try { localStorage.setItem('am-version', String(v)); } catch (e) {}
   }
-  $$('.ver-seg button').forEach(b => { b.onclick = () => { if ((+b.dataset.ver === 2) !== V2) setVersion(+b.dataset.ver, true); }; });
+  let VER = 1;
+  $$('.ver-seg button').forEach(b => { b.onclick = () => { if (+b.dataset.ver !== VER) setVersion(+b.dataset.ver, true); }; });
 
   const dropDoc = docHTML(3);
   $('#dropSheet').innerHTML = `${dropDoc}<div class="read">${dropDoc}<span class="trail"></span></div>`;
   render();
   renderPicked();
-  try { if (localStorage.getItem('am-version') === '2') setVersion(2, false); } catch (e) {}
+  try { const v = +localStorage.getItem('am-version'); if (v === 2 || v === 3) setVersion(v, false); } catch (e) {}
 })();
 </script>
 </body>
