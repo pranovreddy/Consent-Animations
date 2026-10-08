@@ -677,6 +677,17 @@ html[data-vt] .act,html[data-vt] #focusPane{animation:none}
 .x-appeal.done{grid-template-columns:26px minmax(0,1fr);border-color:#b7e4c7;background:var(--green-soft)}
 .x-appeal.done .xa-ic{border-color:#b7e4c7;color:var(--green)}
 .x-appeal.done .xa-ic svg{stroke-width:2.8;width:13px;height:13px}
+.x-right{display:flex;flex-direction:column;gap:10px;min-width:0}
+.x-stages{list-style:none;border:1px solid var(--line-2);border-radius:12px;padding:2px 14px}
+.x-stages li{display:grid;grid-template-columns:132px minmax(0,1fr);gap:12px;align-items:center;padding:9px 0;border-top:1px dashed var(--line)}
+.x-stages li:first-child{border-top:0}
+.xs-n{display:flex;align-items:center;gap:8px;font-size:12.5px;font-weight:600;color:var(--ink-2);white-space:nowrap}
+.xs-d{width:16px;height:16px;border-radius:50%;background:var(--green);display:grid;place-items:center;flex-shrink:0}
+.xs-d svg{width:9px;height:9px;fill:none;stroke:#fff;stroke-width:3.2;stroke-linecap:round;stroke-linejoin:round}
+.xs-f{display:flex;flex-wrap:wrap;gap:4px 14px;font-size:12px;color:var(--ink-3)}
+.xs-f span{display:inline-flex;align-items:center;gap:6px;white-space:nowrap}
+.xs-f i{width:7px;height:7px;border-radius:50%}
+.xs-f b{color:var(--ink);font-weight:650;font-variant-numeric:tabular-nums}
 .x-note,.x-lead{font-size:12.5px;color:var(--ink-3);line-height:1.5}
 .x-lead b{color:var(--ink);font-weight:650}
 .x-note .link-btn{padding:2px 4px}
@@ -1186,19 +1197,27 @@ html[data-vt] .act,html[data-vt] #focusPane{animation:none}
       </div>
       <button type="button" class="btn btn-sm xa-btn" data-do="appeal">Appeal ${num(f)} records</button></div>`;
   }
+  /* one row per AI step with the counts that step produced */
+  function xStages(j) {
+    const keep = [['Records found', 'Columns detected'], ['Passed', 'Fixable errors', 'Need manual edits', 'Duplicates'], ['Auto-fixed', 'Skipped'], ['Consent valid', 'Failed authenticity'], ['Eligible', 'Excluded']];
+    return `<ul class="x-stages">${AI_STEPS.map((t, k) => {
+      const facts = stepFacts(j, k).filter(f => keep[k].includes(f[1]));
+      return `<li><span class="xs-n"><span class="xs-d">${CHECK}</span>${t}</span><span class="xs-f">${facts.map(([c, l, v]) => `<span><i style="background:${c}"></i>${l} <b>${v}</b></span>`).join('')}</span></li>`;
+    }).join('')}</ul>`;
+  }
   function xDetails(j) {
     let body;
     if (j.phase === 'ready') {
       const base = j.verified * .05, tax = base * .18, total = base + tax;
       const skipped = (j.fixed || 0) - (j.fixedApplied || 0), excluded = j.total - j.verified;
-      const why = [['Failed authenticity', j.failed], ['Need manual edits', j.manual], ['Duplicates', j.dup], ['Errors not fixed', skipped]].filter(r => r[1] > 0);
       body = `<div class="x-cols">
         <div class="x-main">
-          <div class="x-stats"><div><small>Eligible</small><b>${num(j.verified)}</b></div><div><small>Estimate</small><b>${inr2(total)}</b><span>incl. sample tax</span></div><div><small>Excluded</small><b>${num(excluded)}</b></div></div>
-          <p class="x-ok"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg>Checks complete.${j.fixedApplied ? ` ${num(j.fixedApplied)} records were corrected and revalidated.` : ' No corrections applied.'}</p>
-          <div class="x-chips">${why.map(([t, n]) => `<span>${t} <b>${num(n)}</b></span>`).join('')}</div>
+          <div class="auth-lbl">Stage-wise summary</div>
+          ${xStages(j)}
           ${j.failed ? xAppeal(j) : ''}
         </div>
+        <div class="x-right">
+          <div class="x-stats"><div><small>Eligible</small><b>${num(j.verified)}</b></div><div><small>Estimate</small><b>${inr2(total)}</b><span>incl. sample tax</span></div><div><small>Excluded</small><b>${num(excluded)}</b></div></div>
         <div class="x-side">
           <div class="auth-lbl">Migration authorization</div>
           <div class="auth-row"><span>${num(j.verified)} × ₹0.05</span><span>${inr2(base)}</span></div>
@@ -1207,6 +1226,7 @@ html[data-vt] .act,html[data-vt] #focusPane{animation:none}
           <label class="declare x-check"><input type="checkbox" class="authz"><span>I authorize <b>${num(j.verified)} consents</b> for <b>${inr2(total)}</b>. Excluded records are not part of this submission.</span></label>
           <button type="button" class="btn btn-pri x-submit" data-do="submit" disabled>Submit ${num(j.verified)} consents</button>
           <p class="x-fine">*Illustrative rate and tax. Other roles send this summary for approval.</p>
+        </div>
         </div>
       </div>`;
     } else if (j.phase === 'fix_review') {
